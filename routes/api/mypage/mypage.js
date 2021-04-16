@@ -18,15 +18,15 @@ router.get('/', authUtil.isLoggedin, async (req, res) => {
     console.log(req.decoded);
     console.log(MypageSelectResult);
     if(!MypageSelectQuery){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 회원정보 조회 실패
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 마이페이지  조회 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, MypageSelectResult[0]));      // 회원정보 조회 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "마이페이지 조회 성공", MypageSelectResult[0]));      // 마이페이지  조회 성공
     }
 });
 
 //프로필 조회
 router.get('/profile', authUtil.isLoggedin, async (req, res) => {
-    const MypageSelectProfileQuery = 'SELECT email,nickname,name,CONCAT( left(phone,3) , "-" , mid(phone,4,4) , "-", right(phone,4)) AS phone FROM user WHERE user_id = ?'; 
+    const MypageSelectProfileQuery = 'SELECT email,nickname,name,CONCAT( left(phone,3) , "-" , mid(phone,4,4) , "-", right(phone,4)) AS phone FROM user_health WHERE user_id = ?'; 
     const MypageSelecProfiletResult = await db.queryParam_Arr(MypageSelectProfileQuery, [req.decoded.id]);
 
     if(!MypageSelectProfileQuery){
@@ -51,7 +51,7 @@ router.put('/profile', authUtil.isLoggedin, async (req, res) => {
 
 //건강데이터 목록 조회
 router.get('/health/list', authUtil.isLoggedin, async (req, res) => {
-    const MypageSelectHealthQuery = 'SELECT health_id,DATE_FORMAT(RegiDate, "%y.%m.%d") AS RegiDate,stageNm,progressNm,cancerNm,disease,weight,height FROM user WHERE user_id = ?'; 
+    const MypageSelectHealthQuery = 'SELECT health_id,DATE_FORMAT(RegiDate, "%y.%m.%d") AS RegiDate,stageNm,progressNm,cancerNm,disease,weight,height FROM user_health WHERE user_id = ?'; 
     const MypageSelectHealthResult = await db.queryParam_Arr(MypageSelectHealthQuery, [req.decoded.id]);
 
     if(!MypageSelectHealthResult ){
