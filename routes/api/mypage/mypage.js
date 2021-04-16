@@ -31,19 +31,19 @@ router.get('/profile', authUtil.isLoggedin, async (req, res) => {
     if(!MypageSelectProfileQuery){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     //프로필 조회 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, MypageSelecProfiletResult));      // 프로필 조회 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "프로필 조회 성공", MypageSelecProfiletResult));      // 프로필 조회 성공
     }
 });
 
 //프로필 수정
 router.put('/profile', authUtil.isLoggedin, async (req, res) => {
-    const MypageSelectQuery = 'SELECT nickname,name,stageNm,progressNM,cancerNm,disease FROM user WHERE user_id = ?'; 
-    const MypageSelectResult = await db.queryParam_Arr(MypageSelectQuery, [req.decoded.id]);
+    const MypageUpdateProfileQuery = 'UPDATE user SET nickname =? ,name =? ,phone =? WHERE user_id = ?'; 
+    const MypageUpdateProfileResult = await db.queryParam_Arr(MypageUpdateProfileQuery , [req.decoded.id]);
 
-    if(!MypageSelectQuery){
+    if(!MypageUpdateProfileResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 회원정보 조회 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, modifySelectResult));      // 회원정보 조회 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "프로필 수정 성공"));      // 회원정보 조회 성공
     }
 });
 
