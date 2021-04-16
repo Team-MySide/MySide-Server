@@ -26,13 +26,13 @@ router.get('/', authUtil.isLoggedin, async (req, res) => {
 
 //프로필 조회
 router.get('/profile', authUtil.isLoggedin, async (req, res) => {
-    const MypageSelectProfileQuery = 'SELECT email,nickname,name,CONCAT( left(phone,3) , "-" , mid(phone,4,4) , "-", right(phone,4)) AS phone FROM user_health WHERE user_id = ?'; 
+    const MypageSelectProfileQuery = 'SELECT email,nickname,name,CONCAT( left(phone,3) , "-" , mid(phone,4,4) , "-", right(phone,4)) AS phone FROM user WHERE user_id = ?'; 
     const MypageSelecProfiletResult = await db.queryParam_Arr(MypageSelectProfileQuery, [req.decoded.id]);
 
-    if(!MypageSelectProfileQuery){
+    if(!MypageSelecProfiletResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     //프로필 조회 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "프로필 조회 성공", MypageSelecProfiletResult));      // 프로필 조회 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "프로필 조회 성공", MypageSelecProfiletResult[0]));      // 프로필 조회 성공
     }
 });
 
@@ -65,8 +65,8 @@ router.get('/health/list', authUtil.isLoggedin, async (req, res) => {
 router.post('/health', authUtil.isLoggedin, async (req, res) => {
     const MypageInsertHealthQuery = "INSERT INTO user_health " 
     +"(user_id,relationNm,gender,age,height,weight,stageNm,progressNm,cancerNm,disease,disable_food,memo,RegiDate) "
-    +"INTO "
-    +"(?,?,?,?,?,?,?,?,?,?,?,?,NOW()) "
+    +"VALUES "
+    +"(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) "
     const MypageInsertHealthResult = await db.queryParam_Arr(MypageInsertHealthQuery, 
         [req.decoded.id,req.body.relationNm,req.body.gender,req.body.age,req.body.height,req.body.weight,req.body.stageNm
         ,req.body.progressNm,req.body.cancerNm,req.body.disease,req.body.disable_food,req.body.memo]);
@@ -87,7 +87,7 @@ router.get('/health/:health_id', authUtil.isLoggedin, async (req, res) => {
     if(!MypageSelectHealthResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 건강데이터  조회 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, MypageSelectHealthResult));      // 건강데이터  조회 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "건강데이터 상세조회 성공", MypageSelectHealthResult[0]));      // 건강데이터  조회 성공
     }
 });
 
