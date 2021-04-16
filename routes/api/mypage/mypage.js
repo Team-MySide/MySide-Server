@@ -70,7 +70,7 @@ router.post('/health', authUtil.isLoggedin, async (req, res) => {
         res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, modifySelectResult));      // 회원정보 조회 성공
     }
 });
-//프로필 조회
+//건강데이터 상세
 router.get('/profile', authUtil.isLoggedin, async (req, res) => {
     const MypageSelectQuery = 'SELECT nickname,name,stageNm,progressNM,cancerNm,disease FROM user WHERE user_id = ?'; 
     const MypageSelectResult = await db.queryParam_Arr(MypageSelectQuery, [req.decoded.id]);
