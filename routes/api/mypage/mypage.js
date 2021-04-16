@@ -25,7 +25,7 @@ router.get('/', authUtil.isLoggedin, async (req, res) => {
 
 //프로필 조회
 router.get('/profile', authUtil.isLoggedin, async (req, res) => {
-    const MypageSelectProfileQuery = 'SELECT email,nickname,name,concat( left(phone,3) , "-" , mid(phone,4,4) , "-", right(phone,4)) FROM user WHERE user_id = ?'; 
+    const MypageSelectProfileQuery = 'SELECT email,nickname,name,CONCAT( left(phone,3) , "-" , mid(phone,4,4) , "-", right(phone,4)) AS phone FROM user WHERE user_id = ?'; 
     const MypageSelecProfiletResult = await db.queryParam_Arr(MypageSelectProfileQuery, [req.decoded.id]);
 
     if(!MypageSelectProfileQuery){
@@ -41,21 +41,21 @@ router.put('/profile', authUtil.isLoggedin, async (req, res) => {
     const MypageUpdateProfileResult = await db.queryParam_Arr(MypageUpdateProfileQuery , [req.decoded.id]);
 
     if(!MypageUpdateProfileResult){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 회원정보 조회 실패
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 프로필 수정 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "프로필 수정 성공"));      // 회원정보 조회 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "프로필 수정 성공"));      // 프로필 수정 성공
     }
 });
 
 //건강데이터 목록 조회
-router.get('/health', authUtil.isLoggedin, async (req, res) => {
-    const MypageSelectQuery = 'SELECT nickname,name,stageNm,progressNM,cancerNm,disease FROM user WHERE user_id = ?'; 
-    const MypageSelectResult = await db.queryParam_Arr(MypageSelectQuery, [req.decoded.id]);
+router.get('/health/list', authUtil.isLoggedin, async (req, res) => {
+    const MypageSelectHealthQuery = 'SELECT health_id,DATE_FORMAT(RegiDate, "%y.%m.%d") AS RegiDate,stageNm,progressNM,cancerNm,disease,weight,height FROM user WHERE user_id = ?'; 
+    const MypageSelectHealthResult = await db.queryParam_Arr(MypageSelectHealthQuery, [req.decoded.id]);
 
-    if(!MypageSelectQuery){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 회원정보 조회 실패
+    if(!MypageSelectHealthResult ){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 건강데이터 목록 조회 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, modifySelectResult));      // 회원정보 조회 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, MypageSelectHealthResult ));      // 건강데이터 목록  조회 성공
     }
 });
 
@@ -71,7 +71,7 @@ router.post('/health', authUtil.isLoggedin, async (req, res) => {
     }
 });
 //건강데이터 상세
-router.get('/profile', authUtil.isLoggedin, async (req, res) => {
+router.get('/health/:health_id', authUtil.isLoggedin, async (req, res) => {
     const MypageSelectQuery = 'SELECT nickname,name,stageNm,progressNM,cancerNm,disease FROM user WHERE user_id = ?'; 
     const MypageSelectResult = await db.queryParam_Arr(MypageSelectQuery, [req.decoded.id]);
 
