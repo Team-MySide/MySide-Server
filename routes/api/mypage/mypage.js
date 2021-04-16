@@ -25,13 +25,13 @@ router.get('/', authUtil.isLoggedin, async (req, res) => {
 
 //프로필 조회
 router.get('/profile', authUtil.isLoggedin, async (req, res) => {
-    const MypageSelectQuery = 'SELECT nickname,name,stageNm,progressNM,cancerNm,disease FROM user WHERE user_id = ?'; 
-    const MypageSelectResult = await db.queryParam_Arr(MypageSelectQuery, [req.decoded.id]);
+    const MypageSelectProfileQuery = 'SELECT email,nickname,name,concat( left(phone,3) , "-" , mid(phone,4,4) , "-", right(phone,4)) FROM user WHERE user_id = ?'; 
+    const MypageSelecProfiletResult = await db.queryParam_Arr(MypageSelectProfileQuery, [req.decoded.id]);
 
-    if(!MypageSelectQuery){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 회원정보 조회 실패
+    if(!MypageSelectProfileQuery){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     //프로필 조회 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, modifySelectResult));      // 회원정보 조회 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, MypageSelecProfiletResult));      // 프로필 조회 성공
     }
 });
 
