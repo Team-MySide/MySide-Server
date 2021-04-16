@@ -7,6 +7,7 @@ const defaultRes = require('../../../module/utils/utils');
 const statusCode = require('../../../module/utils/statusCode');
 const resMessage = require('../../../module/utils/responseMessage');
 const db = require('../../../module/pool');
+const { Health } = require('aws-sdk');
 
 
 //마이페이지 상단
@@ -78,13 +79,15 @@ router.post('/health', authUtil.isLoggedin, async (req, res) => {
 });
 //건강데이터 상세
 router.get('/health/:health_id', authUtil.isLoggedin, async (req, res) => {
-    const MypageSelectQuery = 'SELECT nickname,name,stageNm,progressNM,cancerNm,disease FROM user WHERE user_id = ?'; 
-    const MypageSelectResult = await db.queryParam_Arr(MypageSelectQuery, [req.decoded.id]);
+    const MypageSelectHealthQuery = 
+    'SELECT relationNm,gender,age,height,weight,stageNm,progressNm,cancerNm,disease,disable_food,memo ' 
+    +'FROM user_health WHERE user_id = ? AND health_id =? '; 
+    const MypageSelectHealthResult = await db.queryParam_Arr(MypageSelectHealthQuery, [req.decoded.id, req.params.health_id]);
 
-    if(!MypageSelectQuery){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 회원정보 조회 실패
+    if(!MypageSelectHealthResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 건강데이터  조회 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, modifySelectResult));      // 회원정보 조회 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.SUCCESS_USER_LIST, MypageSelectHealthResult));      // 건강데이터  조회 성공
     }
 });
 
