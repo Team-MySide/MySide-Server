@@ -15,6 +15,9 @@ module.exports = {
   DUPLICATED_ID_FAIL: "중복된 ID가 있습니다.",
   NOT_CORRECT_THUMB_ID: "일치하는 썸네일 ID가 없습니다.",
 
+  FIND_USER_ID: "유저정보 찾기 성공",
+  NOT_CORRECT_INFO:"올바르지 않는 정보",
+
 
   MEMBERSHIP_SELECT_SUCCESS: "멤버십 조회 성공",
   MEMBERSHIP_SELECT_FAIL: "멤버십 조회 실패",
