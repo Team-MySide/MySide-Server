@@ -77,6 +77,24 @@ router.post('/health', authUtil.isLoggedin, async (req, res) => {
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "건강데이터 입력 성공"));      // 건강데이터 입력 성공
     }
 });
+
+
+//건강데이터 편집
+router.put('/health', authUtil.isLoggedin, async (req, res) => {
+    const MypageUpdateHealthQuery = "UPDATE user_health SET " 
+    +"relationNm = ?,gender = ?, age = ?, height = ?, weight = ?, stageNm = ?,"
+    +"progressNm = ?,cancerNm = ?,disease = ?,disable_food = ?, memo = ? "
+    +"WHERE user_id =? AND health_id = ?"
+    const MypageUpdateHealthResult = await db.queryParam_Arr(MypageUpdateHealthQuery, 
+        [req.body.relationNm,req.body.gender,req.body.age,req.body.height,req.body.weight,req.body.stageNm
+        ,req.body.progressNm,req.body.cancerNm,req.body.disease,req.body.disable_food,req.body.memo,req.decoded.id,req.body.health_id]);
+
+        if(!MypageUpdateHealthResult){
+            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 프로필 수정 실패
+        }else{
+            res.status(200).send(defaultRes.successTrue(statusCode.OK, "건강데이터 수정 성공"));      // 프로필 수정 성공
+        }
+});
 //건강데이터 상세
 router.get('/health/:health_id', authUtil.isLoggedin, async (req, res) => {
     const MypageSelectHealthQuery = 
