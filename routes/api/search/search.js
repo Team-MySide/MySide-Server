@@ -23,4 +23,22 @@ router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
 });
 
 
+router.get('/recently', authUtil.isLoggedin,async (req, res) => {
+
+    const SelectQuery = 'SELECT text FROM search_log WHERE user_id = ? LIMIT 10'; 
+    const SelectResult = await db.queryParam_Arr(SelectQuery, [req.decoded.id]);
+    console.log(SelectResult);
+
+ 
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 마이페이지  조회 실패
+    }else{
+        let resData= [];
+        for(let i = 0;i<SelectResult.length;i++){
+               resData.push(SelectResult[i].text);
+        }
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "최근 검색어 조회 성공", resData));      // 마이페이지  조회 성공
+    }
+});
+
 module.exports = router;
