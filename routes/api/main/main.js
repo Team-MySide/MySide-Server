@@ -13,12 +13,19 @@ router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
     const SelectCancerQuery = 'SELECT cancerNm FROM user WHERE user_id = ?'; 
     const SelectCancerResult = await db.queryParam_Arr(SelectCancerQuery, [req.decoded.id]);
 
- 
-    console.log(SelectCancerResult[0].cancerNm);
     if(!SelectCancerResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 마이페이지  조회 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "마이페이지 조회 성공", SelectCancerResult[0]));      // 마이페이지  조회 성공
+        let cancerNm = SelectCancerResult[0].cancerNm;
+        const SelectQuery = 
+        'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views '
+        + 'FROM food_thumbnail A, cancer_food B '
+        + 'WHERE A.name = B.food '
+        + 'AND B.cancerNm = ? '
+        + 'LIMIT 5 '; 
+        const SelectResult = await db.queryParam_Arr(SelectQuery, [cancerNm]);
+
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "추천 음식 조회 성공", SelectResult));      // 마이페이지  조회 성공
     }
 });
 
