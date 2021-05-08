@@ -6,6 +6,7 @@ const resMessage = require('../../../module/utils/responseMessage')
 const db = require('../../../module/pool');
 
 const jwtUtils = require('../../../module/jwt');
+const nodemailer = require('nodemailer');        // e-mail 보낼 때 사용
 
 /* 아이디 찾기 
 입력 : 이름 핸드폰번호
