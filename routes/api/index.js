@@ -5,5 +5,6 @@ router.use('/mypage', require('./mypage/index'));
 router.use('/auth', require('./auth/index'));
 router.use('/search', require('./search/index'));
 router.use('/main', require('./main/index'));
+router.use('/wish', require('./wish/index'));
 
 module.exports = router;
