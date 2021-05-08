@@ -15,7 +15,7 @@ router.put('/', authUtil.isLoggedin,async (req, res) => {
  
 
     if(req.body.status==1){ // 좋아요 O
-        WishQuery = 'INSERT INTO wishlist VALUES (?, ?)'; 
+        WishQuery = 'INSERT INTO wishlist (user_id,food) VALUES (?, ?)'; 
         UpdateWishQuery = 'UPDATE food_thumbnail SET wishes + 1 WHERE food = ?'
     } else{ // 좋아요 X
         WishQuery = 'DELETE FROM wishlist WHERE user_id =? AND food =?'
@@ -23,7 +23,7 @@ router.put('/', authUtil.isLoggedin,async (req, res) => {
     } 
     
     const WishResult = await db.queryParam_Arr(WishQuery, [req.decoded.id,req.body.food]);
-    const UpdateWishResult = await db.queryParam_Arr(UpdateWishQuery, [eq.body.food]);
+    const UpdateWishResult = await db.queryParam_Arr(UpdateWishQuery, [req.body.food]);
     
     if(!WishResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
