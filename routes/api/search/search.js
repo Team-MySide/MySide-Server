@@ -24,7 +24,6 @@ router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
 
 router.get('/nutrition/:text', authUtil.checkLogin,async (req, res) => {
      
-     let resData = {};
      if(req.decoded =='NL'){//비로그인 해당음식 좋아요 분기.. 
         
      }else{
@@ -58,14 +57,8 @@ router.get('/nutrition/:text', authUtil.checkLogin,async (req, res) => {
 });
 
 
-router.get('/nutrition/:text', authUtil.checkLogin,async (req, res) => {
-     
-    let resData = {};
-    if(req.decoded =='NL'){//비로그인 해당음식 좋아요 분기.. 
-       
-    }else{
-        
-    }
+router.get('/cancer/:text', authUtil.checkLogin,async (req, res) => {
+    
 
    const SelectNutQuery = 'SELECT name FROM nutrition WHERE name_kr = ?'; 
    const SelectNutResult = await db.queryParam_Arr(SelectNutQuery, [req.params.text]);
