@@ -22,6 +22,42 @@ router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
     }
 });
 
+router.get('/nutrition/:text', authUtil.checkLogin,async (req, res) => {
+     
+     let resData = {};
+     if(req.decoded =='NL'){//비로그인 
+        
+     }else{
+         
+     }
+
+    const SelectNutQuery = 'SELECT name FROM nutrition WHERE name_kr = ?'; 
+    const SelectNutResult = await db.queryParam_Arr(SelectNutQuery, [req.params.text]);
+    
+    if(!SelectNutResult[0]){
+        res.status(200).send(defaultRes.successFalse(statusCode.OK,"정확한 영양성분을 입력해 주세요" )); 
+    }
+    console.log(SelectNutResult)
+    let nutrition = SelectNutResult[0].name;
+
+    const SelectQuery = 
+    `SELECT A.food_id,name,img,category,background_color,wishes,likes,B.cancerNm, '${nutrition}' AS nutrition FROM `
+    + "( SELECT A.* FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name "
+    +` AND ${nutrition}>0 ORDER BY ${nutrition} DESC ) A`
+    +',cancer_food B WHERE A.name =B.food' 
+
+    console.log(SelectQuery)
+
+    const SelectResult = await db.queryParam_None(SelectQuery);
+
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
+    }else{
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "영양성분 조회 성공", SelectResult)); 
+    }
+});
+
+
 
 router.get('/recently', authUtil.isLoggedin,async (req, res) => {
 
