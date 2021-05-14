@@ -68,7 +68,7 @@ router.get('/cancer/recommendation',async (req, res) => {
 });
 
 
-router.get('/cancer/detail/:cancer/:tabIdx',async (req, res) => {
+router.get('/cancer/rank/:cancer/:tabIdx',async (req, res) => {
 
     let SelectRankQuery;
     let SelectQuery = 
@@ -87,14 +87,13 @@ router.get('/cancer/detail/:cancer/:tabIdx',async (req, res) => {
     if(!SelectRankResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "메인 상세 조회 성공", SelectRankResult));    
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "메인 랭킹 조회 성공", SelectRankResult));    
     }
 
 });
 
-router.get('/cancer/detail/:cancer/:category',async (req, res) => {
+router.get('/cancer/category/:cancer/:category',async (req, res) => {
 
-    let SelectRankQuery;
     let SelectQuery = 
     'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
     + 'FROM food_thumbnail A, cancer_food B '
@@ -103,12 +102,12 @@ router.get('/cancer/detail/:cancer/:category',async (req, res) => {
     + 'AND category = ? '
     
 
-    let SelectRankResult = await db.queryParam_Arr(SelectRankQuery,req.params.cancer,req.params.category);
+    let SelectResult = await db.queryParam_Arr(SelectQuery,[req.params.cancer,req.params.category] );
 
-    if(!SelectRankResult){
+    if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "메인 상세 카테고리 조회 성공", SelectRankResult));    
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "메인 카테고리 조회 성공", SelectResult));    
     }
 
 });
