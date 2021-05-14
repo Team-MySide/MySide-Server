@@ -68,6 +68,52 @@ router.get('/cancer/recommendation',async (req, res) => {
 });
 
 
+router.get('/cancer/detail/:cancer/:tabIdx',async (req, res) => {
+
+    let SelectRankQuery;
+    let SelectQuery = 
+    'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
+    + 'FROM food_thumbnail A, cancer_food B '
+    + 'WHERE A.name = B.food '
+    + 'AND cancerNm = ? '
+    if(req.params.tabIdx == 0){//좋아요
+       SelectRankQuery = SelectQuery + 'ORDER BY likes '
+    }else{ // 추천순 
+        SelectRankQuery = SelectQuery + 'ORDER BY regiDate '
+    }
+
+    let SelectRankResult = await db.queryParam_Arr(SelectRankQuery,req.params.cancer);
+
+    if(!SelectRankResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
+    }else{
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "메인 상세 조회 성공", SelectRankResult));    
+    }
+
+});
+
+router.get('/cancer/detail/:cancer/:category',async (req, res) => {
+
+    let SelectRankQuery;
+    let SelectQuery = 
+    'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
+    + 'FROM food_thumbnail A, cancer_food B '
+    + 'WHERE A.name = B.food '
+    + 'AND cancerNm = ? '
+    + 'AND category = ? '
+    
+
+    let SelectRankResult = await db.queryParam_Arr(SelectRankQuery,req.params.cancer,req.params.category);
+
+    if(!SelectRankResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
+    }else{
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "메인 상세 카테고리 조회 성공", SelectRankResult));    
+    }
+
+});
+
+
 
 
 

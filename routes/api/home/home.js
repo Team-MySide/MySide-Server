@@ -30,7 +30,7 @@ router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
 });
 
 
-router.get('/rank/', async (req, res) => {
+router.get('/rank', async (req, res) => {
 
     let SelectQuery = 
     'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
@@ -50,28 +50,6 @@ router.get('/rank/', async (req, res) => {
 
 
 
-router.get('/rank/:tabIdx', async (req, res) => {
-
-    let SelectRankQuery;
-    let SelectQuery = 
-    'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
-    + 'FROM food_thumbnail A, cancer_food B '
-    + 'WHERE A.name = B.food '
-    + 'ORDER BY likes '
-    if(req.params.tabIdx == 0){//좋아요
-       SelectRankQuery = SelectQuery + 'ORDER BY likes '
-    }else{ // 추천순 
-        SelectRankQuery = SelectQuery + 'ORDER BY views '
-    }
-
-    let SelectRankResult = await db.queryParam_None(SelectRankQuery);
-
-    if(!SelectRankResult){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
-    }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "랭킹 조회 성공", SelectRankResult));    
-    }
-});
 
 
 
