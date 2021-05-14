@@ -7,5 +7,7 @@ router.use('/search', require('./search/index'));
 router.use('/main', require('./main/index'));
 router.use('/wish', require('./wish/index'));
 router.use('/home', require('./home/index'));
+router.use('/like', require('./like/index'));
+router.use('/common', require('./common/index'));
 
 module.exports = router;
