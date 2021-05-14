@@ -20,7 +20,7 @@ router.get('/cancer/:cancer',async (req, res) => {
         if(!SelectResult){
             res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
         }else{
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "위암에 좋은 랭킹별 추천음식 조회 성공", SelectRankResult));    
+            res.status(200).send(defaultRes.successTrue(statusCode.OK, "질병 랭킹별 추천음식 조회 성공", SelectResult));    
         }
  });
 
@@ -35,7 +35,7 @@ router.get('/cancer/:cancer',async (req, res) => {
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "위암에 좋은 성분이 풍부한 음식 조회 성공", SelectRankResult));    
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "좋은 성분이 풍부한 음식 조회 성공", SelectRankResult));    
     }
 });
 
