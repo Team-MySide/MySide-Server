@@ -58,7 +58,7 @@ router.get('/food/:category/:tabIdx',async (req, res) => {
     if(!SelectRankResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "메인 랭킹 조회 성공", SelectRankResult));    
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 검색 조회 성공", SelectRankResult));    
     }
 
 });
