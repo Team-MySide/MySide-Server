@@ -33,7 +33,7 @@ router.put('/', authUtil.isLoggedin,async (req, res) => {
 });
 
 
-router.get('/', authUtil.isLoggedin,async (req, res) => {
+router.get('/list', authUtil.isLoggedin,async (req, res) => {
 
     const SelectQuery = 'SELECT * FROM likelist WHERE user_id = ?'; 
     const SelectResult = await db.queryParam_Arr(SelectQuery, [req.decoded.id]);

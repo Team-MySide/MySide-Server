@@ -41,7 +41,7 @@ router.get('/rank', async (req, res) => {
 
     let SelectResult = await db.queryParam_None(SelectQuery);
 
-    if(!SelectRankResult){
+    if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
     }else{
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "랭킹 조회 성공", SelectResult));    

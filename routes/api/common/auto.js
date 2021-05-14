@@ -14,11 +14,15 @@ const db = require('../../../module/pool');
 router.get('/food',async (req, res) => {
     const SelectQuery = 'SELECT food_id,name FROM food_thumbnail'; 
     const SelectResult = await db.queryParam_None(SelectQuery);
+    resData =[];
 
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "영양성분 전체 조회 성공", SelectResult));      
+        for(let i= 0;i<SelectResult.length;i++){
+            resData.push(SelectResult[i].name);
+        }
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 전체 조회 성공", resData));      
     }
 });
 
@@ -26,11 +30,15 @@ router.get('/food',async (req, res) => {
 router.get('/nutrition',async (req, res) => {
     const SelectQuery = 'SELECT nutrition_id,name,name_kr FROM nutrition'; 
     const SelectResult = await db.queryParam_None(SelectQuery);
+    resData =[];
 
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 전체 조회 성공", SelectResult));      
+        for(let i= 0;i<SelectResult.length;i++){
+            resData.push(SelectResult[i].name_kr);
+        }
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "영양성분 전체 조회 성공", resData));      
     }
 });
 
@@ -38,11 +46,15 @@ router.get('/nutrition',async (req, res) => {
 router.get('/cancer',async (req, res) => {
     const SelectQuery = 'SELECT cancer_id,name FROM cancer'; 
     const SelectResult = await db.queryParam_None(SelectQuery);
+    resData =[];
 
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "암 전체 조회 성공", SelectResult));      
+        for(let i= 0;i<SelectResult.length;i++){
+            resData.push(SelectResult[i].name);
+        }
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "암 전체 조회 성공", resData));      
     }
 });
 
