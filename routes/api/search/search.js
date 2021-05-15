@@ -10,7 +10,7 @@ const db = require('../../../module/pool');
 
 router.get('/cancer/:cancer',async (req, res) => {
         let SelectQuery = 
-        'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
+        'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
         + 'FROM food_thumbnail A, cancer_food B '
         + 'WHERE A.name = B.food '
         + 'AND cancerNm = ? '
@@ -26,7 +26,7 @@ router.get('/cancer/:cancer',async (req, res) => {
 
  router.get('/cancer/nutrition/:cancer',async (req, res) => {//보류
     let SelectQuery = 
-    'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
+    'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
     + 'FROM food_thumbnail A, cancer_food B '
     + 'WHERE A.name = B.food '
     + 'AND nutrition IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? ) '
@@ -43,7 +43,7 @@ router.get('/food/:category/:tabIdx',async (req, res) => {
 
     let SelectRankQuery;
     let SelectQuery = 
-    'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
+    'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
     + 'FROM food_thumbnail A, cancer_food B '
     + 'WHERE A.name = B.food '
     + 'AND category = ? '
@@ -76,7 +76,7 @@ router.get('/nutrition/:keyword', async (req, res) => {
     let nutrition = SelectNutResult[0].name;
 
     const SelectQuery = 
-    `SELECT A.food_id,name,img,category,background_color,wishes,likes,B.cancerNm, '${nutrition}' AS nutrition FROM `
+    `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${nutrition}' AS nutrition FROM `
     + "( SELECT A.* FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name "
     +` AND ${nutrition}>0 ORDER BY ${nutrition} DESC ) A`
     +',cancer_food B WHERE A.name =B.food' 

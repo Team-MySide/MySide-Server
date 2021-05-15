@@ -18,7 +18,7 @@ router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
     }else{
         let cancerNm = SelectCancerResult[0].cancerNm;
         const SelectQuery = 
-        'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
+        'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
         + 'FROM food_thumbnail A, cancer_food B '
         + 'WHERE A.name = B.food '
         + 'AND B.cancerNm = ? '
@@ -33,7 +33,7 @@ router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
 router.get('/rank', async (req, res) => {
 
     let SelectQuery = 
-    'SELECT food_id, name,img,category,cancerNm,background_color,wishes,views,likes,nutrition1 '
+    'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
     + 'FROM food_thumbnail A, cancer_food B '
     + 'WHERE A.name = B.food '
     + 'ORDER BY likes '
