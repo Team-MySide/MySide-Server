@@ -15,10 +15,7 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         img: "",
         title: "",
         cancer :[],
-        nutrition1 :"",
-        nutrition2 :"",
-        nutrition3 :"",
-        nutrition4 :"",
+        nutrition :[],
         likes : 0,
         wishes : 0,
         views : 0,
@@ -40,10 +37,6 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         resData.name =SelectResult1[0].name;
         resData.img =SelectResult1[0].img;
         resData.title =SelectResult1[0].title;
-        resData.nutrition1 =SelectResult1[0].nutrition1;
-        resData.nutrition2 =SelectResult1[0].nutrition2;
-        resData.nutrition3 =SelectResult1[0].nutrition3;
-        resData.nutrition4 =SelectResult1[0].nutrition4;
         resData.likes =SelectResult1[0].likes;
         resData.views =SelectResult1[0].views;
         resData.wishes =SelectResult1[0].wishes;
@@ -51,6 +44,13 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         for(let i =0;i<SelectResult2.length;i++){
             resData.cancer.push(SelectResult2[i].cancerNm);
         }
+
+         if(SelectResult1[0].nutrition1!='')resData.nutrition.push(SelectResult1[0].nutrition1);
+         if(SelectResult1[0].nutrition2!='')resData.nutrition.push(SelectResult1[0].nutrition2);
+         if(SelectResult1[0].nutrition3!='')resData.nutrition.push(SelectResult1[0].nutrition3);
+         if(SelectResult1[0].nutrition4!='')resData.nutrition.push(SelectResult1[0].nutrition4);
+
+
     
         if(req.decoded != "NL"){
             const SelectQuery3 = 'SELECT * FROM likelist WHERE food = ?'; 

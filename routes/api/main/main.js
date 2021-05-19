@@ -116,7 +116,11 @@ router.get('/cancer/category/:cancer/:category',async (req, res) => {
     + 'FROM food_thumbnail A, cancer_food B '
     + 'WHERE A.name = B.food '
     + 'AND cancerNm = ? '
-    + 'AND category = ? '
+
+    if(req.params.category!="all"){
+       SelectQuery =SelectQuery + 'AND category = ? '
+    }
+  
     
 
     let SelectResult = await db.queryParam_Arr(SelectQuery,[req.params.cancer,req.params.category] );
