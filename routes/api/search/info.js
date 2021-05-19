@@ -16,6 +16,7 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         title: "",
         cancer :[],
         nutrition :[],
+        etc : [],
         likes : 0,
         wishes : 0,
         views : 0,
@@ -49,7 +50,8 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
          if(SelectResult1[0].nutrition2!='')resData.nutrition.push(SelectResult1[0].nutrition2);
          if(SelectResult1[0].nutrition3!='')resData.nutrition.push(SelectResult1[0].nutrition3);
          if(SelectResult1[0].nutrition4!='')resData.nutrition.push(SelectResult1[0].nutrition4);
-
+   
+        resData.etc.push("기타");
 
     
         if(req.decoded != "NL"){
