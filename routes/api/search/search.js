@@ -64,6 +64,60 @@ router.get('/food/:category/:tabIdx',async (req, res) => {
 });
  
 
+router.get('/total/:keyword', async (req, res) => {
+
+    let nutrition ="";
+    let SelectQuery = ""
+    let SelectResult = "";
+    try{
+        //1. 영양성분인지 부터 확인
+        const SelectNutQuery = 'SELECT name FROM nutrition WHERE name_kr = ?'; 
+        const SelectNutResult = await db.queryParam_Arr(SelectNutQuery, [req.params.keyword]);
+        
+        if(SelectNutResult[0]){
+        nutrition = SelectNutResult[0].name;
+
+        SelectQuery = 
+            `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${nutrition}' AS nutrition FROM `
+            + "( SELECT A.* FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name "
+            +` AND ${nutrition}>0 ORDER BY ${nutrition} DESC ) A`
+            +',cancer_food B WHERE A.name =B.food' 
+
+        SelectResult = await db.queryParam_None(SelectQuery);
+        console.log(SelectResult)
+
+        }else{
+            let SelectCancerQuery = 
+            'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
+            + 'FROM food_thumbnail A, cancer_food B '
+            + 'WHERE A.name = B.food '
+            + 'AND cancerNm = ? '
+            + 'ORDER BY likes '
+            let SelectCancerResult = await db.queryParam_Arr(SelectCancerQuery ,req.params.keyword);
+            console.log(SelectCancerResult)
+            let SelectFoodQuery = 
+            'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
+            + 'FROM food_thumbnail A, cancer_food B '
+            + 'WHERE A.name = B.food '
+            + 'AND name = ?  '
+            + 'ORDER BY likes '
+            let SelectFoodResult = await db.queryParam_Arr(SelectFoodQuery ,req.params.keyword);
+            console.log(SelectFoodResult)
+
+            SelectResult = [
+                ...SelectCancerResult,
+                ...SelectFoodResult
+            ];
+        }
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "통합 검색 성공",SelectResult));
+    }catch(err){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
+    }
+      
+    
+});
+
+
 router.get('/nutrition/:keyword', async (req, res) => {
 
     const SelectNutQuery = 'SELECT name FROM nutrition WHERE name_kr = ?'; 
@@ -91,8 +145,6 @@ router.get('/nutrition/:keyword', async (req, res) => {
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "영양성분 조회 성공", SelectResult)); 
     }
 });
-
-
 
 
 

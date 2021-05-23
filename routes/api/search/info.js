@@ -46,6 +46,7 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
             resData.cancer.push(SelectResult2[i].cancerNm);
         }
 
+        console.log(SelectResult1);
          if(SelectResult1[0].nutrition1!='')resData.nutrition.push(SelectResult1[0].nutrition1);
          if(SelectResult1[0].nutrition2!='')resData.nutrition.push(SelectResult1[0].nutrition2);
          if(SelectResult1[0].nutrition3!='')resData.nutrition.push(SelectResult1[0].nutrition3);
