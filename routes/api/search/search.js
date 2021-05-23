@@ -62,6 +62,27 @@ router.get('/food/:category/:tabIdx',async (req, res) => {
     }
 
 });
+
+
+router.get('/food/:keyword',async (req, res) => {
+
+    let SelectQuery = 
+    'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
+    + 'FROM food_thumbnail A, cancer_food B '
+    + 'WHERE A.name = B.food '
+    + 'AND name LIKE ? '
+   
+    let likeKeyword = "%" +req.params.keyword +"%"
+  
+    let SelectResult = await db.queryParam_Arr(SelectQuery,likeKeyword);
+
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
+    }else{
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 검색 조회 성공", SelectResult));    
+    }
+
+});
  
 
 router.get('/total/:keyword', async (req, res) => {
