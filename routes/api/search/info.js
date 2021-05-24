@@ -99,9 +99,13 @@ router.get('/configuration/:food', async (req, res) => {
 
     let resData = {
         good: 10,
+        goodMax : 120,
         bad: 2,
+        badMax : 120,
         function: 10,
-        etc:110
+        functionMax : 120,
+        etc:110,
+        etcMax : 120
     };
 
     res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 성분 구성 조회 성공",resData ));      
