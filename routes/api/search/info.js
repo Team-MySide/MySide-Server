@@ -113,9 +113,55 @@ router.get('/configuration/:food', async (req, res) => {
 });
 
 
-router.get('/configuration/detail', async (req, res) => {
+router.get('/configuration/detail/:food', async (req, res) => {
 
+   let resData ={
+       good : [],
+       bad :[],
+       function:"",
+       etc:""
+   };
 
+   let cancerData ={
+       cancer : "",
+       nutritions :""  
+   }
+    cancerData.cancer = "위암";
+    cancerData.nutritions ="비타민 A,카로틴,단백질";
+    resData.good.push(cancerData);
+
+    cancerData ={
+        cancer : "",
+        nutritions :""  
+    }
+
+    cancerData.cancer = "대장암";
+    cancerData.nutritions ="비타민 A,비타민 C,비타민 E,카로틴,엽산,단백질";
+    resData.good.push(cancerData);
+
+    cancerData ={
+        cancer : "",
+        nutritions :""  
+    }
+
+    cancerData.cancer = "위암";
+    cancerData.nutritions ="비타민 A,카로틴,단백질";
+    resData.bad.push(cancerData);
+ 
+    cancerData ={
+        cancer : "",
+        nutritions :""  
+    }
+
+    cancerData.cancer = "대장암";
+    cancerData.nutritions ="비타민 A,비타민 C,비타민 E,카로틴,엽산,단백질";
+    resData.bad.push(cancerData);
+   
+    resData.function ="비타민 A,비타민 C,비타민 B,단백질,무기질,셀레늄"
+    resData.etc ="비타민 A,비타민 C,비타민 B,단백질,무기질,셀레늄, 비타민 B2,비타민 D2,비타민 D3"
+
+    res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 성분 구성 상세 조회 성공",resData ));  
+   
 
 });
 
@@ -573,5 +619,16 @@ router.get('/nutrition/detail/:food/:status', async (req, res) => {
     }
 });
 
+
+router.get('/detail/:food', async (req, res) => {
+    const SelectQuery = 'SELECT efficacy,combination,select_tip,care FROM food_detail WHERE name = ?'; 
+    const SelectResult = await db.queryParam_Arr(SelectQuery, [req.params.food]);
+
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     
+    }else{
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 상세 세부설명 조회 성공",SelectResult));      
+    }
+});
 
 module.exports = router;
