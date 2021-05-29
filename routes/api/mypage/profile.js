@@ -93,9 +93,4 @@ router.put('/profile/checkpw/changepb', authUtil.isLoggedin, async (req, res) =>
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "휴대폰 번호 수정 성공"));      // 프로필 수정 성공
     }
 });
-
-
-
-
-
 module.exports = router;
