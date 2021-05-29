@@ -1,5 +1,14 @@
 var express = require('express');
 var router = express.Router();
+const authUtil = require("../../../module/utils/authUtils");   // 토큰 있을 때 사용ßß
+const crypto = require('crypto-promise');
+
+const defaultRes = require('../../../module/utils/utils');
+const statusCode = require('../../../module/utils/statusCode');
+const resMessage = require('../../../module/utils/responseMessage');
+const db = require('../../../module/pool');
+const { Health } = require('aws-sdk');
+
 
 
 /* 프로필 수정 */
@@ -10,7 +19,7 @@ var router = express.Router();
 /* (3-2) 휴대폰번호 변경 */
 
 
-// //프로필 조회
+//프로필 조회
 // router.get('/profile', authUtil.isLoggedin, async (req, res) => {
 //     const MypageSelectProfileQuery = 'SELECT email,nickname,name,CONCAT( left(phone,3) , "-" , mid(phone,4,4) , "-", right(phone,4)) AS phone FROM user WHERE user_id = ?'; 
 //     const MypageSelecProfiletResult = await db.queryParam_Arr(MypageSelectProfileQuery, [req.decoded.id]);
@@ -27,7 +36,7 @@ router.get('/profile',authUtil.isLoggedin,async(req,res)=>{//비동기처리로 
     const MyPageSelectProfileQuery = 'SELECT nickname,email,CONCAT( left(phone,3) , "-" , mid(phone,4,4) , "-", right(phone,4)) AS phone FROM user WHERE user_id = ?';//user_id의 값으로 필요한 데이터를 가져온다
     //gui에서 보면, 세가지 데이터 필요 : nickname, email, phone
     //01012345678을 010-1234-5678출력위해, CONCAT SUBSTRING (컬럼명 from i to j),'-' 사용
-    const MypageSelecProfiletResult = await db.queryParam_Arr(MypageSelectProfileQuery, [req.decoded.id]);//req에서 토큰으로 decoded된 id과 쿼리문 await으로 비동기 기다리기
+    const MypageSelecProfiletResult = await db.queryParam_Arr(MyPageSelectProfileQuery, [req.decoded.id]);//req에서 토큰으로 decoded된 id과 쿼리문 await으로 비동기 기다리기
     if(!MypageSelecProfiletResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     //존재하는 result 형식이용해서 실패값 출력
     }else{

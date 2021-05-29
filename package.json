@@ -23,5 +23,18 @@
     "nodemailer": "6.5.0",
     "promise-mysql": "3.3.2",
     "rand-token": "1.0.1"
-  }
+  },
+  "description": "![스크린샷 2021-04-16 오후 4 09 49](https://user-images.githubusercontent.com/49789734/114985794-2ff57880-9ece-11eb-82a0-01916e14c68a.png)",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-MySide/MySide_Server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Team-MySide/MySide_Server/issues"
+  },
+  "homepage": "https://github.com/Team-MySide/MySide_Server#readme"
 }
