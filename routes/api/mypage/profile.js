@@ -9,8 +9,6 @@ const resMessage = require('../../../module/utils/responseMessage');
 const db = require('../../../module/pool');
 const { Health } = require('aws-sdk');
 
-
-
 /* 프로필 수정 */
 /* (1) 프로필 조회 */
 /* (2) 닉네임 수정 */
