@@ -108,5 +108,10 @@ module.exports = {
   NOT_CORRECT_REFRESH_TOKEN_USER: "토큰과 일치하는 유저가 없습니다.",
 
   NO_SELECT_AUTHORITY: "조회 권한 없음.",
-  USER_SELECTED: "회원 조회 성공."
+  USER_SELECTED: "회원 조회 성공.",
+  HEALTHLIST_SELECT : "건강 정보 조회 성공",
+  HEALTHLIST_SELECT_NULL : "입력한 건강 정보가 없습니다.",
+  HEALTHLIST_DELETE : "회원 건강 정보 삭제 성공",
+  HEALTHLIST_INSERT : "회원 건강 정보 입력 성공",
+  HEALTHLIST_UPDATE : "회원 건강 정보 수정 성공",
 };
