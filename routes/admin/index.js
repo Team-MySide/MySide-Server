@@ -8,7 +8,8 @@ router.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html')
 });
 
-router.use('/', require('./api/index.js'));
-router.use('/admin', require('./admin/index.js'));
+router.use('/thumbnail', require('./thumbnail.js'));
+router.use('/detail', require('./detail.js'));
+
 
 module.exports = router;

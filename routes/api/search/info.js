@@ -243,7 +243,7 @@ router.get('/percent/:food/:status', async (req, res) => {
     +	`	union all	select	Gamma_Linolenic_Acid	* 	0.001	as g	,	'Gamma_Linolenic_Acid'	as nutname	,	'감마 리놀렌산(18:3 (n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Eicosadienoic_acid	* 	0.001	as g	,	'Eicosadienoic_acid'	as nutname	,	'에이코사디에노산(20:2(n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Eicosatrienoic_acid	* 	0.001	as g	,	'Eicosatrienoic_acid'	as nutname	,	'에이코사트리에노산(20:3(n-3))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
-    +	`	union all	select	Eicosatrienoic_acid	* 	0.001	as g	,	'Eicosatrienoic_acid'	as nutname	,	'에이코사트리에노산(20:3(n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
+    +	`	union all	select	Eicosatrienoic_acid2	* 	0.001	as g	,	'Eicosatrienoic_acid2'	as nutname	,	'에이코사트리에노산(20:3(n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Arachidonic_acid	* 	0.001	as g	,	'Arachidonic_acid'	as nutname	,	'아라키돈산(20:4(n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Eicosapentaenoic_acid	* 	0.001	as g	,	'Eicosapentaenoic_acid'	as nutname	,	'에이코사펜타에노산(20:5(n-3))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Docosadienosan	* 	0.001	as g	,	'Docosadienosan'	as nutname	,	'도코사디에노산(22:2)'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
@@ -392,7 +392,7 @@ router.get('/percent/detail/:food/:status',async (req, res) => {
     +	`	union all	select	Gamma_Linolenic_Acid	* 	0.001	as g	,	'Gamma_Linolenic_Acid'	as nutname	,	'감마 리놀렌산(18:3 (n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Eicosadienoic_acid	* 	0.001	as g	,	'Eicosadienoic_acid'	as nutname	,	'에이코사디에노산(20:2(n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Eicosatrienoic_acid	* 	0.001	as g	,	'Eicosatrienoic_acid'	as nutname	,	'에이코사트리에노산(20:3(n-3))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
-    +	`	union all	select	Eicosatrienoic_acid	* 	0.001	as g	,	'Eicosatrienoic_acid'	as nutname	,	'에이코사트리에노산(20:3(n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
+    +	`	union all	select	Eicosatrienoic_acid2	* 	0.001	as g	,	'Eicosatrienoic_acid2'	as nutname	,	'에이코사트리에노산(20:3(n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Arachidonic_acid	* 	0.001	as g	,	'Arachidonic_acid'	as nutname	,	'아라키돈산(20:4(n-6))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Eicosapentaenoic_acid	* 	0.001	as g	,	'Eicosapentaenoic_acid'	as nutname	,	'에이코사펜타에노산(20:5(n-3))'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +	`	union all	select	Docosadienosan	* 	0.001	as g	,	'Docosadienosan'	as nutname	,	'도코사디에노산(22:2)'	as nutnamekr	,	'지방산'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
@@ -547,7 +547,7 @@ router.get('/nutrition/detail/:food/:status', async (req, res) => {
     +	`	Gamma_Linolenic_Acid	* 	0.001	as	Gamma_Linolenic_Acid	,	`
     +	`	Eicosadienoic_acid	* 	0.001	as	Eicosadienoic_acid	,	`
     +	`	Eicosatrienoic_acid	* 	0.001	as	Eicosatrienoic_acid	,	`
-    +	`	Eicosatrienoic_acid	* 	0.001	as	Eicosatrienoic_acid	,	`
+    +	`	Eicosatrienoic_acid2	* 	0.001	as	Eicosatrienoic_acid2	,	`
     +	`	Arachidonic_acid	* 	0.001	as	Arachidonic_acid	,	`
     +	`	Eicosapentaenoic_acid	* 	0.001	as	Eicosapentaenoic_acid	,	`
     +	`	Docosadienosan	* 	0.001	as	Docosadienosan	,	`

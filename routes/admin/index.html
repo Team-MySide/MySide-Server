@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+    <style>
+    body{background-color:#3BD7E2;}
+
+    div { text-align: center; }
+    #head {color:#FFFFFF; font-size: 24px; font-weight: bold;}
+    /*div menubar css*/
+    #menubar{width:810px; margin-left:auto;  margin-right:auto; margin-top:50px; height:auto;}
+    #menubar2{width:810px; margin-left:auto;  margin-right:auto; margin-top:50px; height:auto;}
+    ul {
+      text-transform:uppercase;
+      text-align: left;
+      display: inline;
+      margin: 0;
+      padding: 15px 4px 17px 0;
+      list-style: none;
+      -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+      -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    }
+    ul li {
+      font: bold 12px/18px sans-serif;
+      display: inline-block;
+      margin-right: -5px;
+      position: relative;
+      padding: 15px 20px;
+      background: #f7f7f7;
+      color:#3BD7E2;
+      cursor: pointer;
+      -webkit-transition: all 0.2s;
+      -moz-transition: all 0.2s;
+      -ms-transition: all 0.2s;
+      -o-transition: all 0.2s;
+      transition: all 0.2s;
+    }
+    ul li:hover {
+      background: #3BD7E2;
+      color: #f7f7f7;
+      }
+     
+    </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+         
+   
+<script type="text/javascript">
+$(document).ready(function () {
+  $("li[id='thumbnailbtn']").click(function () {
+    location.href='admin/thumbnail'
+  });
+
+  $("li[id='detaillbtn']").click(function () {
+    location.href='admin/detail'
+  });
+});
+</script>
+
+<body style="background-color:#3BD7E2;"> 
+    
+    <div style="margin-top: 200px;">
+        <img src="https://mysidebucket.s3.ap-northeast-2.amazonaws.com/splash_logo.png">
+        <p id="head">이웃집닥터</p>
+    </div>
+    <div id="menubar">
+    <ul>
+      <li id="thumbnailbtn">음식 썸네일 등록</li>
+      <li id="detaillbtn">음식 상세정보 등록</li>
+      <li>암-음식 정보 등록</li>
+      <li>좋은 영양성분 등록</li>
+      <li>나쁜 영양성분 등록</li>
+      <li>영양성분 정보 등록</li>
+    </ul>
+    </div>
+</body>
+
+</html>
