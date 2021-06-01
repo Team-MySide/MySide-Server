@@ -9,11 +9,11 @@ const statusCode = require("../../module/utils/statusCode");
 const resMessage = require("../../module/utils/responseMessage");
 const db = require("../../module/pool");
 
-router.post('/', async(req, res) => {
+router.get('/', async(req, res) => {
 
 
     console.log(req.body)
-    let insertQuery =  'INSERT INTO cancer_food '
+    let insertQuery =  'GET INTO cancer_food '
     +' (cancerNm, food, ref_link)'
     +' VALUES (?,?,?)';;
     let insertResult = await db.queryParam_Arr(insertQuery, 
