@@ -2,36 +2,74 @@
 <html lang="ko">
 
 <style type="text/css">
-        body {
-            padding-top: 50px;
-        }
-        .panel-login {
-            border-color: #ccc;
-            -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
-            -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
-            box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
-        }
-       
-        #submit {
-            background-color: #3BD7E2;
-            outline: none;
-            color: #fff;
-            font-size: 14px;
-           
-        }
-        #content{
-            height: 20px;
-        }
-        #head{
-            font-size: 16px;
-            color: #3BD7E2;
-        }
-    </style>
+       body{
+    margin-top:20px;
+    background-color: #edf0f0;    
+}
+i{
+  font-size:5px;
+  font-style:normal;
+}
+.btn-primary, 
+.btn-primary:hover, 
+.btn-primary:focus, 
+.btn-primary:active, 
+.btn-primary.active, 
+.btn-primary.focus, 
+.btn-primary:active, 
+.btn-primary:focus, 
+.btn-primary:hover, 
+.open>.dropdown-toggle.btn-primary {
+    background-color: #3bc0c3;
+    border: 1px solid #3bc0c3;
+}
+.p-t-10 {
+    padding-top: 10px !important;
+}
+.media-main a.pull-left {
+    width: 100px;
+}
+.thumb-lg {
+    height: 84px;
+    width: 84px;
+}
+.media-main .info {
+    overflow: hidden;
+    color: #000;
+}
+.media-main .info h4 {
+    padding-top: 10px;
+    margin-bottom: 5px;
+}
+.social-links li a {
+    background: #EFF0F4;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    color: #7A7676;
+}
+.tag2 {
+padding: 3px 12px;
+background: #FFF6D6;
+border-radius: 12px;
+color:#FF9635;
+}
+.tag1 {
+padding: 3px 12px;
+background: #E4F7FB;
+border-radius: 12px;
+color:#5091CD;
+}
+ </style>
 <head>
 <meta charset="utf-8" />
 <script src="http://code.jquery.com/jquery.min.js"></script>
 </head>   
-<body>
+<body style ="background-color:#F4F4F4">
 <script type="text/javascript">   
 $(document).ready(function() {
      
@@ -56,16 +94,50 @@ $(document).ready(function() {
      });         
 
 
-    function nextFocus(){
-        alert("a");
-        if(event.keyCode ==13){
-            document.getElementById(next).focus();
-        }
-    }
+   
      
 });
+ function showNutrition(idx){
+    var bbsreplll = $(idx).text(); 
 
+    alert(bbsreplll);
+ }
 
+ function Search(){
+    $('#searchList').empty();
+
+       for (var i = 0; i < 5; i++) {
+                            var tag = ` <div  class="col-sm-6">`
+                                      + ` <div class="panel">`
+                                      + `<div class="panel-body p-t-10">`
+                                      + ` <div class="media-main">`
+                                      + ` <a class="pull-left" href="#">`
+                                      + ` <img class="thumb-lg img-circle bx-s" `+`src="https://bootdey.com/img/Content/user_3.jp2g" `
+                                      + `alt="" onerror="src='https://bootdey.com/img/Content/user_3.jpg'">`
+                                      + `</a>`
+                                      + `<div class="pull-right btn-group-sm">`
+                                      + `  <i class= "tag1">위암</i>`
+                                      + `  <i class= "tag2">카테고리</i>`
+                                      + `</div>`
+                                     + ` <div class="info">`
+                                      + `    <h4>음식명</h4>`
+                                      + `    <p class="text-muted">타이틀</p>`
+                                      + `</div>`
+                                      + ` </div>`
+                                      + ` <div class="clearfix"></div>`
+                                      + ` <hr>`
+                                      + ` <a>영양성분</a>`
+                                      + ` <a>영양성분</a>`
+                                      + ` <a>영양성분</a>`
+                                      + `<a>영양성분</a>`
+                                      + `</div>`
+                                       + ` </div>`
+                                        + ` </div>`
+                            var $li = (`${tag}`);
+                            $('#searchList').append($li);//jQuery 문법
+
+             }
+  }
 
 </script>
 
@@ -76,8 +148,8 @@ $(document).ready(function() {
             var $next = $('[tabIndex=' + (+this.tabIndex + 1) + ']');
             console.log($next.length);
             if (!$next.length) {
-           $next = $('[tabIndex=1]');        }
-            $next.focus() .click();
+           $next = $('[tabIndex=2]');        }
+            $next.focus().click();
         }
     });
     </script>
@@ -86,52 +158,55 @@ $(document).ready(function() {
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
-
-<div class="container">
-    	<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-login">
-					<div class="panel-heading">
-						<div class="row">
-							<div id="head">
-								암-음식 관계 등록
-							</div>
-						</div>
-						<hr>
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-12">
-                                <form id="myform"  method="post" role="form" style="display: block;">
-									<div class="form-group">
-										<input type="text" name="cancerNm" id="cancerNm" tabindex="1" class="form-control" placeholder="암 명창" value="">
-                                    </div>   
-                               
-                                    <div class="form-group">
-										<input id="food" name="food" type="text" tabindex="2" class="form-control" placeholder="음식" value="" >
-                                    </div>
-                                    <div class="form-group">
-										<input id="ref_link"  name="ref_link" type="text" tabindex="3" class="form-control" placeholder="참조링크" value="">
-                                    </div>
-                                    
-									<div class="form-group">
-										<div class="row">
-											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit"  id="submit" tabindex="4" class="form-control btn btn-login" value="등 록">
-											</div>
-										</div>
-									</div>
-								
-								</form>
-							
-							</div>
-						</div>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container bootstrap snippets bootdey">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body p-t-0">
+                    <div class="input-group">
+                        <input type="text" id="example-input1-group2" name="example-input1-group2" class="form-control" placeholder="Search">
+                        <span class="input-group-btn"  onclick="Search()">
+                            <button type="button" style ="background-color:#3BD7E2; border-color:#3BD7E2" class="btn btn-effect-ripple btn-primary">
+                              <i class="fa fa-search"></i>
+                            </button>
+                        </span>
                     </div>
-                    <button type="button" id="passBtn" onClick="location.href='/admin'">뒤로가기</button>
-				</div>
-			</div>
-		</div>
-	</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id ="searchList" class="row">
+  
+
+        <div  class="col-sm-6">
+            <div class="panel">
+                <div class="panel-body p-t-10">
+                    <div class="media-main">
+                        <a class="pull-left" href="#">
+                            <img class="thumb-lg img-circle bx-s" src="https://bootdey.com/img/Content/user_3.jp2g" alt="" onerror="src='https://bootdey.com/img/Content/user_3.jpg'">
+                        </a>
+                        <div class="pull-right btn-group-sm">
+                            <i class= "tag1">위암</i>
+                            <i class= "tag2">카테고리</i>
+                        </div>
+                        <div class="info">
+                            <h4>음식명</h4>
+                            <p class="text-muted">타이틀</p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                   <a onclick="showNutrition(this)">영양성분</a>
+                   <a>영양성분</a>
+                   <a>영양성분</a>
+                   <a>영양성분</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
 
 <!-- <form id="myform" name="myform" method="post" enctype="multipart/form-data">
     <input  id="thumbImg" name="thumbImg" type="file" />
