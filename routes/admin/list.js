@@ -9,7 +9,7 @@ const statusCode = require("../../module/utils/statusCode");
 const resMessage = require("../../module/utils/responseMessage");
 const db = require("../../module/pool");
 
-router.get('/', async(req, res) => {
+router.get('/all', async(req, res) => {
 
 
     console.log(req.body)
