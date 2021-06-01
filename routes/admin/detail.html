@@ -11,13 +11,19 @@
             -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
             box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
         }
+        #conversionBtn{
+            background-color: #3BD7E2;
+            outline: none;
+            color: #fff;
+            font-size: 14px;
+            margin: 30px;
+        }
        
         #submit {
             background-color: #3BD7E2;
             outline: none;
             color: #fff;
             font-size: 14px;
-           
         }
         #content{
             height: 20px;
@@ -26,9 +32,49 @@
             font-size: 16px;
             color: #3BD7E2;
         }
+        #help{
+            color :#BFBFBF;
+        }
+        .subTitle{
+            font-size: 14px;
+            color: #3BD7E2; 
+            margin-bottom: 20px;
+        }
+
+        p.tip {
+            text-decoration: none;
+            width: 10%;
+            float: left;
+            margin-right: 10px;
+        }
+
+        p.tip:hover {
+            cursor: help;
+            position: relative
+        }
+
+        p.tip span {
+            display: none
+        }
+
+        p.tip:hover span {
+            border: #c0c0c0 1px dotted;
+            padding: 5px 20px 5px 5px;
+            display: block;
+            z-index: 100;
+            background: url(../images/status-info.png) #ffffff no-repeat 100% 5%;
+            left: 0px;
+            margin: 10px;
+            width: 310px;
+            position: absolute;
+            top: 10px;
+            text-decoration: none
+        }
+        
     </style>
 <head>
 <meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-cache">
 <script src="http://code.jquery.com/jquery.min.js"></script>
 </head>   
 <body>
@@ -55,14 +101,6 @@ $(document).ready(function() {
             processData: false
      });         
 
-
-    function nextFocus(){
-        alert("a");
-        if(event.keyCode ==13){
-            document.getElementById(next).focus();
-        }
-    }
-     
 });
 
 
@@ -70,6 +108,19 @@ $(document).ready(function() {
 </script>
 
 <script type="text/javascript">
+
+    function conversion(){
+            var dataStr = document.getElementById("rawData").value;
+            var data = dataStr.split(" ");
+            var x = document.getElementsByTagName("input");
+            for (var i = 0; i < data.length; i++) {
+             document.getElementById(x[i+7].id).value =data[i];
+            }
+      
+        if(event.keyCode ==13){
+           
+        }
+    }
     $(document).on('keypress', 'input,select', function (e) {
         if (e.which == 13) {
             e.preventDefault();
@@ -102,32 +153,50 @@ $(document).ready(function() {
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
-                                <form id="myform"  method="post" role="form" style="display: block;">
-
-                                    	
-                                    		
-                                    			
-                                  
+                                <form id="myform" autocomplete="off"  method="post" role="form" style="display: block;">
+                                    
+                                    <p class = "subTitle">음식 정보</p>
 									<div class="form-group">
-										<input type="text" name="name" id="name" tabindex="2" class="form-control" placeholder="음식명" value="">
+										<input type="text" name="name" id="name" tabindex="1"  class="form-control" placeholder="음식명(썸네일 음식명과 맞춰주세요)" value="">
                                     </div>   
+                                    
                                     <div class="form-group">
-										<input id="status" name="status" type="text" tabindex="3" class="form-control" placeholder="상태" value="" >
+										<input id="status" name="status" type="text" tabindex="2" class="form-control" placeholder="상태" value="" >
                                     </div>
                                     <div class="form-group">
-										<input id="efficacy" name="efficacy"   type="text" tabindex="4" class="form-control" placeholder="효능 및 영양성분" value="">
+										<input id="efficacy" name="efficacy"   type="text" tabindex="3" class="form-control" placeholder="효능 및 영양성분" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="combination" name="combination" type="text" tabindex="5" class="form-control" placeholder="궁합" value="">
+										<input id="combination" name="combination" type="text" tabindex="4" class="form-control" placeholder="궁합" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="select_tip"  name="select_tip" type="text" tabindex="6" class="form-control" placeholder="고르는법" value="">
+										<input id="select_tip"  name="select_tip" type="text" tabindex="5" class="form-control" placeholder="고르는법" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="care" name="care" type="text" tabindex="7" class="form-control" placeholder="손질법" value="">
+										<input id="care" name="care" type="text" tabindex="6" class="form-control" placeholder="손질법" value="">
                                     </div>
+                                    
+                                   
 
+                                    <p class = "subTitle">영양성분</p>
 
+                                    <div class="form-group">
+                                        <a href="http://koreanfood.rda.go.kr/kfi/fct/fctFoodSrch/list" target='_blank' >농식품종합정보시스템</a>   
+                                            
+                                        <p href="#"  class="tip">도움말
+                                            <span id="help">1.사이트에서 음식 정보 조회 후 엑셀 다운 <br>
+                                                2.받은 엑셀 함량 컬럼 전체 복사(무조건 전체 필수)<br>
+                                                3.아래 칸에 붙이기 <br>
+                                                4.예시) 10 20 30 10 14 14.1 5 .. .. .. ..<br>
+                                                5.[변 환] 버튼 클릭
+                                            </span>   
+                                        </p>  
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="rawData" name="rawData" type="text" tabindex="7" class="form-control" placeholder="예시대로 여기에 붙여주세요 " value="">          
+                                        <div type="submit"  id="submit" tabindex="139" class="form-control btn btn-login" onclick="conversion()">변 환</div>
+                                    </div>
+                                    
 
                                     <div class="form-group">
 										<input id="energy" name="energy" type="text" tabindex="8" class="form-control" placeholder="에너지" value="">
@@ -458,118 +527,119 @@ $(document).ready(function() {
 										<input id="Niacin" name="Niacin" type="text" tabindex="108" class="form-control" placeholder="니아신" value="">
                                     </div>
                                     <div class="form-group">
+                                        <input id="Niacin_NE" name="Niacin_NE" type="text" tabindex="109" class="form-control" placeholder="나이아신(NE)" value="">           
                                     </div>
 
                                     <div class="form-group">
-										<input id="Nicotinic_acid" name="Nicotinic_acid" type="text" tabindex="109" class="form-control" placeholder="니코틴산" value="">
+										<input id="Nicotinic_acid" name="Nicotinic_acid" type="text" tabindex="110" class="form-control" placeholder="니코틴산" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Nicotinamide" name="Nicotinamide" type="text" tabindex="110" class="form-control" placeholder="니코틴아마이드" value="">
+										<input id="Nicotinamide" name="Nicotinamide" type="text" tabindex="111" class="form-control" placeholder="니코틴아마이드" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Pantothenic_acid" name="Pantothenic_acid" type="text" tabindex="111" class="form-control" placeholder="판토텐산" value="">
+										<input id="Pantothenic_acid" name="Pantothenic_acid" type="text" tabindex="112" class="form-control" placeholder="판토텐산" value="">
                                     </div>
                                  
                                     <div class="form-group">
-										<input id="Vitamin_B6" name="Vitamin_B6" type="text" tabindex="112" class="form-control" placeholder="비타민 B6" value="">
+										<input id="Vitamin_B6" name="Vitamin_B6" type="text" tabindex="113" class="form-control" placeholder="비타민 B6" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Pyridoxine" name="Pyridoxine" type="text" tabindex="113" class="form-control" placeholder="피리독신" value="">
+										<input id="Pyridoxine" name="Pyridoxine" type="text" tabindex="114" class="form-control" placeholder="피리독신" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Biotin" name="Biotin" type="text" tabindex="114" class="form-control" placeholder="비오틴" value="">
-                                    </div>
-                                    <div class="form-group">
-                                    </div>
-
-                                    <div class="form-group">
-										<input id="Folic_acid_DFE" name="Folic_acid_DFE" type="text" tabindex="115" class="form-control" placeholder="엽산(DFE)" value="">
-                                    </div>
-                                    <div class="form-group">
-										<input id="Folic_Acid_Food_Folic_Acid" name="Folic_Acid_Food_Folic_Acid" type="text" tabindex="116" class="form-control" placeholder="엽산 - 식품 엽산" value="">
-                                    </div>
-                                    <div class="form-group">
-										<input id="Folic_acid_added_folic_acid" name="Folic_acid_added_folic_acid" type="text" tabindex="117" class="form-control" placeholder="엽산 - 첨가 엽산" value="">
-                                    </div>
-                                    <div class="form-group">
-										<input id="Vitamin_B12" name="Vitamin_B12" type="text" tabindex="118" class="form-control" placeholder="비타민 B12" value="">
+										<input id="Biotin" name="Biotin" type="text" tabindex="115" class="form-control" placeholder="비오틴" value="">
                                     </div>
                                     <div class="form-group">
                                     </div>
 
                                     <div class="form-group">
-										<input id="Vitamin_C" name="Vitamin_C" type="text" tabindex="119" class="form-control" placeholder="비타민 C" value="">
+										<input id="Folic_acid_DFE" name="Folic_acid_DFE" type="text" tabindex="116" class="form-control" placeholder="엽산(DFE)" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Vitamin_D" name="Vitamin_D" type="text" tabindex="120" class="form-control" placeholder="비타민 D" value="">
+										<input id="Folic_Acid_Food_Folic_Acid" name="Folic_Acid_Food_Folic_Acid" type="text" tabindex="117" class="form-control" placeholder="엽산 - 식품 엽산" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Vitamin_D2" name="Vitamin_D2" type="text" tabindex="121" class="form-control" placeholder="비타민 D2" value="">
+										<input id="Folic_acid_added_folic_acid" name="Folic_acid_added_folic_acid" type="text" tabindex="118" class="form-control" placeholder="엽산 - 첨가 엽산" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Vitamin_D3" name="Vitamin_D3" type="text" tabindex="122" class="form-control" placeholder="비타민 D3" value="">
+										<input id="Vitamin_B12" name="Vitamin_B12" type="text" tabindex="119" class="form-control" placeholder="비타민 B12" value="">
+                                    </div>
+                                    <div class="form-group">
+                                    </div>
+
+                                    <div class="form-group">
+										<input id="Vitamin_C" name="Vitamin_C" type="text" tabindex="120" class="form-control" placeholder="비타민 C" value="">
+                                    </div>
+                                    <div class="form-group">
+										<input id="Vitamin_D" name="Vitamin_D" type="text" tabindex="121" class="form-control" placeholder="비타민 D" value="">
+                                    </div>
+                                    <div class="form-group">
+										<input id="Vitamin_D2" name="Vitamin_D2" type="text" tabindex="122" class="form-control" placeholder="비타민 D2" value="">
+                                    </div>
+                                    <div class="form-group">
+										<input id="Vitamin_D3" name="Vitamin_D3" type="text" tabindex="123" class="form-control" placeholder="비타민 D3" value="">
                                     </div>
                                   
                                     <div class="form-group">
-										<input id="Vitamin_E" name="Vitamin_E" type="text" tabindex="123" class="form-control" placeholder="비타민 E" value="">
+										<input id="Vitamin_E" name="Vitamin_E" type="text" tabindex="124" class="form-control" placeholder="비타민 E" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Alpha_tocopherol" name="Alpha_tocopherol" type="text" tabindex="124" class="form-control" placeholder="알파 토코페롤" value="">
+										<input id="Alpha_tocopherol" name="Alpha_tocopherol" type="text" tabindex="125" class="form-control" placeholder="알파 토코페롤" value="">
                                     </div>
 
                                     <div class="form-group">
-										<input id="Beta_tocopherol" name="Beta_tocopherol" type="text" tabindex="125" class="form-control" placeholder="베타 토코페롤" value="">
+										<input id="Beta_tocopherol" name="Beta_tocopherol" type="text" tabindex="126" class="form-control" placeholder="베타 토코페롤" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Gamma_Tocopherol" name="Gamma_Tocopherol" type="text" tabindex="126" class="form-control" placeholder="감마 토코페롤" value="">
+										<input id="Gamma_Tocopherol" name="Gamma_Tocopherol" type="text" tabindex="127" class="form-control" placeholder="감마 토코페롤" value="">
                                     </div>
                     
                                     <div class="form-group">
-										<input id="Delta_tocopherol" name="Delta_tocopherol" type="text" tabindex="127" class="form-control" placeholder="델타 토코페롤" value="">
+										<input id="Delta_tocopherol" name="Delta_tocopherol" type="text" tabindex="128" class="form-control" placeholder="델타 토코페롤" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Alpha_tocotrienol" name="Alpha_tocotrienol" type="text" tabindex="128" class="form-control" placeholder="알파 토코트리에놀" value="">
+										<input id="Alpha_tocotrienol" name="Alpha_tocotrienol" type="text" tabindex="129" class="form-control" placeholder="알파 토코트리에놀" value="">
                                     </div>
                                     <div class="form-group">
                                     </div>
 
                                     <div class="form-group">
-										<input id="Beta_tocotrienol" name="Beta_tocotrienol" type="text" tabindex="129" class="form-control" placeholder="베타 토코트리에놀" value="">
+										<input id="Beta_tocotrienol" name="Beta_tocotrienol" type="text" tabindex="130" class="form-control" placeholder="베타 토코트리에놀" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Gamma_Tocotrienol" name="Gamma_Tocotrienol" type="text" tabindex="130" class="form-control" placeholder="감마 토코트리에놀" value="">
+										<input id="Gamma_Tocotrienol" name="Gamma_Tocotrienol" type="text" tabindex="131" class="form-control" placeholder="감마 토코트리에놀" value="">
                                     </div>
                 
                                     <div class="form-group">
-										<input id="Delta_Tocotrienol" name="Delta_Tocotrienol" type="text" tabindex="131" class="form-control" placeholder="델타 토코트리에놀" value="">
+										<input id="Delta_Tocotrienol" name="Delta_Tocotrienol" type="text" tabindex="132" class="form-control" placeholder="델타 토코트리에놀" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Vitamin_K" name="Vitamin_K" type="text" tabindex="132" class="form-control" placeholder="비타민 K" value="">
+										<input id="Vitamin_K" name="Vitamin_K" type="text" tabindex="133" class="form-control" placeholder="비타민 K" value="">
                                     </div>
                                     
 
                                     <div class="form-group">
-										<input id="Vitamin_K1" name="Vitamin_K1" type="text" tabindex="133" class="form-control" placeholder="비타민 K1" value="">
+										<input id="Vitamin_K1" name="Vitamin_K1" type="text" tabindex="134" class="form-control" placeholder="비타민 K1" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Vitamin_K2" name="Vitamin_K2" type="text" tabindex="134" class="form-control" placeholder="비타민 K2" value="">
+										<input id="Vitamin_K2" name="Vitamin_K2" type="text" tabindex="135" class="form-control" placeholder="비타민 K2" value="">
                                     </div>
                 
                                     <div class="form-group">
-										<input id="cholesterol" name="cholesterol" type="text" tabindex="135" class="form-control" placeholder="콜레스테롤" value="">
+										<input id="cholesterol" name="cholesterol" type="text" tabindex="136" class="form-control" placeholder="콜레스테롤" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Salt_equivalent" name="Salt_equivalent" type="text" tabindex="136" class="form-control" placeholder="식염상당량" value="">
+										<input id="Salt_equivalent" name="Salt_equivalent" type="text" tabindex="137" class="form-control" placeholder="식염상당량" value="">
                                     </div>
                                     <div class="form-group">
-										<input id="Discard_rate" name="Discard_rate" type="text" tabindex="137" class="form-control" placeholder="폐기율" value="">
+										<input id="Discard_rate" name="Discard_rate" type="text" tabindex="138" class="form-control" placeholder="폐기율" value="">
                                     </div>
 							
            
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit"  id="submit" tabindex="138" class="form-control btn btn-login" value="등 록">
+												<input type="submit"  id="submit" tabindex="139" class="form-control btn btn-login" value="등 록">
 											</div>
 										</div>
 									</div>

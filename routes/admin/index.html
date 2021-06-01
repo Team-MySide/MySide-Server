@@ -8,7 +8,7 @@
     div { text-align: center; }
     #head {color:#FFFFFF; font-size: 24px; font-weight: bold;}
     /*div menubar css*/
-    #menubar{width:810px; margin-left:auto;  margin-right:auto; margin-top:50px; height:auto;}
+    #menubar{width:900px; margin-left:auto;  margin-right:auto; margin-top:50px; height:auto;}
     #menubar2{width:810px; margin-left:auto;  margin-right:auto; margin-top:50px; height:auto;}
     ul {
       text-transform:uppercase;
@@ -57,6 +57,10 @@ $(document).ready(function () {
   $("li[id='detaillbtn']").click(function () {
     location.href='admin/detail'
   });
+
+  $("li[id='cancerFoodbtn']").click(function () {
+    location.href='admin/cancer_food'
+  });
 });
 </script>
 
@@ -70,10 +74,10 @@ $(document).ready(function () {
     <ul>
       <li id="thumbnailbtn">음식 썸네일 등록</li>
       <li id="detaillbtn">음식 상세정보 등록</li>
-      <li>암-음식 정보 등록</li>
+      <li id="cancerFoodbtn">암-음식 정보 등록</li>
       <li>좋은 영양성분 등록</li>
       <li>나쁜 영양성분 등록</li>
-      <li>영양성분 정보 등록</li>
+      <li>영양성분 등록</li>
     </ul>
     </div>
 </body>
