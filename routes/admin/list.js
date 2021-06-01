@@ -29,7 +29,7 @@ router.post('/', async(req, res) => {
     }
 });
 router.get('/', (req, res) => {
-    res.sendFile(__dirname + '/cancerFood.html')
+    res.sendFile(__dirname + '/list.html')
 });
 
 
