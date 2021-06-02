@@ -38,7 +38,7 @@ router.post('/password/:email/:name', async (req, res) => {
       const smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-          user: senderInfo.user, // 보내는 메일의 주소
+          user: senderInfo.user, // 보내는 메일의 주소 
           pass: senderInfo.pass  // 보내는 메일의 비밀번호
         }
       })
