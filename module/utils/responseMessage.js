@@ -114,4 +114,7 @@ module.exports = {
   HEALTHLIST_DELETE : "회원 건강 정보 삭제 성공",
   HEALTHLIST_INSERT : "회원 건강 정보 입력 성공",
   HEALTHLIST_UPDATE : "회원 건강 정보 수정 성공",
+  FAQ_NULL : "FAQ가 존재하지 않습니다.",
+  FAQ_SUCCESS : "FAQ 조회 성공",
+
 };
