@@ -34,7 +34,7 @@ router.get('/', authUtil.isLoggedin, async(req, res) => {
     }
     else {//DB연결 성공
         if(checkuserResult[0]==null){ //작성한 건강 데이터가 없음 => 0으로 데이터 보냄
-            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL, 0));
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL));
 
         }
         else{//건강 데이터 존재 => 데이터 값 전송
@@ -67,7 +67,7 @@ router.put('/update', authUtil.isLoggedin, async(req, res) => {
             res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
         }
         else{
-            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_UPDATE,listUpdateResult));
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_UPDATE));
 
         }
     }
@@ -89,12 +89,12 @@ router.post('/insert', authUtil.isLoggedin, async(req, res) => {
                 res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
             }
             else{
-                res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_INSERT,listInsertResult));
+                res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_INSERT));
         
             }
         }
         else{
-            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_FAIL,0));
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_FAIL));
         }
     }
 })
