@@ -43,9 +43,9 @@ router.get('/', authUtil.isLoggedin, async(req, res) => {
     }
 })
 //2. 삭제하기
-router.post('/delete', authUtil.isLoggedin, async(req, res) => {
+router.delete('/delete/:health_id', authUtil.isLoggedin, async(req, res) => {
     const listDeleteQuery = "DELETE FROM user_health WHERE health_id = ? AND user_id = ?";
-    const listDeleteResult = await db.queryParam_Parse(listDeleteQuery, [req.body.health_id, req.decoded.id]);
+    const listDeleteResult = await db.queryParam_Parse(listDeleteQuery, [req.params.health_id, req.decoded.id]);
     if (!listDeleteResult) { //DB에러
         res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
     }
@@ -54,7 +54,7 @@ router.post('/delete', authUtil.isLoggedin, async(req, res) => {
     }
 })
 //3. 편집하기
-router.post('/update', authUtil.isLoggedin, async(req, res) => {
+router.put('/update', authUtil.isLoggedin, async(req, res) => {
     const checkdayQuery = "SELECT * FROM user_health WHERE user_id = ? AND RegiDate = ?";
     const checkdayResult = await db.queryParam_Parse(checkdayQuery, [req.decoded.id, req.body.RegiDate]);
     if (!checkdayResult) { //DB에러
@@ -91,6 +91,23 @@ router.post('/update', authUtil.isLoggedin, async(req, res) => {
 router.get('/:RegiDate', authUtil.isLoggedin, async(req, res) => {
     const checkuserQurey = "SELECT health_id, cancerNm, stageNm, progressNm, disease, weight, height, memo, DATE_FORMAT(RegiDate, '%y.%m.%d') AS RegiDate from user_health WHERE user_id = ? AND RegiDate LIKE '%"+ req.params.RegiDate +"%' ORDER BY RegiDate DESC";
     const checkuserResult = await db.queryParam_Parse(checkuserQurey, [req.decoded.id])
+    if (!checkuserResult) { //DB에러
+        res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
+    }
+    else {//데이터베이스 연결 성공 => 데이터 존재할 때, 존재 안 할 때 구분
+        if(checkuserResult[0]==null){
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL, 0));
+        }
+        else{
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT, checkuserResult));
+        }
+    }
+})
+ 
+//5. health_id로 상세정보 넘겨서 건강데이터 추가입력에 사용하게 만들기
+router.get('/:health_id', authUtil.isLoggedin, async(req, res) => {
+    const checkuserQurey = "SELECT DATE_FORMAT(RegiDate, '%Y.%m.%d') AS RegiDate, relationNm, gender, age, height, weight, cancerNm, stageNm, progressNm, disease, memo from user_health WHERE health_id = ?";
+    const checkuserResult = await db.queryParam_Parse(checkuserQurey, [req.params.health_id])
     if (!checkuserResult) { //DB에러
         res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
     }
