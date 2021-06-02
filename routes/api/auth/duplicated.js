@@ -17,7 +17,7 @@ router.get('/email/:email', async (req, res) => {
         if(selectEmailResult[0]== null){  
             res.status(200).send(defaultRes.successTrue(statusCode.OK, "사용하실 수 있는 이메일입니다.",1));      
         } else {    
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "동일한 이메일이 이미 등록되어 있습니다.",0));      
+            res.status(200).send(defaultRes.successFalse(statusCode.OK, "동일한 이메일이 이미 등록되어 있습니다.",0));      
         }
     }
 });
@@ -33,7 +33,7 @@ router.get('/nickname/:nickname', async (req, res) => {
         if(selectNickResult[0]== null){  
             res.status(200).send(defaultRes.successTrue(statusCode.OK, "사용하실 수 있는 닉네임입니다.",1));      
         } else {    
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "동일한 닉네임이 이미 등록되어 있습니다.",0));      
+            res.status(200).send(defaultRes.successFalse(statusCode.OK, "동일한 닉네임이 이미 등록되어 있습니다.",0));      
         }
     }
 });
