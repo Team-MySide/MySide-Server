@@ -107,7 +107,7 @@ router.get('/:RegiDate', authUtil.isLoggedin, async(req, res) => {
     }
     else {//데이터베이스 연결 성공 => 데이터 존재할 때, 존재 안 할 때 구분
         if(checkuserResult[0]==null){
-            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL, 0));
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL));
         }
         else{
             res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT, checkuserResult));
@@ -124,7 +124,7 @@ router.get('/:health_id', authUtil.isLoggedin, async(req, res) => {
     }
     else {//데이터베이스 연결 성공 => 데이터 존재할 때, 존재 안 할 때 구분
         if(checkuserResult[0]==null){
-            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL, 0));
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL));
         }
         else{
             res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT, checkuserResult));
