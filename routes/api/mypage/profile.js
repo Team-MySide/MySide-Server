@@ -58,10 +58,10 @@ router.get('/',authUtil.isLoggedin,async(req,res)=>{//비동기처리로 /profil
 /* (2) 닉네임 수정 */
 //nickname UPDATE
 router.put('/nickname', authUtil.isLoggedin, async (req, res) => {
-    const MypageUpdateProfileQuery = 'UPDATE user SET nickname =?, protector_nickname=? WHERE user_id = ?'; 
+    const MypageUpdateProfileQuery = 'UPDATE user SET nickname =? WHERE user_id = ?'; 
     //INSERT INTO user 
     const MypageUpdateProfileResult = await db.queryParam_Arr(MypageUpdateProfileQuery , 
-        [req.body.nickname,req.body.protector_nickname,req.decoded.id]);
+        [req.body.nickname,req.decoded.id]);
 
     if(!MypageUpdateProfileResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 닉네임 수정 실패
