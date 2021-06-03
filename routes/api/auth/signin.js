@@ -31,11 +31,19 @@ router.post('/', async (req, res) => {
             const refreshToken = tokens.refreshToken;
             const TokenUpdateQuery = "UPDATE user SET accessToken = ?, refreshToken = ? WHERE email= ?";
             const TokenUpdateResult = await db.queryParam_Parse(TokenUpdateQuery, [accessToken, refreshToken, email]);
+
+            let nickname = selectUserResult[0].nickname;
+            let relationNm = selectUserResult[0].relationNm;
+
+            if(relationNm=="보호자"){
+                nickname = "("+nickname+")"+"보호자";
+            }
+   
             if (!TokenUpdateResult) {
                 res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "refreshtoken DB등록 오류 "));
             } else {
                 res.status(200).send(defaultRes.successTrue(statusCode.OK, "로그인 성공", {
-                    tokens
+                    tokens,nickname,relationNm
                 }));
             }
         } else {
