@@ -32,15 +32,15 @@ router.post('/', async (req, res) => {
             const TokenUpdateQuery = "UPDATE user SET accessToken = ?, refreshToken = ? WHERE email= ?";
             const TokenUpdateResult = await db.queryParam_Parse(TokenUpdateQuery, [accessToken, refreshToken, email]);
             if (!TokenUpdateResult) {
-                res.status(200).send(defaultRes.successTrue(statusCode.DB_ERROR, "refreshtoken DB등록 오류 "));
+                res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "refreshtoken DB등록 오류 "));
             } else {
-                res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.LOGIN_SUCCESS, {
+                res.status(200).send(defaultRes.successTrue(statusCode.OK, "로그인 성공", {
                     tokens
                 }));
             }
         } else {
             //비밀번호가 일치하지 않음
-            res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.PASSWORD_NO));
+            res.status(200).send(defaultRes.successFalse(statusCode.OK, "정보가 정확하지 않음"));
         }
     }
 });

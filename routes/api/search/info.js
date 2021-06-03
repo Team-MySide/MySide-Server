@@ -627,7 +627,21 @@ router.get('/detail/:food', async (req, res) => {
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 상세 세부설명 조회 성공",SelectResult));      
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 상세 세부설명 조회 성공",SelectResult[0]));      
+    }
+});
+
+router.get('/source/:food', async (req, res) => {
+
+    let resData =["농식품종합정보시스템","네이버 지식사전"];
+
+    const SelectQuery = 'SELECT efficacy,combination,select_tip,care FROM food_detail WHERE name = ?'; 
+    const SelectResult = await db.queryParam_Arr(SelectQuery, [req.params.food]);
+
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     
+    }else{
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 출처 팝업 조회 성공",resData));      
     }
 });
 

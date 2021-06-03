@@ -11,7 +11,7 @@ const { Health } = require('aws-sdk');
 
 
 router.get('/title', async(req, res) => {
-    const checkfaqQurey = "SELECT category,title from faq";
+    const checkfaqQurey = "SELECT faq_id, category,title from faq";
     const checkfaqResult = await db.queryParam_None(checkfaqQurey)
     if (!checkfaqResult) { //DB에러
         res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
@@ -26,6 +26,7 @@ router.get('/title', async(req, res) => {
         }
     }
 })
+
 router.get('/title/:faq_id', async(req, res) => {
     const checkfaqQurey = "SELECT * from faq WHERE faq_id = ?";
     const checkfaqResult = await db.queryParam_Parse(checkfaqQurey, [req.params.faq_id])

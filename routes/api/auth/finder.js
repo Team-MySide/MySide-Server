@@ -17,15 +17,21 @@ router.get('/id/:name/:phone', async (req, res) => {
     const selectIdQuery = 'SELECT email FROM user WHERE name = ? AND phone = ? '; 
     const selectIdResult = await db.queryParam_Arr(selectIdQuery, [req.params.name, req.params.phone]);
 
+    let resData ={
+        flag : 0,
+        email : ""
+    }
     console.log(selectIdResult);
     if(!selectIdResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 회원정보 조회 실패
     }else{
-        if(selectIdResult[0].email == null){   // user_email이 존재하지 않은 경우
-            // 팝업창 띄워주기 
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.NOT_CORRECT_INFO));      // 올바르지 않은 정보 입니다
+        if(!selectIdResult[0]){   // user_email이 존재하지 않은 경우
+            resData.flag = 0;
+            res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.NOT_CORRECT_INFO,resData ));      // 올바르지 않은 정보 입니다
         } else {    // user_email이 존재하는 경우
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.FIND_USER_ID, selectIdResult[0]));      // 아이디 찾기 성공 
+            resData.flag = 1;
+            resData.email =selectIdResult[0];
+            res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.FIND_USER_ID, resData));      // 아이디 찾기 성공 
         }
     }
 });

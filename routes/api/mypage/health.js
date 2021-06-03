@@ -34,7 +34,7 @@ router.get('/', authUtil.isLoggedin, async(req, res) => {
     }
     else {//DB연결 성공
         if(checkuserResult[0]==null){ //작성한 건강 데이터가 없음 => 0으로 데이터 보냄
-            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL, 0));
+            res.status(200).send(defaultRes.successFalse(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL));
 
         }
         else{//건강 데이터 존재 => 데이터 값 전송
@@ -55,12 +55,32 @@ router.delete('/delete/:health_id', authUtil.isLoggedin, async(req, res) => {
 })
 //3. 편집하기
 router.put('/update', authUtil.isLoggedin, async(req, res) => {
+    const checkdayQuery = "SELECT * FROM user_health WHERE user_id = ? AND health_id = ?";
+    const checkdayResult = await db.queryParam_Parse(checkdayQuery, [req.decoded.id, req.body.health_id]);
+    if (!checkdayResult) { //DB에러
+        res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
+    }
+    else{//DB 조회 성공
+        const listUpdateQuery = "UPDATE user_health SET RegiDate = ? , relationNm = ?, gender = ?, age = ?, height = ?, weight = ?, cancerNm = ?, stageNm = ?, progressNm = ?, disease = ?, memo = ? WHERE health_id = ? AND user_id = ?";
+        const listUpdateResult = await db.queryParam_Parse(listUpdateQuery, [checkdayResult[0].RegiDate,req.body.relationNm, req.body.gender, req.body.age, req.body.height, req.body.weight, req.body.cancerNm, req.body.stageNm, req.body.progressNm, req.body.disease, req.body.memo, req.body.health_id, req.decoded.id]);
+        if(!listUpdateResult){
+            res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
+        }
+        else{
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_UPDATE));
+
+        }
+    }
+})
+
+//입력하기
+router.post('/insert', authUtil.isLoggedin, async(req, res) => {
     const checkdayQuery = "SELECT * FROM user_health WHERE user_id = ? AND RegiDate = ?";
     const checkdayResult = await db.queryParam_Parse(checkdayQuery, [req.decoded.id, req.body.RegiDate]);
     if (!checkdayResult) { //DB에러
         res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
     }
-    else{//DB 조회 성공 => 데이터 존재 = 업데이트, 데이터 X = 입력 
+    else{//DB 조회 성공
         if(checkdayResult[0]==null){
             const listInsertQuery = "INSERT INTO user_health (user_id,RegiDate,relationNm,gender,age,height,weight,stageNm,progressNm,cancerNm,disease,memo) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"
             const listInsertResult = await db.queryParam_Parse(listInsertQuery, [req.decoded.id,req.body.RegiDate,req.body.relationNm,req.body.gender,req.body.age,req.body.height,req.body.weight,req.body.stageNm
@@ -69,22 +89,13 @@ router.put('/update', authUtil.isLoggedin, async(req, res) => {
                 res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
             }
             else{
-                res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_INSERT,listInsertResult));
+                res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_INSERT));
+        
             }
         }
-            
         else{
-            const listUpdateQuery = "UPDATE user_health SET RegiDate = ? , relationNm = ?, gender = ?, age = ?, height = ?, weight = ?, cancerNm = ?, stageNm = ?, progressNm = ?, disease = ?, memo = ? WHERE RegiDate = ? AND user_id = ?";
-            const listUpdateResult = await db.queryParam_Parse(listUpdateQuery, [req.body.RegiDate,req.body.relationNm, req.body.gender, req.body.age, req.body.height, req.body.weight, req.body.cancerNm, req.body.stageNm, req.body.progressNm, req.body.disease, req.body.memo, req.body.RegiDate, req.decoded.id]);
-            if(!listUpdateResult){
-                res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
-            }
-            else{
-                res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_UPDATE,listUpdateResult));
-
-            }
+            res.status(200).send(defaultRes.successFalse(statuscode.OK, resMessage.HEALTHLIST_FAIL));
         }
-
     }
 })
 //4. 달별로 데이터 받아오기
@@ -96,7 +107,7 @@ router.get('/:RegiDate', authUtil.isLoggedin, async(req, res) => {
     }
     else {//데이터베이스 연결 성공 => 데이터 존재할 때, 존재 안 할 때 구분
         if(checkuserResult[0]==null){
-            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL, 0));
+            res.status(200).send(defaultRes.successFalse(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL));
         }
         else{
             res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT, checkuserResult));
@@ -113,7 +124,7 @@ router.get('/:health_id', authUtil.isLoggedin, async(req, res) => {
     }
     else {//데이터베이스 연결 성공 => 데이터 존재할 때, 존재 안 할 때 구분
         if(checkuserResult[0]==null){
-            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL, 0));
+            res.status(200).send(defaultRes.successFalse(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL));
         }
         else{
             res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT, checkuserResult));
