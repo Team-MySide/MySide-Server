@@ -117,4 +117,7 @@ module.exports = {
   FAQ_NULL : "FAQ가 존재하지 않습니다.",
   FAQ_SUCCESS : "FAQ 조회 성공",
 
+  FIND_PASSWORD_SUCCESS : "비밀번호 찾기 성공",
+  FIND_PASSWORD_FAIL : "비밀번호 찾기 실패",
+
 };

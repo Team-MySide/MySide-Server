@@ -4,22 +4,23 @@ const defaultRes = require('../../../module/utils/utils');
 const statusCode = require('../../../module/utils/statusCode');
 const resMessage = require('../../../module/utils/responseMessage')
 const db = require('../../../module/pool');
-
+const bcrypt = require('bcrypt');
 const jwtUtils = require('../../../module/jwt');
 const nodemailer = require('nodemailer');        // e-mail 보낼 때 사용
+const senderInfo = require('../config/senderInfo.json');
 
 
 
 router.post('/password/:email/:name', async (req, res) => {
 
-    console.log(req.body);
+    console.log(req.params);
     const getUser = "SELECT * FROM user WHERE email=? AND name =? ";
-    const getUserinfo = await db.queryParam_Parse(getUser, [req.body.email, req.body.name]);
+    const getUserinfo = await db.queryParam_Parse(getUser, [req.params.email, req.params.name]);
   
   
   
     if (!getUserinfo[0]) {
-      res.status(200).send("입력된 정보가 잘못되었습니다.");
+        res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.NOT_CORRECT_INFO));      // 올바르지 않은 정보 입니다
     } else { //쿼리문이 성공했을 때
   
       //f 추출
@@ -27,9 +28,9 @@ router.post('/password/:email/:name', async (req, res) => {
       const encryptedPassword = bcrypt.hashSync(random, 10);
   
       const getUpdate = "UPDATE myside.user SET password =? WHERE email =? AND name = ?";
-      const getResult = await db.queryParam_Parse(getUpdate, [encryptedPassword, req.body.email, req.body.name]);
+      const getResult = await db.queryParam_Parse(getUpdate, [encryptedPassword, req.params.email, req.params.name]);
   
-      let email = req.body.email;
+      let email = req.params.email;
       var password = random;
       console.log(email);
       console.log(password);
@@ -53,9 +54,9 @@ router.post('/password/:email/:name', async (req, res) => {
       await smtpTransport.sendMail(mailOptions, (error, responses) => {
         if (error) {
           console.log(error);
-          res.status(200).send("실패");
+          res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.FIND_PASSWORD_FAIL));      // 올바르지 않은 정보 입니다
         } else {
-          res.status(200).send("성공");
+            res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.FIND_PASSWORD_SUCCESS, getResult[0]));      // 아이디 찾기 성공 
         }
         smtpTransport.close();
       });
