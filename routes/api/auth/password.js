@@ -7,11 +7,11 @@ const db = require('../../../module/pool');
 const bcrypt = require('bcrypt');
 const jwtUtils = require('../../../module/jwt');
 const nodemailer = require('nodemailer');        // e-mail 보낼 때 사용
-const senderInfo = require('../config/senderInfo.json');
+const senderInfo = require('../../../config/senderInfo.json');
 
 
 
-router.post('/password/:email/:name', async (req, res) => {
+router.get('/:email/:name', async (req, res) => {
 
     console.log(req.params);
     const getUser = "SELECT * FROM user WHERE email=? AND name =? ";
