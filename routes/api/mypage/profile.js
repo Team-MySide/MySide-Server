@@ -9,6 +9,7 @@ const resMessage = require('../../../module/utils/responseMessage');
 const db = require('../../../module/pool');
 const { Health } = require('aws-sdk');
 
+const jwtUtils = require('../../../module/jwt');
 /* 프로필 수정 */
 /* (1) 프로필 조회 */
 /* (2) 닉네임 수정 */
@@ -57,34 +58,40 @@ router.get('/',authUtil.isLoggedin,async(req,res)=>{//비동기처리로 /profil
 /* (2) 닉네임 수정 */
 //nickname UPDATE
 router.put('/nickname', authUtil.isLoggedin, async (req, res) => {
-    const MypageUpdateProfileQuery = 'UPDATE user SET nickname =? WHERE user_id = ?'; 
+    const MypageUpdateProfileQuery = 'UPDATE user SET nickname =?, protector_nickname=? WHERE user_id = ?'; 
+    //INSERT INTO user 
     const MypageUpdateProfileResult = await db.queryParam_Arr(MypageUpdateProfileQuery , 
-        [req.body.nickname,req.decoded.id]);
+        [req.body.nickname,req.body.protector_nickname,req.decoded.id]);
 
     if(!MypageUpdateProfileResult){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 프로필 수정 실패
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 닉네임 수정 실패
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "닉네임 수정 성공"));      // 프로필 수정 성공
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "닉네임 수정 성공"));      // 닉네임 수정 성공
     }
 });
 
 /* (3-1) 비밀번호 확인 */
 router.post('/checkpw',authUtil.isLoggedin, async (req, res) => {
-    password = req.body.password;
-    const MyPageCheckPWQuery = 'SELECT * FROM user WHERE user_id = ?';//user_id의 값으로 password값 가져온다
-    const MyPageCheckPWResult = await db.queryParam_Arr(MyPageCheckPWQuery, user_id);//req에서 토큰으로 decoded된 id과 쿼리문 await으로 비동기 기다리기
-    if(!MyPageCheckPWResult){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     //존재하는 result 형식이용해서 실패값 출력
-    }else{
-        const salt = MyPageCheckPWQuery[0].salt;
+
+    id = req.decoded.id;
+    password = req.body.password
+
+    const selectUserQuery = 'SELECT * FROM user WHERE user_id = ?'
+    const selectUserResult = await db.queryParam_Parse(selectUserQuery, id);
+
+    if (!selectUserResult) {
+        // 아이디가 존재하지 않으면
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+    } else {
+        const salt = selectUserResult[0].salt;
         const hashedEnterPw = await crypto.pbkdf2(password, salt, 1000, 32, 'SHA512')
-        const dbPw = MyPageCheckPWQuery[0].password
+        const dbPw = selectUserResult[0].password
+
         if (hashedEnterPw.toString('base64') == dbPw) {
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "비밀번호 조회 성공", MypageSelecProfiletResult[0]));
-        }
-        else{
-            //비밀번호가 일치하지 않음
-            res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.PASSWORD_NO));
+                res.status(200).send(defaultRes.successTrue(statusCode.OK, "비밀번호 일치 성공"
+                ));
+        } else {
+            res.status(200).send(defaultRes.successFalse(statusCode.OK, "비밀번호 일치하지 않음"));
         }
     }
 });
