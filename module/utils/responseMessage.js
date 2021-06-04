@@ -121,4 +121,6 @@ module.exports = {
   FIND_PASSWORD_SUCCESS : "비밀번호 찾기 성공",
   FIND_PASSWORD_FAIL : "비밀번호 찾기 실패",
 
+  LIKE_SELECT_SUCCESS : "좋아요 목록 조회 성공",
+
 };
