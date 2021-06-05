@@ -62,7 +62,7 @@ router.post('/', upload.single('thumbImg'), async(req, res) => {
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "실패"));
     } else { //쿼리문이 성공했을 때
   
-       res.status(200).send(defaultRes.successTrue(statusCode.OK, ""));
+       res.redirect("/admin/image")
     }
   
 });
