@@ -219,26 +219,26 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
-    <div id ="searchList" class="row">
-  
-    </div>
+    <div id ="searchList" class="row"> </div>
 </div>
  
 <div id="detailModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
 
-          <div id ="modal-title">상세보기</div>
-          <div id ="modalList" class="row">
+          <div id ="modal-title">이미지 수정</div>
+          <div class="form-group">
+            <input  id="thumbImg" name="thumbImg" tabindex="2"  type="file" />
+            </div>
+            <div class="form-group">
+                <input id="title" name="title" type="text" tabindex="3" class="form-control" placeholder="제목" value="" >
+            </div>
+          
      </div>
  </div>
 
   <script>
-        $(document).on('keypress', 'input,select', function (e) {
-            if (e.which == 13) {
-            Search();
-            }
-        });
+  
 
 
         function openModal(idx){
@@ -258,51 +258,6 @@ $(document).ready(function() {
                         modal.style.display = "none";
                     }
                 }
-
-                $.ajax({
-                    method: "GET", // 요청 방식
-                    url: "/admin/list/detail/"+name,
-                    success: function (res) { // 성공 시 호출 콜백
-                        console.log(res);
-                        $('#modalList').empty();
-                        if(res.data.length ==0) {
-                            alert("음식 상세정보 미입력");
-                            return ;
-                        }
-
-                        $('#modal-title').text(res.data[0].name);
-
-                      
-                        for (var i = 0; i < res.data.length; i++) {
-                                        var tag =  `  <i class= "tag1">${res.data[i].status}</i>`
-                                        var $li = (`${tag}`);
-                                        $('#modalList').append($li);//jQuery 문법
-                        }
-
-                        for (var i = 0; i < res.data.length; i++) {
-                                        var tag =     
-                                                   `  <div class ="mhead">효능</div>`
-                                                 + `  <div class = "mtext">${res.data[i].efficacy}</div>`
-                                                 + `  <div class ="mhead">궁합</div>`
-                                                 + `  <div class = "mtext">${res.data[i].combination}</div>`
-                                                 + `  <div class ="mhead">고르는 법</div>`
-                                                 + `  <div class = "mtext">${res.data[i].select_tip}</div>`
-                                                 + `  <div class ="mhead">손질법</div>`
-                                                 + `  <div class = "mtext">${res.data[i].care}</div>`
-
-                                        var $li = (`${tag}`);
-                                        $('#modalList').append($li);//jQuery 문법
-                        }
-                    },
-                    error: function (data) {
-                        console.log("failed");
-                    },
-                    complete: function () {
-                        console.log('compelted');
-                    }
-
-                });
-            
         }
 
 
