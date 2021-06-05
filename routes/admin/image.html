@@ -93,7 +93,7 @@ i{
   padding: 20px;
   border: 1px solid #888;
   width: 50%;
-  height: 100px;
+  height: 210px;
   overflow: auto; /* Enable scroll if needed */
 }
 
@@ -142,6 +142,9 @@ i{
     outline: none;
     color: #fff;
     font-size: 14px;
+    display: flex;
+   justify-content: center;
+    
 }
 
  </style>
@@ -249,9 +252,7 @@ $(document).ready(function() {
                 <input id="color" name="color" type="text" tabindex="3" class="form-control" placeholder="색상코드 : FFFFFF" value="" >
             </div>
             <div class="form-group">
-                <div class="row">
                     <div type="submit"  id="submit" tabindex="139" class="form-control btn btn-login" onclick="conversion()">변 환</div>
-                </div>
             </div>
           
      </div>
