@@ -11,26 +11,72 @@ const db = require("../../module/pool");
 
 router.get('/all', async(req, res) => {
 
-
-    console.log(req.body)
-    let insertQuery =  'GET INTO cancer_food '
-    +' (cancerNm, food, ref_link)'
-    +' VALUES (?,?,?)';;
-    let insertResult = await db.queryParam_Arr(insertQuery, 
-            [req.body.cancerNm, req.body.food, req.body.ref_link]);
+    let selectQuery =  'SELECT A.name,A.img,A.title,A.background_color,A.category'
+    + ", CASE A.nutrition1 WHEN '' THEN '미등록' ELSE A.nutrition1 END AS nutrition1"
+    + ',A.nutrition2,A.nutrition3,A.nutrition4,B.cancerNm '
+    + 'FROM food_thumbnail A, cancer_food B '
+    + 'WHERE A.name = B.food '
+    + 'ORDER BY regiDate DESC '
+    + 'LIMIT 20 ' 
+    console.log(selectQuery);
+    let selectResult = await db.queryParam_None(selectQuery);
+    console.log(selectQuery);
     
     
-
-    if (!insertResult) {
+    if (!selectResult) {
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.BOARD_INSERT_FAIL));
     } else { //쿼리문이 성공했을 때
   
-       res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.BOARD_INSERT_SUCCESS));
+       res.status(200).send(defaultRes.successTrue(statusCode.OK, "성공",selectResult));
     }
+});
+
+
+router.get('/detail/:food', async(req, res) => {
+
+    let selectQuery = "SELECT name,status,efficacy,combination,select_tip,care FROM food_detail WHERE name =?  "
+    
+    let selectResult = await db.queryParam_Parse(selectQuery,req.params.food);
+    
+    
+    if (!selectResult) {
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.BOARD_INSERT_FAIL));
+    } else { //쿼리문이 성공했을 때
+  
+       res.status(200).send(defaultRes.successTrue(statusCode.OK, "성공",selectResult));
+    }
+});
+
+router.get('/search', async(req, res) => {
+
+    let keyword = '%'+req.query.keyword+'%';
+    let selectQuery =  'SELECT A.name,A.img,A.title,A.background_color,A.category'
+    + ", CASE A.nutrition1 WHEN '' THEN '미등록' ELSE A.nutrition1 END AS nutrition1"
+    + ',A.nutrition2,A.nutrition3,A.nutrition4,B.cancerNm '
+    + 'FROM food_thumbnail A, cancer_food B '
+    + 'WHERE A.name = B.food AND A.name LIKE ? '
+    + 'ORDER BY A.name '
+    let selectResult = await db.queryParam_Parse(selectQuery,keyword);
+    
+    if (!selectResult) {
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.BOARD_INSERT_FAIL));
+    } else { //쿼리문이 성공했을 때
+  
+       res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.BOARD_INSERT_SUCCESS,selectResult));
+    }
+ 
 });
 router.get('/', (req, res) => {
     res.sendFile(__dirname + '/list.html')
 });
 
+
+/*'SELECT * FROM '
+    + '(SELECT A.name,A.img,A.title,A.category,A.nutrition1,A.nutrition2,A.nutrition3,A.nutrition4 '
+    + 'FROM food_thumbnail A, food_detail B '
+    + 'WHERE A.name = B.name AND A.name LIKE ? '
+    + 'GROUP BY A.name,A.img,A.title,A.category,A.nutrition1,A.nutrition2,A.nutrition3,A.nutrition4) F' //thumbnail+detail
+    + ',cacner_food C '
+    + 'WHERE  F.name = C.food ' */
 
 module.exports = router;

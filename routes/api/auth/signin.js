@@ -34,6 +34,7 @@ router.post('/', async (req, res) => {
 
             let nickname = selectUserResult[0].nickname;
             let relationNm = selectUserResult[0].relationNm;
+            let cancerNm = selectUserResult[0].cancerNm;
 
             if(relationNm=="보호자"){
                 nickname = "("+nickname+")"+"보호자";
@@ -43,7 +44,7 @@ router.post('/', async (req, res) => {
                 res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "refreshtoken DB등록 오류 "));
             } else {
                 res.status(200).send(defaultRes.successTrue(statusCode.OK, "로그인 성공", {
-                    tokens,nickname,relationNm
+                    tokens,nickname,relationNm,cancerNm
                 }));
             }
         } else {

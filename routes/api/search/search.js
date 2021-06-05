@@ -99,7 +99,7 @@ router.get('/total/:keyword', async (req, res) => {
         nutrition = SelectNutResult[0].name;
 
         SelectQuery = 
-            `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${nutrition}' AS nutrition FROM `
+            `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${nutrition}' AS nutrition, 'nutrition' AS flag FROM `
             + "( SELECT A.* FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name "
             +` AND ${nutrition}>0 ORDER BY ${nutrition} DESC ) A`
             +',cancer_food B WHERE A.name =B.food' 
@@ -109,7 +109,7 @@ router.get('/total/:keyword', async (req, res) => {
 
         }else{
             let SelectCancerQuery = 
-            'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
+            "SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 ,'cancer' AS flag "
             + 'FROM food_thumbnail A, cancer_food B '
             + 'WHERE A.name = B.food '
             + 'AND cancerNm = ? '
@@ -117,7 +117,7 @@ router.get('/total/:keyword', async (req, res) => {
             let SelectCancerResult = await db.queryParam_Arr(SelectCancerQuery ,req.params.keyword);
             console.log(SelectCancerResult)
             let SelectFoodQuery = 
-            'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
+            "SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1, 'food'AS flag "
             + 'FROM food_thumbnail A, cancer_food B '
             + 'WHERE A.name = B.food '
             + 'AND name = ?  '

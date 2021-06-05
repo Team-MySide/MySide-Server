@@ -15,7 +15,7 @@ router.post('/', async(req, res) => {
     console.log(req.body)
     let insertQuery =  'INSERT INTO cancer_food '
     +' (cancerNm, food, ref_link, ref_site)'
-    +' VALUES (?,?,?,?)';;
+    +' VALUES (?,?,?,?)';
     let insertResult = await db.queryParam_Arr(insertQuery, 
             [req.body.cancerNm, req.body.food, req.body.ref_link,req.body.ref_site]);
     
