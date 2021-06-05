@@ -11,13 +11,11 @@ const db = require("../../module/pool");
 
 router.get('/all', async(req, res) => {
 
-    let selectQuery =  'SELECT A.name,A.img,A.title,A.background_color,A.category'
-    + ", CASE A.nutrition1 WHEN '' THEN '미등록' ELSE A.nutrition1 END AS nutrition1"
-    + ',A.nutrition2,A.nutrition3,A.nutrition4,B.cancerNm '
-    + 'FROM food_thumbnail A, cancer_food B '
-    + 'WHERE A.name = B.food '
+    let selectQuery =  'SELECT A.name,A.img,A.title,A.background_color FROM food_thumbnail A '
+    + "WHERE (background_color = '') "
+    + "OR (img ='')"
     + 'ORDER BY regiDate DESC '
-    + 'LIMIT 20 ' 
+  
     console.log(selectQuery);
     let selectResult = await db.queryParam_None(selectQuery);
     console.log(selectQuery);
@@ -43,10 +41,10 @@ router.post('/', upload.single('thumbImg'), async(req, res) => {
          insertThumbResult ="";
         if(req.file){ 
             insertThumbResult = await db.queryParam_Arr(insertThumbQuery, 
-                [ req.file.location,req.body.background_color,req.body.food]);
+                [ req.file.location,req.body.color,req.body.food]);
         }else{
             insertThumbResult = await db.queryParam_Arr(insertThumbQuery, 
-                [ req.file.location,req.body.background_color,req.body.food]);
+                [ req.file.location,req.body.color,req.body.food]);
         }
     }else{
              insertThumbQuery =  'UPDATE food_thumbnail '
