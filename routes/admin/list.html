@@ -278,10 +278,41 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
-    <div id ="searchList" class="row"></div>
+    <div id ="searchList" class="row">
+  
+
+        <div  class="col-sm-6">
+            <div class="panel">
+                <div class="panel-body p-t-10">
+                    <div class="media-main">
+                        <a class="pull-left" href="#">
+                            <img class="thumb-lg img-circle bx-s" style ="background-color:#FFF3D9" src="https://mysidebucket.s3.ap-northeast-2.amazonaws.com/02%E1%84%8E%E1%85%A2%E1%84%89%E1%85%A9_%E1%84%83%E1%85%A1%E1%86%BC%E1%84%80%E1%85%B3%E1%86%AB.png" alt="" onerror="src='https://mysidebucket.s3.ap-northeast-2.amazonaws.com/02%E1%84%8E%E1%85%A2%E1%84%89%E1%85%A9_%E1%84%83%E1%85%A1%E1%86%BC%E1%84%80%E1%85%B3%E1%86%AB.png'">
+                        </a>
+                        <div class="pull-right btn-group-sm">
+                            <i class= "tag1">위암</i>
+                            <i class= "tag2">카테고리</i>
+                        </div>
+                        <div class="info">
+                            <h4>음식명</h4>
+                            <p class="text-muted">타이틀</p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                   <a onclick="showNutrition(this)">영양성분</a>
+                   <a>영양성분</a>
+                   <a>영양성분</a>
+                   <a>영양성분</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
 </div>
- 
-<div id="detailModal" class="modal">
+
+<!-- Trigger/Open The Modal -->
+<button id="myBtn">Open Modal</button>
+<div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
 
@@ -303,7 +334,8 @@ $(document).ready(function() {
 
                 console.log(name);
                 // Get the modal
-               var modal = document.getElementById("detailModal");
+               var modal = document.getElementById("myModal");
+                var btn = document.getElementById("myBtn");
                 var span = document.getElementsByClassName("close")[0];
                 modal.style.display = "block";
                 
@@ -361,8 +393,6 @@ $(document).ready(function() {
                 });
             
         }
-
-
 
         
    </script>
