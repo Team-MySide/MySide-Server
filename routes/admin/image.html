@@ -93,7 +93,7 @@ i{
   padding: 20px;
   border: 1px solid #888;
   width: 50%;
-  height: 210px;
+  height: 250px;
   overflow: auto; /* Enable scroll if needed */
 }
 
@@ -178,7 +178,7 @@ $(document).ready(function() {
                                       + `<div class="panel-body p-t-10">`
                                       + ` <div class="media-main">`
                                       + ` <a class="pull-left" href="#">`
-                                      + ` <img class="thumb-lg img-circle bx-s" style ="background-color:#${res.data[i].background_color}"`+`src=${res.data[i].img} `
+                                      + ` <img id ="thumb" class="thumb-lg img-circle bx-s" style ="background-color:#${res.data[i].background_color}"`+`src=${res.data[i].img} `
                                       + `alt="" onerror="src='https://mysidebucket.s3.ap-northeast-2.amazonaws.com/02%E1%84%8E%E1%85%A2%E1%84%89%E1%85%A9_%E1%84%83%E1%85%A1%E1%86%BC%E1%84%80%E1%85%B3%E1%86%AB.png'">`
                                       + `</a>`
                                       + `<div class="pull-right btn-group-sm">`
@@ -240,17 +240,19 @@ $(document).ready(function() {
     <div id ="searchList" class="row"> </div>
 </div>
  
-<form id="detailModal" autocomplete="off"  method="post" role="form" class="modal">
+<form id="detailModal" autocomplete="off" enctype="multipart/form-data" role="form" method="post" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
 
-          <div id ="modal-title"></div>
           <div class="form-group">
-            <input  id="thumbImg" name="thumbImg" tabindex="2"  type="file" />
+                <input  id="food" name="food" tabindex="2"  class="form-control"  type="text" readonly />
             </div>
             <div class="form-group">
                 <input id="color" name="color" type="text" tabindex="3" class="form-control" placeholder="색상코드 : FFFFFF" value="" >
             </div>
+            <div class="form-group">
+                <input  id="thumbImg" name="thumbImg" tabindex="2"  type="file" />
+             </div>
             <div class="form-group">
                     <button type="submit"  id="submit" tabindex="139" class="form-control btn btn-login" onclick="conversion()">등 록</button>
             </div>
@@ -261,37 +263,19 @@ $(document).ready(function() {
   <script>
   
         function clear(){
-            $('#modal-title').text("");
+            $('#food').text("");
             $('#color').text("");
             $('#color').val("");
             $('#thumbImg').text("");
             $('#thumbImg').val("");
         }
 
-        function conversion(){
-            $.ajax({
-                    url: '/admin/image',
-                    contentType: 'multipart/form-data', 
-                    type: 'POST',
-                    data: jQuery("#detailModal").serialize(),   
-                    dataType: 'json',     
-                    mimeType: 'multipart/form-data',
-                    success: function (data) {               
-                        alert( data.url );                
-                    },
-                    error : function (jqXHR, textStatus, errorThrown) {
-                        alert('ERRORS: ' + textStatus);
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-            });    
-        }
-
         function openModal(idx){
             clear();
             let name = $(idx).find('#name').text();
-            $('#modal-title').text(name);
+            let color = $(idx).find('#thumb').css( "background-color" );
+            $('#food').val(name);
+            $('#food').text(name);
                 // Get the modal
                var modal = document.getElementById("detailModal");
                 var span = document.getElementsByClassName("close")[0];

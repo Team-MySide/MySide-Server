@@ -33,24 +33,36 @@ router.get('/all', async(req, res) => {
 
 router.post('/', upload.single('thumbImg'), async(req, res) => {
 
-    console.log(req.body)
-    let insertThumbQuery =  'UPDATE food_thumbnail '
-    +' SET img = ?, background_color = ? '
-    +' WHERE name = ?'
+    let insertThumbQuery ="";
     let insertThumbResult ="";
-    if(req.file){ 
-        insertThumbResult = await db.queryParam_Arr(insertThumbQuery, 
-            [ req.file.location,req.body.background_color,req.body.name]);
+    console.log(req.body);
+    if(req.body.color !=''){
+         insertThumbQuery =  'UPDATE food_thumbnail '
+        +' SET img = ?, background_color = ? '
+        +' WHERE name = ?'
+         insertThumbResult ="";
+        if(req.file){ 
+            insertThumbResult = await db.queryParam_Arr(insertThumbQuery, 
+                [ req.file.location,req.body.background_color,req.body.food]);
+        }else{
+            insertThumbResult = await db.queryParam_Arr(insertThumbQuery, 
+                [ req.file.location,req.body.background_color,req.body.food]);
+        }
     }else{
-        insertThumbResult = await db.queryParam_Arr(insertThumbQuery, 
-            [ req.file.location,req.body.background_color,req.body.name]);
+             insertThumbQuery =  'UPDATE food_thumbnail '
+            +' SET img = ? '
+            +' WHERE name = ?'
+             insertThumbResult ="";
+            if(req.file){ 
+                insertThumbResult = await db.queryParam_Arr(insertThumbQuery, 
+                    [ req.file.location,req.body.food]);
+            }
     }
-
     if (!insertThumbResult) {
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "실패"));
     } else { //쿼리문이 성공했을 때
   
-       res.status(200).send(defaultRes.successTrue(statusCode.OK, "성공"));
+       res.status(200).send(defaultRes.successTrue(statusCode.OK, ""));
     }
   
 });
