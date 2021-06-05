@@ -240,7 +240,7 @@ $(document).ready(function() {
     <div id ="searchList" class="row"> </div>
 </div>
  
-<div id="detailModal" class="modal">
+<form id="detailModal" autocomplete="off"  method="post" role="form" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
 
@@ -252,20 +252,44 @@ $(document).ready(function() {
                 <input id="color" name="color" type="text" tabindex="3" class="form-control" placeholder="색상코드 : FFFFFF" value="" >
             </div>
             <div class="form-group">
-                    <div type="submit"  id="submit" tabindex="139" class="form-control btn btn-login" onclick="conversion()">변 환</div>
+                    <button type="submit"  id="submit" tabindex="139" class="form-control btn btn-login" onclick="conversion()">등 록</button>
             </div>
           
      </div>
- </div>
+ </form>
 
   <script>
   
         function clear(){
             $('#modal-title').text("");
-            $('#modal-title').text("");
+            $('#color').text("");
+            $('#color').val("");
+            $('#thumbImg').text("");
+            $('#thumbImg').val("");
+        }
+
+        function conversion(){
+            $.ajax({
+                    url: '/admin/image',
+                    contentType: 'multipart/form-data', 
+                    type: 'POST',
+                    data: jQuery("#detailModal").serialize(),   
+                    dataType: 'json',     
+                    mimeType: 'multipart/form-data',
+                    success: function (data) {               
+                        alert( data.url );                
+                    },
+                    error : function (jqXHR, textStatus, errorThrown) {
+                        alert('ERRORS: ' + textStatus);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+            });    
         }
 
         function openModal(idx){
+            clear();
             let name = $(idx).find('#name').text();
             $('#modal-title').text(name);
                 // Get the modal
@@ -282,6 +306,8 @@ $(document).ready(function() {
                     }
                 }
         }
+
+        
 
         
    </script>

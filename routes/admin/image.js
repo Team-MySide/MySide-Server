@@ -31,26 +31,31 @@ router.get('/all', async(req, res) => {
     }
 });
 
+router.post('/', upload.single('thumbImg'), async(req, res) => {
 
-router.get('/search', async(req, res) => {
+    console.log(req.body)
+    let insertThumbQuery =  'UPDATE food_thumbnail '
+    +' SET img = ?, background_color = ? '
+    +' WHERE name = ?'
+    let insertThumbResult ="";
+    if(req.file){ 
+        insertThumbResult = await db.queryParam_Arr(insertThumbQuery, 
+            [ req.file.location,req.body.background_color,req.body.name]);
+    }else{
+        insertThumbResult = await db.queryParam_Arr(insertThumbQuery, 
+            [ req.file.location,req.body.background_color,req.body.name]);
+    }
 
-    let keyword = '%'+req.query.keyword+'%';
-    let selectQuery =  'SELECT A.name,A.img,A.title,A.background_color,A.category'
-    + ", CASE A.nutrition1 WHEN '' THEN '미등록' ELSE A.nutrition1 END AS nutrition1"
-    + ',A.nutrition2,A.nutrition3,A.nutrition4,B.cancerNm '
-    + 'FROM food_thumbnail A, cancer_food B '
-    + 'WHERE A.name = B.food AND A.name LIKE ? '
-    + 'ORDER BY A.name '
-    let selectResult = await db.queryParam_Parse(selectQuery,keyword);
-    
-    if (!selectResult) {
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.BOARD_INSERT_FAIL));
+    if (!insertThumbResult) {
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, "실패"));
     } else { //쿼리문이 성공했을 때
   
-       res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.BOARD_INSERT_SUCCESS,selectResult));
+       res.status(200).send(defaultRes.successTrue(statusCode.OK, "성공"));
     }
- 
+  
 });
+
+
 router.get('/', (req, res) => {
     res.sendFile(__dirname + '/image.html')
 });
