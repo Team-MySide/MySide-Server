@@ -13,6 +13,7 @@ router.use('/detail', require('./detail.js'));
 router.use('/cancer_food', require('./cancerFood.js'));
 router.use('/list', require('./list.js'));
 router.use('/faq', require('./faq.js'));
+router.use('/image', require('./image.js'));
 
 
 module.exports = router;

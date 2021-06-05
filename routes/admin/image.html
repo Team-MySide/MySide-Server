@@ -146,59 +146,6 @@ $(document).ready(function() {
     alert(bbsreplll);
  }
 
- function Search(){
-    
-    let keyword ="";
-    keyword = $('#keyword').val();
-    $.ajax({
-        method: "GET", // 요청 방식
-        url: "/admin/list/search?keyword="+ keyword,
-        success: function (res) { // 성공 시 호출 콜백
-            console.log(res);
-            $('#searchList').empty();
-            for (var i = 0; i < res.data.length; i++) {
-                            var tag = ` <div  class="col-sm-6" onclick="openModal(this)">`
-                                      + ` <div class="panel">`
-                                      + `<div class="panel-body p-t-10">`
-                                      + ` <div class="media-main">`
-                                      + ` <a class="pull-left" href="#">`
-                                      + ` <img class="thumb-lg img-circle bx-s" style ="background-color:#${res.data[i].background_color}"`+`src=${res.data[i].img} `
-                                      + `alt="" onerror="src='https://mysidebucket.s3.ap-northeast-2.amazonaws.com/02%E1%84%8E%E1%85%A2%E1%84%89%E1%85%A9_%E1%84%83%E1%85%A1%E1%86%BC%E1%84%80%E1%85%B3%E1%86%AB.png'">`
-                                      + `</a>`
-                                      + `<div class="pull-right btn-group-sm">`
-                                      + `  <i class= "tag1">${res.data[i].cancerNm}</i>`
-                                      + `  <i class= "tag2">${res.data[i].category}</i>`
-                                      + `</div>`
-                                     + ` <div class="info">`
-                                      + `    <h4 id="name">${res.data[i].name}</h4>`
-                                      + `    <p class="text-muted" style = "font-size:9px;">${res.data[i].title}</p>`
-                                      + `</div>`
-                                      + ` </div>`
-                                      + ` <div class="clearfix"></div>`
-                                      + ` <hr>`
-                                      + ` <a>${res.data[i].nutrition1}</a>`
-                                      + ` <a>${res.data[i].nutrition2}</a>`
-                                      + ` <a>${res.data[i].nutrition3}</a>`
-                                      +  ` <a>${res.data[i].nutrition4}</a>`
-                                      + `</div>`
-                                      + ` </div>`
-                                      + ` </div>`
-                            var $li = (`${tag}`);
-                            $('#searchList').append($li);//jQuery 문법
-
-             }
-        },
-        error: function (data) {
-            console.log("failed");
-        },
-        complete: function () {
-            console.log('compelted');
-        }
-
-    });
-       
-  }
-
   function init(){
     
     $.ajax({
@@ -217,8 +164,6 @@ $(document).ready(function() {
                                       + `alt="" onerror="src='https://mysidebucket.s3.ap-northeast-2.amazonaws.com/02%E1%84%8E%E1%85%A2%E1%84%89%E1%85%A9_%E1%84%83%E1%85%A1%E1%86%BC%E1%84%80%E1%85%B3%E1%86%AB.png'">`
                                       + `</a>`
                                       + `<div class="pull-right btn-group-sm">`
-                                      + `  <i class= "tag1">${res.data[i].cancerNm}</i>`
-                                      + `  <i class= "tag2">${res.data[i].category}</i>`
                                       + `</div>`
                                      + ` <div class="info">`
                                       + `    <h4 id="name">${res.data[i].name}</h4>`
@@ -227,10 +172,6 @@ $(document).ready(function() {
                                       + ` </div>`
                                       + ` <div class="clearfix"></div>`
                                       + ` <hr>`
-                                      + ` <a>${res.data[i].nutrition1}</a>`
-                                      + ` <a>${res.data[i].nutrition2}</a>`
-                                      + ` <a>${res.data[i].nutrition3}</a>`
-                                      +  ` <a>${res.data[i].nutrition4}</a>`
                                       + `</div>`
                                        + ` </div>`
                                         + ` </div>`
@@ -280,33 +221,6 @@ $(document).ready(function() {
     </div>
     <div id ="searchList" class="row">
   
-
-        <div  class="col-sm-6">
-            <div class="panel">
-                <div class="panel-body p-t-10">
-                    <div class="media-main">
-                        <a class="pull-left" href="#">
-                            <img class="thumb-lg img-circle bx-s" style ="background-color:#FFF3D9" src="https://mysidebucket.s3.ap-northeast-2.amazonaws.com/02%E1%84%8E%E1%85%A2%E1%84%89%E1%85%A9_%E1%84%83%E1%85%A1%E1%86%BC%E1%84%80%E1%85%B3%E1%86%AB.png" alt="" onerror="src='https://mysidebucket.s3.ap-northeast-2.amazonaws.com/02%E1%84%8E%E1%85%A2%E1%84%89%E1%85%A9_%E1%84%83%E1%85%A1%E1%86%BC%E1%84%80%E1%85%B3%E1%86%AB.png'">
-                        </a>
-                        <div class="pull-right btn-group-sm">
-                            <i class= "tag1">위암</i>
-                            <i class= "tag2">카테고리</i>
-                        </div>
-                        <div class="info">
-                            <h4>음식명</h4>
-                            <p class="text-muted">타이틀</p>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <hr>
-                   <a onclick="showNutrition(this)">영양성분</a>
-                   <a>영양성분</a>
-                   <a>영양성분</a>
-                   <a>영양성분</a>
-                </div>
-            </div>
-        </div>
-        
     </div>
 </div>
  
