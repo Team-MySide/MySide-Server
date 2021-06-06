@@ -120,8 +120,11 @@ module.exports = {
 
   FIND_PASSWORD_SUCCESS : "비밀번호 찾기 성공",
   FIND_PASSWORD_FAIL : "비밀번호 찾기 실패",
+  CHANGE_PASSWORD_SUCCESS : "비밀번호 변경 성공",
+  INCORRECT_PASSWORD : "비밀번호 틀림",
 
   LIKE_SELECT_SUCCESS : "좋아요 목록 조회 성공",
 
   LEAVE_ACCOUNT_SUCCESS : "회원 탈퇴 성공",
+
 };

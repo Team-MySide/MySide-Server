@@ -111,37 +111,39 @@ router.put('/changepb', authUtil.isLoggedin, async (req, res) => {
 
 
 /* 비밀번호 변경 */
-router.put('/changepwd', authUtil.isLoggedin, async (req, res) => {
+router.put('/change/password', authUtil.isLoggedin, async (req, res) => {
 
-    id = req.decoded.id;
-    password = req.body.password
-    newpassword = req.body.newpassword
+    id = req.decoded.id; //토큰
+    password = req.body.password //기존 비밀번호
+    newpassword = req.body.newpassword //새로운 비밀번호
     const selectUserQuery = 'SELECT * FROM user WHERE user_id = ?'
     const selectUserResult = await db.queryParam_Parse(selectUserQuery, [req.decoded.id]);
-
     const salt = selectUserResult[0].salt;
     const hashedEnterPw = await crypto.pbkdf2(password, salt, 1000, 32, 'SHA512')
     const dbPw = selectUserResult[0].password
 
-    if (hashedEnterPw.toString('base64') == dbPw) {
-        const signupQuery = 'UPDATE user SET password = ? WHERE user_id = ?'
-        const buf = await crypto.randomBytes(64);
-        const salt = buf.toString('base64');
-        const hashedPw = await crypto.pbkdf2(newpassword, salt, 1000, 32, 'SHA512')
-        const signupResult = await db.queryParam_Arr(signupQuery, [hashedPw.toString('base64'),req.decoded.id])
-        console.log(newpassword)
-        console.log(signupResult)
-        if(!signupResult){
+    if (hashedEnterPw.toString('base64') == dbPw) {  // 입력한 비밀번호 True 
+
+        const salt1 = selectUserResult[0].salt; // salt 업데이트
+
+        const hashPassword = await crypto.pbkdf2(newpassword, salt1, 1000, 32, 'SHA512')//새로운 비밀번호
+        const PassNew = hashPassword.toString('base64') //새로운 비밀번호
+  
+        const changePasswordQuery = "UPDATE user SET password = ? WHERE user_id = ?";
+        const changePasswordResult = await db.queryParam_Parse(changePasswordQuery, [PassNew, id]);
+  
+        if(!changePasswordResult){
             res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
         else{
-            res.status(200).send(defaultRes.successTrue(statusCode.DB_ERROR, "성공"));
+            res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.CHANGE_PASSWORD_SUCCESS));
 
         }
-    } else {
-        res.status(200).send(defaultRes.successFalse(statusCode.OK, "비밀번호 일치하지 않음"));
+    } else { // 입력 비밀번호 False
+        res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.INCORRECT_PASSWORD));
     }
 });
+
 
 
 module.exports = router;
