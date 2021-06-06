@@ -123,4 +123,5 @@ module.exports = {
 
   LIKE_SELECT_SUCCESS : "좋아요 목록 조회 성공",
 
+  LEAVE_ACCOUNT_SUCCESS : "회원 탈퇴 성공",
 };
