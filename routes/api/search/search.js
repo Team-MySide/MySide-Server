@@ -29,13 +29,18 @@ router.get('/cancer/:cancer',async (req, res) => {
     'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
     + 'FROM food_thumbnail A, cancer_food B '
     + 'WHERE A.name = B.food '
-    + 'AND nutrition IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? ) '
-    let SelectResult = await db.queryParam_Arr(SelectQuery,req.params.cancer);
+    + 'AND (nutrition1 IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? ) '
+    + 'OR nutrition2 IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? ) '
+    + 'OR nutrition3 IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? ) '
+    + 'OR nutrition4 IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? )) '
+
+    console.log(SelectQuery);
+    let SelectResult = await db.queryParam_Arr(SelectQuery,[req.params.cancer,req.params.cancer,req.params.cancer,req.params.cancer]);
 
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "좋은 성분이 풍부한 음식 조회 성공", SelectRankResult));    
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "좋은 성분이 풍부한 음식 조회 성공", SelectResult));    
     }
 });
 
