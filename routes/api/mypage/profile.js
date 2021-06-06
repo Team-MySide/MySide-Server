@@ -16,7 +16,7 @@ const jwtUtils = require('../../../module/jwt');
 /* (3) 휴대폰번호 수정 */
 /* (3-1) 비밀번호 확인 */
 /* (3-2) 휴대폰번호 변경 */
-
+/* (new) 비밀번호 변경 */
 
 //프로필 조회
 // router.get('/profile', authUtil.isLoggedin, async (req, res) => {
@@ -107,4 +107,41 @@ router.put('/changepb', authUtil.isLoggedin, async (req, res) => {
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "휴대폰 번호 수정 성공"));      // 프로필 수정 성공
     }
 });
+
+
+
+/* 비밀번호 변경 */
+router.put('/changepwd', authUtil.isLoggedin, async (req, res) => {
+
+    id = req.decoded.id;
+    password = req.body.password
+    newpassword = req.body.newpassword
+    const selectUserQuery = 'SELECT * FROM user WHERE user_id = ?'
+    const selectUserResult = await db.queryParam_Parse(selectUserQuery, [req.decoded.id]);
+
+    const salt = selectUserResult[0].salt;
+    const hashedEnterPw = await crypto.pbkdf2(password, salt, 1000, 32, 'SHA512')
+    const dbPw = selectUserResult[0].password
+
+    if (hashedEnterPw.toString('base64') == dbPw) {
+        const signupQuery = 'UPDATE user SET password = ? WHERE user_id = ?'
+        const buf = await crypto.randomBytes(64);
+        const salt = buf.toString('base64');
+        const hashedPw = await crypto.pbkdf2(newpassword, salt, 1000, 32, 'SHA512')
+        const signupResult = await db.queryParam_Arr(signupQuery, [hashedPw.toString('base64'),req.decoded.id])
+        console.log(newpassword)
+        console.log(signupResult)
+        if(!signupResult){
+            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+        else{
+            res.status(200).send(defaultRes.successTrue(statusCode.DB_ERROR, "성공"));
+
+        }
+    } else {
+        res.status(200).send(defaultRes.successFalse(statusCode.OK, "비밀번호 일치하지 않음"));
+    }
+});
+
+
 module.exports = router;
