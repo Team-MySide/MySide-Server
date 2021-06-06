@@ -187,4 +187,11 @@ router.get('/recently', authUtil.isLoggedin,async (req, res) => {
     }
 });
 
+router.get('/popular', async (req, res) => {
+
+         resData =["토마토", "비타민 C", "당근", "위암"]
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "인기검색어 조회 성공", resData));      // 마이페이지  조회 성공
+
+});
+
 module.exports = router;
