@@ -24,28 +24,7 @@ router.get('/', async(req, res) => {
             res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.FAQ_SUCCESS, checkfaqResult));
         }
     }
-})
-
-router.get('/leave/:leave_reason', authUtil.isLoggedin, async(req, res) => {
-    const LeaveResonQuery = "INSERT INTO myside.leave(email, leave_reason) VALUES((SELECT email FROM user WHERE user_id=?),?) "
-    const LeaveReasonResult = await db.queryParam_Arr(LeaveResonQuery, [req.decoded.id, req.params.leave_reason]);
-
-    if(!LeaveReasonResult){
-        res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));
-    }
-    else {
-        const LeaveAccountQuery = "DELETE FROM user WHERE user_id = ?"
-        const LeaveAccountResult = await db.queryParam_Arr(LeaveAccountQuery, [req.decoded.id]);
-
-        if (!LeaveAccountResult){
-            res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));
-        }
-        else {
-            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.LEAVE_ACCOUNT_SUCCESS,LeaveAccountResult));
-    }
-}})
-
-
+});
 
 
 
