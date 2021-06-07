@@ -116,9 +116,10 @@ router.get('/:RegiDate', authUtil.isLoggedin, async(req, res) => {
 })
  
 //5. health_id로 상세정보 넘겨서 건강데이터 추가입력에 사용하게 만들기
-router.get('/:health_id', authUtil.isLoggedin, async(req, res) => {
-    const checkuserQurey = "SELECT DATE_FORMAT(RegiDate, '%Y.%m.%d') AS RegiDate, relationNm, gender, age, height, weight, cancerNm, stageNm, progressNm, disease, memo from user_health WHERE health_id = ?";
-    const checkuserResult = await db.queryParam_Parse(checkuserQurey, [req.params.health_id])
+router.get('/list/:health_id', authUtil.isLoggedin, async(req, res) => {
+    const checkuserQurey = "SELECT DATE_FORMAT(RegiDate, '%Y.%m.%d') AS RegiDate, relationNm, gender, age, height, weight, cancerNm, stageNm, progressNm, disease, memo from user_health WHERE user_id = ? AND health_id = ?";
+    const checkuserResult = await db.queryParam_Parse(checkuserQurey, [req.decoded.id, req.params.health_id])
+    console.log(checkuserResult)
     if (!checkuserResult) { //DB에러
         res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
     }
