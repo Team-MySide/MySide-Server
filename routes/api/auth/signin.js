@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
 
     if (selectUserResult[0] == null) {
         // 아이디가 존재하지 않으면
-        res.status(200).send(defaultRes.successFalse(statusCode.OK, resMessage.ID_NO));
+        res.status(200).send(defaultRes.successFalse(statusCode.OK, "아이디가 존재하지 않습니다."));
     } else {
         const salt = selectUserResult[0].salt;
         const hashedEnterPw = await crypto.pbkdf2(password, salt, 1000, 32, 'SHA512')
