@@ -194,8 +194,15 @@ router.get('/recently', authUtil.isLoggedin,async (req, res) => {
 
 router.get('/popular', async (req, res) => {
 
-         resData =["토마토", "비타민 C", "당근", "위암"]
+         resData =["토마토", "비타민C", "당근", "위암"]
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "인기검색어 조회 성공", resData));      // 마이페이지  조회 성공
+
+});
+
+router.get('/suggest/keyword', async (req, res) => {
+
+    resData =["비타민C", "베타카로틴", "마그네슘", "타우린", "비타민D"]
+   res.status(200).send(defaultRes.successTrue(statusCode.OK, "인기검색어 조회 성공", resData));      // 마이페이지  조회 성공
 
 });
 
