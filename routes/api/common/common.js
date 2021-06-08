@@ -11,18 +11,15 @@ const db = require('../../../module/pool');
 
 
 //자동완성 
-router.get('/food',async (req, res) => {
-    const SelectQuery = 'SELECT food_id,name FROM food_thumbnail'; 
-    const SelectResult = await db.queryParam_None(SelectQuery);
+router.get('/user/info',authUtil.isLoggedin,async (req, res) => {
+    const SelectQuery = 'SELECT user_id,name,email,relationNm,nickname,cancerNm FROM user WHERE user_id = ?'; 
+    const SelectResult = await db.queryParam_Parse(SelectQuery,req.decoded.id);
     resData =[];
 
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
     }else{
-        for(let i= 0;i<SelectResult.length;i++){
-            resData.push(SelectResult[i].name);
-        }
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 전체 조회 성공", resData));      
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "유저 정보 조회", SelectResult));      
     }
 });
 
