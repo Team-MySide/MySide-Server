@@ -135,9 +135,9 @@ router.get('/list/:health_id', authUtil.isLoggedin, async(req, res) => {
     }
 })
 
-router.get('/list/detail', authUtil.isLoggedin, async(req, res) => {
+router.get('/list/detail/info', authUtil.isLoggedin, async(req, res) => {
     const checkuserQurey = "SELECT relationNm, gender, age, height, weight, cancerNm, stageNm, progressNm, disease from user WHERE user_id = ?";
-    const checkuserResult = await db.queryParam_Parse(checkuserQurey, req.decoded.id)
+    const checkuserResult = await db.queryParam_Parse(checkuserQurey, req.decoded.id);
 
     if (!checkuserResult) { //DB에러
         res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
