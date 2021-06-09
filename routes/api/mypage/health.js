@@ -85,6 +85,8 @@ router.post('/insert', authUtil.isLoggedin, async(req, res) => {
             const listInsertQuery = "INSERT INTO user_health (user_id,RegiDate,relationNm,gender,age,height,weight,stageNm,progressNm,cancerNm,disease,memo) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)"
             const listInsertResult = await db.queryParam_Parse(listInsertQuery, [req.decoded.id,req.body.RegiDate,req.body.relationNm,req.body.gender,req.body.age,req.body.height,req.body.weight,req.body.stageNm
                 ,req.body.progressNm,req.body.cancerNm,req.body.disease,req.body.memo]);
+            const listUpdateQuery = "UPDATE user SET  relationNm = ?, gender = ?, age = ?, height = ?, weight = ?, cancerNm = ?, stageNm = ?, progressNm = ?, disease = ? WHERE user_id = ?";
+            const listUpdateResult = await db.queryParam_Parse(listUpdateQuery, [req.body.relationNm, req.body.gender, req.body.age, req.body.height, req.body.weight, req.body.cancerNm, req.body.stageNm, req.body.progressNm, req.body.disease, req.decoded.id]);
             if(!listInsertResult){
                 res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
             }
@@ -133,5 +135,20 @@ router.get('/list/:health_id', authUtil.isLoggedin, async(req, res) => {
     }
 })
 
+router.get('/detail/list', authUtil.isLoggedin, async(req, res) => {
+    const checkuserQurey = "SELECT relationNm, gender, age, height, weight, cancerNm, stageNm, progressNm, disease from user WHERE user_id = ?";
+    const checkuserResult = await db.queryParam_Parse(checkuserQurey, req.decoded.id)
 
+    if (!checkuserResult) { //DB에러
+        res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
+    }
+    else {//데이터베이스 연결 성공 => 데이터 존재할 때, 존재 안 할 때 구분
+        if(checkuserResult[0]==null){
+            res.status(200).send(defaultRes.successFalse(statuscode.OK, resMessage.HEALTHLIST_SELECT_NULL));
+        }
+        else{
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT, checkuserResult));
+        }
+    }
+})
 module.exports = router;
