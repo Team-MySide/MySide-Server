@@ -13,6 +13,7 @@ router.get('/cancer/:cancer',async (req, res) => {
         'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
         + 'FROM food_thumbnail A, cancer_food B '
         + 'WHERE A.name = B.food '
+        + "AND A.img !=''"
         + 'AND cancerNm = ? '
     
         let SelectResult = await db.queryParam_Arr(SelectQuery,req.params.cancer);
@@ -33,6 +34,7 @@ router.get('/cancer/:cancer',async (req, res) => {
     + 'OR nutrition2 IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? ) '
     + 'OR nutrition3 IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? ) '
     + 'OR nutrition4 IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? )) '
+    
 
     console.log(SelectQuery);
     let SelectResult = await db.queryParam_Arr(SelectQuery,[req.params.cancer,req.params.cancer,req.params.cancer,req.params.cancer]);
@@ -49,8 +51,9 @@ router.get('/food/:category/:tabIdx',async (req, res) => {
     let SelectRankQuery;
     let SelectQuery = 
     'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
-    + 'FROM food_thumbnail A, cancer_food B '
+    + 'FROM food_thumbnail A, , (SELECT food,cancerNm FROM cancer_food GROUP BY food)B '
     + 'WHERE A.name = B.food '
+    + "AND A.img !=''"
     + 'AND category = ? '
     if(req.params.tabIdx == 0){//좋아요
        SelectRankQuery = SelectQuery + 'ORDER BY likes '
@@ -73,14 +76,16 @@ router.get('/food/:keyword',async (req, res) => {
 
     let SelectQuery = 
     'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
-    + 'FROM food_thumbnail A, cancer_food B '
+    + 'FROM food_thumbnail A, (SELECT food,cancerNm FROM cancer_food GROUP BY food)B '
     + 'WHERE A.name = B.food '
+    + "AND A.img !=''"
     + 'AND name LIKE ? '
    
     let likeKeyword = "%" +req.params.keyword +"%"
-  
+     
     let SelectResult = await db.queryParam_Arr(SelectQuery,likeKeyword);
-
+  
+    console.log(SelectQuery);
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
     }else{
@@ -156,10 +161,11 @@ router.get('/nutrition/:keyword', async (req, res) => {
     let nutrition = SelectNutResult[0].name;
 
     const SelectQuery = 
-    `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${nutrition}' AS nutrition FROM `
-    + "( SELECT A.* FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name "
-    +` AND ${nutrition}>0 ORDER BY ${nutrition} DESC ) A`
-    +',cancer_food B WHERE A.name =B.food' 
+    `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${req.params.keyword}' AS nutrition,${nutrition} AS num FROM `
+    +`( SELECT A.*,${nutrition} FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name `
+    +` AND ${nutrition}>0 AND A.img !='' GROUP BY A.name  ) A`
+    +',(SELECT food,cancerNm FROM cancer_food GROUP BY food)B  WHERE A.name =B.food ' 
+    +` ORDER BY ${nutrition} DESC`
 
     console.log(SelectQuery)
 
@@ -182,7 +188,7 @@ router.get('/recently', authUtil.isLoggedin,async (req, res) => {
 
  
     if(!SelectResult){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 마이페이지  조회 실패
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     
     }else{
         let resData= [];
         for(let i = 0;i<SelectResult.length;i++){

@@ -29,7 +29,7 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         const UpdateViewsQuery = 'UPDATE food_thumbnail SET views + 1 WHERE food = ?' 
         const UpdateViewsResult = await db.queryParam_Arr(UpdateViewsQuery, [req.params.food]);
          
-        const SelectQuery1 = 'SELECT food_id, name,title,img,category,wishes,views,likes,nutrition1,nutrition2,nutrition3,nutrition4 FROM food_thumbnail WHERE name = ?'; 
+        const SelectQuery1 = 'SELECT food_id, background_color,name,title,img,category,wishes,views,likes,nutrition1,nutrition2,nutrition3,nutrition4 FROM food_thumbnail WHERE name = ?'; 
         const SelectResult1 = await db.queryParam_Arr(SelectQuery1, [req.params.food]);
         const SelectQuery2 = 'SELECT cancerNm from cancer_food WHERE food = ?'; 
         const SelectResult2 = await db.queryParam_Arr(SelectQuery2, [req.params.food]);
@@ -41,6 +41,7 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         resData.likes =SelectResult1[0].likes;
         resData.views =SelectResult1[0].views;
         resData.wishes =SelectResult1[0].wishes;
+        resData.Color = SelectResult1[0].background_color;
     
         for(let i =0;i<SelectResult2.length;i++){
             resData.cancer.push(SelectResult2[i].cancerNm);
@@ -73,7 +74,7 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 상세 헤더 조회 성공", resData));      
     }catch(error){
       console.log(error);
-      res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
+      res.status(500).send(defaultRes.successFalse(500, resMessage.DB_ERROR));
     }
    
 });
