@@ -29,7 +29,7 @@ router.get('/:email/:name', async (req, res) => {
       }
       const password = Math.random().toString(36).slice(2); // 랜덤 임시비밀번호 난수 생성
       const newpassword = password + result; // 기존 임시비밀번호 + 임의 숫자 + 랜덤특수문자 2개
-      
+
       const salt = userInfoResult[0].salt; // salt 업데이트
 
       const hashPassword = await crypto.pbkdf2(newpassword, salt, 1000, 32, 'SHA512')
@@ -59,7 +59,7 @@ router.get('/:email/:name', async (req, res) => {
           console.log(error);
           res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.FIND_PASSWORD_FAIL));      // 올바르지 않은 정보 입니다
         } else {
-          res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.FIND_PASSWORD_SUCCESS, changePasswordResult));      // 아이디 찾기 성공 
+          res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.FIND_PASSWORD_SUCCESS));      // 아이디 찾기 성공 
         }
         smtpTransport.close();
       });
