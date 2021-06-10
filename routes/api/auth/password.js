@@ -20,10 +20,19 @@ router.get('/:email/:name', async (req, res) => {
     res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR)); 
   }
   else {//True --> 임시비밀번호 랜덤으로 생성하여 발송 && 암호화하여 디비 저장
+      var ar = "!@#$%^&*()_-+=~" //특수문자 문자열
+      var ac = "0123456789" //숫자가 안들어가는 경우가 있기에 임의로 숫자 추가
+      var result = ac.charAt(Math.floor(Math.random()*ac.length)); //숫자추가
+      for(var i = 0; i <2; i++){ //랜덤한 특수문자열 2개 추가
+        result += ar.charAt(Math.floor(Math.random()*ar.length))
+        
+      }
       const password = Math.random().toString(36).slice(2); // 랜덤 임시비밀번호 난수 생성
+      const newpassword = password + result; // 기존 임시비밀번호 + 임의 숫자 + 랜덤특수문자 2개
+      
       const salt = userInfoResult[0].salt; // salt 업데이트
 
-      const hashPassword = await crypto.pbkdf2(password, salt, 1000, 32, 'SHA512')
+      const hashPassword = await crypto.pbkdf2(newpassword, salt, 1000, 32, 'SHA512')
       const tempPWD = hashPassword.toString('base64') //임시비밀번호 암호화
 
       const changePasswordQuery = "UPDATE user SET password = ? WHERE name = ? AND email = ?";
@@ -42,7 +51,7 @@ router.get('/:email/:name', async (req, res) => {
         from: senderInfo.user,
         to: req.params.email,
         subject: '안녕하세요. 이웃집닥터입니다.',
-        text: "임시 비밀번호 : " + password
+        text: "임시 비밀번호 : " + newpassword
       };
 
       await smtpTransport.sendMail(mailOptions, (error, responses) => {
