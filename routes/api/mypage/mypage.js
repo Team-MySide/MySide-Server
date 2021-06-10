@@ -126,7 +126,7 @@ router.get('/leave/:leave_reason', authUtil.isLoggedin, async(req, res) => {
             res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
         else {
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.LEAVE_ACCOUNT_SUCCESS,LeaveAccountResult));
+            res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.LEAVE_ACCOUNT_SUCCESS));
     }
 }})
 
