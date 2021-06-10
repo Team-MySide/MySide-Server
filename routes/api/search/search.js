@@ -51,7 +51,7 @@ router.get('/food/:category/:tabIdx',async (req, res) => {
     let SelectRankQuery;
     let SelectQuery = 
     'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
-    + 'FROM food_thumbnail A, , (SELECT food,cancerNm FROM cancer_food GROUP BY food)B '
+    + 'FROM food_thumbnail A, (SELECT food,cancerNm FROM cancer_food GROUP BY food)B '
     + 'WHERE A.name = B.food '
     + "AND A.img !=''"
     + 'AND category = ? '
@@ -161,11 +161,20 @@ router.get('/nutrition/:keyword', async (req, res) => {
     let nutrition = SelectNutResult[0].name;
 
     const SelectQuery = 
+    `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${req.params.keyword}' AS nutrition FROM `
+    +`( SELECT A.*,${nutrition} FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name `
+    +` AND ${nutrition}>0 AND A.img !='' GROUP BY A.name  ) A`
+    +',(SELECT food,cancerNm FROM cancer_food GROUP BY food)B  WHERE A.name =B.food ' 
+   
+
+    /*
+const SelectQuery = 
     `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${req.params.keyword}' AS nutrition,${nutrition} AS num FROM `
     +`( SELECT A.*,${nutrition} FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name `
     +` AND ${nutrition}>0 AND A.img !='' GROUP BY A.name  ) A`
     +',(SELECT food,cancerNm FROM cancer_food GROUP BY food)B  WHERE A.name =B.food ' 
     +` ORDER BY ${nutrition} DESC`
+    */
 
     console.log(SelectQuery)
 
