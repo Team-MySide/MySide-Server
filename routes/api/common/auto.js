@@ -12,7 +12,7 @@ const db = require('../../../module/pool');
 
 //자동완성 
 router.get('/food',async (req, res) => {
-    const SelectQuery = 'SELECT food_id,name FROM food_thumbnail'; 
+    const SelectQuery = "SELECT food_id,name FROM food_thumbnail WHERE img !=''"; 
     const SelectResult = await db.queryParam_None(SelectQuery);
     resData =[];
 
@@ -67,7 +67,7 @@ router.get('/total',async (req, res) => {
 
     const SelectQuery1 = "SELECT nutrition_id,name,name_kr, 'nutrition' AS flag FROM nutrition"; 
     const SelectResult1 = await db.queryParam_None(SelectQuery1);
-    const SelectQuery2 = "SELECT food_id,name, 'food' AS flag FROM food_thumbnail"; 
+    const SelectQuery2 = "SELECT food_id,name, 'food' AS flag FROM food_thumbnail WHERE img !=''"; 
     const SelectResult2 = await db.queryParam_None(SelectQuery2);
     const SelectQuery3 = "SELECT cancer_id,name,'cancer' AS flag FROM cancer"; 
     const SelectResult3 = await db.queryParam_None(SelectQuery3);
