@@ -305,7 +305,6 @@ router.get('/percent/:food/:status', async (req, res) => {
     +	`	union all	select	Discard_rate	* 	0	as g	,	'Discard_rate'	as nutname	,	'폐기율'	as nutnamekr	,	'기타'	as category	from	food_detail	where	name = '${food}'	AND	status = '${status}'	`
     +   'ORDER BY g DESC '
     +   'LIMIT 4';
-     console.log(SelectQuery);
     const SelectResult = await db.queryParam_None(SelectQuery);
 
  

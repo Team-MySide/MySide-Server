@@ -16,10 +16,10 @@ router.put('/', authUtil.isLoggedin,async (req, res) => {
 
     if(req.body.status==1){ // 좋아요 O
         WishQuery = 'INSERT INTO likelist (user_id,food) VALUES (?, ?)'; 
-        UpdateWishQuery = 'UPDATE food_thumbnail SET likes + 1 WHERE food = ?'
+        UpdateWishQuery = 'UPDATE food_thumbnail SET likes + 1 WHERE name = ?'
     } else{ // 좋아요 X
         WishQuery = 'DELETE FROM likelist WHERE user_id =? AND food =?'
-        UpdateWishQuery = 'UPDATE food_thumbnail SET likes -1 WHERE food = ?'
+        UpdateWishQuery = 'UPDATE food_thumbnail SET likes -1 WHERE name = ?'
     } 
     
     const WishResult = await db.queryParam_Arr(WishQuery, [req.decoded.id,req.body.food]);

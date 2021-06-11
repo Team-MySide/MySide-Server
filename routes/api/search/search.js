@@ -160,21 +160,14 @@ router.get('/nutrition/:keyword', async (req, res) => {
     console.log(SelectNutResult)
     let nutrition = SelectNutResult[0].name;
 
-    const SelectQuery = 
-    `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${req.params.keyword}' AS nutrition FROM `
-    +`( SELECT A.*,${nutrition} FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name `
-    +` AND ${nutrition}>0 AND A.img !='' GROUP BY A.name  ) A`
-    +',(SELECT food,cancerNm FROM cancer_food GROUP BY food)B  WHERE A.name =B.food ' 
-   
 
-    /*
-const SelectQuery = 
+    const SelectQuery = 
     `SELECT A.food_id,name,img,category,background_color,foreground_color,wishes,likes,B.cancerNm, '${req.params.keyword}' AS nutrition,${nutrition} AS num FROM `
     +`( SELECT A.*,${nutrition} FROM myside.food_thumbnail A , myside.food_detail B  WHERE A.name = B.name `
     +` AND ${nutrition}>0 AND A.img !='' GROUP BY A.name  ) A`
     +',(SELECT food,cancerNm FROM cancer_food GROUP BY food)B  WHERE A.name =B.food ' 
     +` ORDER BY ${nutrition} DESC`
-    */
+   
 
     console.log(SelectQuery)
 
