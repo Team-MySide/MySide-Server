@@ -15,6 +15,7 @@ router.get('/', authUtil.isLoggedin, async (req, res) => {
     const MypageSelectQuery = 'SELECT nickname,name,stageNm,progressNm,cancerNm,disease FROM user WHERE user_id = ?'; 
     const MypageSelectResult = await db.queryParam_Arr(MypageSelectQuery, [req.decoded.id]);
 
+    console.log("a");
     console.log(req.decoded);
     console.log(MypageSelectResult);
     if(!MypageSelectQuery){
@@ -112,6 +113,7 @@ router.get('/', authUtil.isLoggedin, async (req, res) => {
 
 //탈퇴
 router.get('/leave/:leave_reason', authUtil.isLoggedin, async(req, res) => {
+    console.log(req);
     const LeaveResonQuery = "INSERT INTO myside.leave(email, leave_reason) VALUES((SELECT email FROM user WHERE user_id=?),?) "
     const LeaveReasonResult = await db.queryParam_Arr(LeaveResonQuery, [req.decoded.id, req.params.leave_reason]);
 
@@ -131,4 +133,11 @@ router.get('/leave/:leave_reason', authUtil.isLoggedin, async(req, res) => {
 }})
 
 
+router.get('/leave/a/:leave_reason', authUtil.isLoggedin, async (req, res) => {
+
+
+    console.log(req.decoded);
+
+    
+});
 module.exports = router;

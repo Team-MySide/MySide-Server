@@ -96,15 +96,25 @@ router.get('/status/:food', async (req, res) => {
 });
 
 router.get('/configuration/:food', async (req, res) => {
+    
+    for(let i=0;i<100;i++){
+        var idx = Math.floor(Math.random()*4);
+        console.log(idx);
+    }
+    
+       
+    
+    
 
+  
 
     let resData = {
-        good: 10,
+        good: 9,
         goodMax : 120,
-        bad: 2,
+        bad: 1,
         badMax : 120,
         function: 10,
-        functionMax : 120,
+        functionMax : 80,
         etc:110,
         etcMax : 120
     };

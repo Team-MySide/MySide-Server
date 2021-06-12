@@ -93,6 +93,7 @@ router.get('/cancer/rank/:cancer/:tabIdx',async (req, res) => {
     + 'FROM food_thumbnail A, cancer_food B '
     + 'WHERE A.name = B.food '
     + 'AND cancerNm = ? '
+    + "AND A.img !=''"
     if(req.params.tabIdx == 0){//좋아요
        SelectRankQuery = SelectQuery + 'ORDER BY likes '
     }else{ // 추천순 

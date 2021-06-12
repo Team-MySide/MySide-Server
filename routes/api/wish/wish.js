@@ -12,14 +12,14 @@ router.put('/', authUtil.isLoggedin,async (req, res) => {
 
     let WishQuery;
     let UpdateWishQuery;
- 
+     console.log(req.body);
 
-    if(req.body.status==1){ // 좋아요 O
+    if(req.body.status==0){ // 아직 찜이 아니면
         WishQuery = 'INSERT INTO wishlist (user_id,food) VALUES (?, ?)'; 
-        UpdateWishQuery = 'UPDATE food_thumbnail SET wishes + 1 WHERE name = ?'
-    } else{ // 좋아요 X
+        UpdateWishQuery = 'UPDATE food_thumbnail SET wishes = wishes + 1  WHERE name = ?'
+    } else{ // 찜이면
         WishQuery = 'DELETE FROM wishlist WHERE user_id =? AND food =?'
-        UpdateWishQuery = 'UPDATE food_thumbnail SET wishes -1 WHERE name = ?'
+        UpdateWishQuery = 'UPDATE food_thumbnail SET wishes = wishes - 1  WHERE name = ?'
     } 
     
     const WishResult = await db.queryParam_Arr(WishQuery, [req.decoded.id,req.body.food]);
