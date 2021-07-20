@@ -96,28 +96,104 @@ router.get('/status/:food', async (req, res) => {
 });
 
 router.get('/configuration/:food', async (req, res) => {
+
+    let resData = {};
+    let food = req.params.food;
+
+    let idx = food.length;
     
-    for(let i=0;i<100;i++){
-        var idx = Math.floor(Math.random()*4);
-        console.log(idx);
+    if(idx == 0){
+        resData = {
+            good: 9,
+            goodMax : 131,
+            bad: 2,
+            badMax : 131,
+            function: 3,
+            functionMax : 80,
+            etc:120,
+            etcMax : 131
+        };
+
+    }else if(idx ==1){
+        resData = {
+            good: 6,
+            goodMax : 131,
+            bad: 0,
+            badMax : 131,
+            function: 3,
+            functionMax : 80,
+            etc:125,
+            etcMax : 131
+        };
+    }else if(idx ==2){
+        resData = {
+            good: 7,
+            goodMax : 131,
+            bad: 0,
+            badMax : 131,
+            function: 1,
+            functionMax : 80,
+            etc:124,
+            etcMax : 131
+        };
+    }else if(idx ==3){
+        resData = {
+            good: 4,
+            goodMax : 131,
+            bad: 0,
+            badMax : 131,
+            function: 2,
+            functionMax : 80,
+            etc:127,
+            etcMax : 131
+        };
+    }else if(idx ==4){
+        resData = {
+            good: 3,
+            goodMax : 131,
+            bad: 0,
+            badMax : 131,
+            function: 4,
+            functionMax : 80,
+            etc:131,
+            etcMax : 131
+        };
+    }else if(idx ==5){
+        resData = {
+            good: 11,
+            goodMax : 131,
+            bad: 1,
+            badMax : 131,
+            function: 5,
+            functionMax : 80,
+            etc:118,
+            etcMax : 131
+        };
+    }else if(idx ==6){
+        resData = {
+            good: 5,
+            goodMax : 131,
+            bad: 0,
+            badMax : 131,
+            function: 0,
+            functionMax : 80,
+            etc:126,
+            etcMax : 131
+        };
+    }else{
+        resData = {
+            good: 8,
+            goodMax : 131,
+            bad: 0,
+            badMax : 131,
+            function: 0,
+            functionMax : 80,
+            etc:123,
+            etcMax : 131
+        };
     }
     
-       
-    
-    
 
-  
-
-    let resData = {
-        good: 9,
-        goodMax : 120,
-        bad: 1,
-        badMax : 120,
-        function: 10,
-        functionMax : 80,
-        etc:110,
-        etcMax : 120
-    };
 
     res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 성분 구성 조회 성공",resData ));      
     

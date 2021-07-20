@@ -95,9 +95,9 @@ router.get('/cancer/rank/:cancer/:tabIdx',async (req, res) => {
     + 'AND cancerNm = ? '
     + "AND A.img !=''"
     if(req.params.tabIdx == 0){//좋아요
-       SelectRankQuery = SelectQuery + 'ORDER BY likes '
+       SelectRankQuery = SelectQuery + 'ORDER BY regiDate '
     }else{ // 추천순 
-        SelectRankQuery = SelectQuery + 'ORDER BY regiDate '
+        SelectRankQuery = SelectQuery + 'ORDER BY likes DESC'
     }
 
     let SelectRankResult = await db.queryParam_Arr(SelectRankQuery,req.params.cancer);

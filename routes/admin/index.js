@@ -11,7 +11,8 @@ router.get('/', (req, res) => {
 router.use('/thumbnail', require('./thumbnail.js'));
 router.use('/detail', require('./detail.js'));
 router.use('/cancer_food', require('./cancerFood.js'));
-router.use('/list', require('./list.js'));
+router.use('/list', require('./list/list.js'));
+router.use('/list/info', require('./list/info.js'));
 router.use('/faq', require('./faq.js'));
 router.use('/image', require('./image.js'));
 

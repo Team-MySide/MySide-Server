@@ -93,17 +93,18 @@ i{
   padding: 20px;
   border: 1px solid #888;
   width: 50%;
-  height: 400px;
+  
+  height: 300px;/* height: 400px; */
   overflow: auto; /* Enable scroll if needed */
 }
 
 .mhead{
-    font-size: 8px;
+    font-size: 11px;
     color: #3BD7E2;
     margin:  5px;
 }
 .mtext{
-    font-size: 10px;
+    font-size: 11px;
     margin:  3px;
 }
 
@@ -129,6 +130,90 @@ i{
   cursor: pointer;
 }
 
+
+/* search toggle*/
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tg-list {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  float:right;
+}
+
+.tg-list-item {
+}
+
+.tgl {
+  display: none;
+}
+.tgl, .tgl:after, .tgl:before, .tgl *, .tgl *:after, .tgl *:before, .tgl + .tgl-btn {
+  box-sizing: border-box;
+}
+.tgl::-moz-selection, .tgl:after::-moz-selection, .tgl:before::-moz-selection, .tgl *::-moz-selection, .tgl *:after::-moz-selection, .tgl *:before::-moz-selection, .tgl + .tgl-btn::-moz-selection {
+  background: none;
+}
+.tgl::selection, .tgl:after::selection, .tsgl:before::selection, .tgl *::selection, .tgl *:after::selection, .tgl *:before::selection, .tgl + .tgl-btn::selection {
+  background: none;
+}
+.tgl + .tgl-btn {
+  outline: 0;
+  display: block;
+  width: 4em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.tgl + .tgl-btn:after, .tgl + .tgl-btn:before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+}
+.tgl + .tgl-btn:after {
+  left: 0;
+}
+.tgl + .tgl-btn:before {
+  display: none;
+}
+.tgl:checked + .tgl-btn:after {
+  left: 50%;
+}
+
+.tgl-flat + .tgl-btn {
+  padding: 2px;
+  transition: all 0.2s ease;
+  background: #fff;
+  border: 4px solid #f2f2f2;
+  border-radius: 2em;
+}
+.tgl-flat + .tgl-btn:after {
+  transition: all 0.2s ease;
+  background: #f2f2f2;
+  content: "";
+  border-radius: 1em;
+}
+.tgl-flat:checked + .tgl-btn {
+  border: 4px solid #3bc0c3;
+}
+.tgl-flat:checked + .tgl-btn:after {
+  left: 50%;
+  background: #3bc0c3;
+}
+
+
+
+/* search toggle*/
+
  </style>
 <head>
 <meta charset="utf-8" />
@@ -147,17 +232,17 @@ $(document).ready(function() {
  }
 
  function Search(){
-    
+    let checked = $('#cb4').is(":checked");
     let keyword ="";
     keyword = $('#keyword').val();
     $.ajax({
         method: "GET", // 요청 방식
-        url: "/admin/list/search?keyword="+ keyword,
+        url: "/admin/list/search?keyword="+ keyword +"&checked=" +checked ,
         success: function (res) { // 성공 시 호출 콜백
             console.log(res);
             $('#searchList').empty();
             for (var i = 0; i < res.data.length; i++) {
-                            var tag = ` <div  class="col-sm-6" onclick="openModal(this)">`
+                            var tag = ` <div  class="col-sm-6" onclick="openInfo(this)">`
                                       + ` <div class="panel">`
                                       + `<div class="panel-body p-t-10">`
                                       + ` <div class="media-main">`
@@ -208,7 +293,7 @@ $(document).ready(function() {
             console.log(res);
             $('#searchList').empty();
             for (var i = 0; i < res.data.length; i++) {
-                            var tag = ` <div  class="col-sm-6" onclick="openModal(this)">`
+                            var tag = ` <div  class="col-sm-6" onclick="openInfo(this)">`
                                       + ` <div class="panel">`
                                       + `<div class="panel-body p-t-10">`
                                       + ` <div class="media-main">`
@@ -227,10 +312,10 @@ $(document).ready(function() {
                                       + ` </div>`
                                       + ` <div class="clearfix"></div>`
                                       + ` <hr>`
-                                      + ` <a>${res.data[i].nutrition1}</a>`
-                                      + ` <a>${res.data[i].nutrition2}</a>`
-                                      + ` <a>${res.data[i].nutrition3}</a>`
-                                      +  ` <a>${res.data[i].nutrition4}</a>`
+                                      + ` <a onclick ="openModal(this)">${res.data[i].nutrition1}</a>`
+                                      + ` <a onclick ="openModal(this)">${res.data[i].nutrition2}</a>`
+                                      + ` <a onclick ="openModal(this)">${res.data[i].nutrition3}</a>`
+                                      + ` <a onclick ="openModal(this)">${res.data[i].nutrition4}</a>`
                                       + `</div>`
                                        + ` </div>`
                                         + ` </div>`
@@ -278,9 +363,22 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
+    <div style = "width: 100%; float:right;">
+        <p style ="float: right; margin: 4px;">전체 보기</p>
+        <ul class="tg-list">
+            <li class="tg-list-item">
+            <input class="tgl tgl-flat" id="cb4" type="checkbox"/>
+            <label class="tgl-btn" for="cb4"></label>
+            </li>
+            <li class="tg-list-item"></li>
+        </ul>
+    </div>
     <div id ="searchList" class="row"></div>
     <button type="button" id="passBtn" onClick="location.href='/admin'">뒤로가기</button>
 </div>
+
+
+
 
 <!-- Trigger/Open The Modal -->
 <div id="myModal" class="modal">
@@ -300,59 +398,61 @@ $(document).ready(function() {
         });
 
 
-        function openModal(idx){
+        function openInfo(idx){
             let name = $(idx).find('#name').text();
+            let url = '/admin/list/info?food='+name;
+            location.href= url;
+        }
 
-                console.log(name);
-                // Get the modal
-               var modal = document.getElementById("myModal");
-                var btn = document.getElementById("myBtn");
-                var span = document.getElementsByClassName("close")[0];
-                modal.style.display = "block";
-                
-                span.onclick = function() {
-                modal.style.display = "none";
-                }
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
-
+        function openModal(idx){
+            event.stopPropagation();
+            let name = $(idx).text();
+            let val = 0;
                 $.ajax({
                     method: "GET", // 요청 방식
-                    url: "/admin/list/detail/"+name,
+                    url: "/admin/list/nutrition/"+name,
                     success: function (res) { // 성공 시 호출 콜백
-                        console.log(res);
                         $('#modalList').empty();
-                        if(res.data.length ==0) {
-                            alert("음식 상세정보 미입력");
+                        if(res.data[0]==null) {
+                            val =1;
                             return ;
                         }
 
-                        $('#modal-title').text(res.data[0].name);
+                        $('#modal-title').text(res.data[0].name_kr);
 
-                      
-                        for (var i = 0; i < res.data.length; i++) {
-                                        var tag =  `  <i class= "tag1">${res.data[i].status}</i>`
-                                        var $li = (`${tag}`);
-                                        $('#modalList').append($li);//jQuery 문법
+                        var tag =  `  <i class= "tag1">${res.data[0].category}</i>`
+                        var $li = (`${tag}`);
+                        $('#modalList').append($li);//jQuery 문법
+                        var tag =     
+                                    `  <div class ="mhead">생리적 기능</div>`
+                                    + `  <div class = "mtext">${res.data[0].physiological}</div>`
+                                    + `  <div class ="mhead">결핍시</div>`
+                                    + `  <div class = "mtext">${res.data[0].lack}</div>`
+                                    + `  <div class ="mhead">과잉시</div>`
+                                    + `  <div class = "mtext">${res.data[0].overabundance}</div>`
+                                    + `  <div class ="mhead">대표음식</div>`
+                                    + `  <div class = "mtext">${res.data[0].representation_food}</div>`
+                                    + ` </br>`
+                                    + `  <i class ="mhead">출처</i>`
+                                    + `  <a class = "mtext" href="${res.data[0].ref_link}">바로가기</a>`
+
+                        var $li = (`${tag}`);
+                        $('#modalList').append($li);//jQuery 문법
+
+                        var modal = document.getElementById("myModal");
+                        var btn = document.getElementById("myBtn");
+                        var span = document.getElementsByClassName("close")[0];
+                        modal.style.display = "block";
+                        
+                        span.onclick = function() {
+                        modal.style.display = "none";
                         }
-
-                        for (var i = 0; i < res.data.length; i++) {
-                                        var tag =     
-                                                   `  <div class ="mhead">효능</div>`
-                                                 + `  <div class = "mtext">${res.data[i].efficacy}</div>`
-                                                 + `  <div class ="mhead">궁합</div>`
-                                                 + `  <div class = "mtext">${res.data[i].combination}</div>`
-                                                 + `  <div class ="mhead">고르는 법</div>`
-                                                 + `  <div class = "mtext">${res.data[i].select_tip}</div>`
-                                                 + `  <div class ="mhead">손질법</div>`
-                                                 + `  <div class = "mtext">${res.data[i].care}</div>`
-
-                                        var $li = (`${tag}`);
-                                        $('#modalList').append($li);//jQuery 문법
+                        window.onclick = function(event) {
+                            if (event.target == modal) {
+                                modal.style.display = "none";
+                            }
                         }
+                        
                     },
                     error: function (data) {
                         console.log("failed");
@@ -364,6 +464,72 @@ $(document).ready(function() {
                 });
             
         }
+
+
+        // function openModal(idx){
+        //     let name = $(idx).find('#name').text();
+
+        //         console.log(name);
+        //         // Get the modal
+        //        var modal = document.getElementById("myModal");
+        //         var btn = document.getElementById("myBtn");
+        //         var span = document.getElementsByClassName("close")[0];
+        //         modal.style.display = "block";
+                
+        //         span.onclick = function() {
+        //         modal.style.display = "none";
+        //         }
+        //         window.onclick = function(event) {
+        //             if (event.target == modal) {
+        //                 modal.style.display = "none";
+        //             }
+        //         }
+
+        //         $.ajax({
+        //             method: "GET", // 요청 방식
+        //             url: "/admin/list/detail/"+name,
+        //             success: function (res) { // 성공 시 호출 콜백
+        //                 console.log(res);
+        //                 $('#modalList').empty();
+        //                 if(res.data.length ==0) {
+        //                     alert("음식 상세정보 미입력");
+        //                     return ;
+        //                 }
+
+        //                 $('#modal-title').text(res.data[0].name);
+
+                      
+        //                 for (var i = 0; i < res.data.length; i++) {
+        //                                 var tag =  `  <i class= "tag1">${res.data[i].status}</i>`
+        //                                 var $li = (`${tag}`);
+        //                                 $('#modalList').append($li);//jQuery 문법
+        //                 }
+
+        //                 for (var i = 0; i < res.data.length; i++) {
+        //                                 var tag =     
+        //                                            `  <div class ="mhead">효능</div>`
+        //                                          + `  <div class = "mtext">${res.data[i].efficacy}</div>`
+        //                                          + `  <div class ="mhead">궁합</div>`
+        //                                          + `  <div class = "mtext">${res.data[i].combination}</div>`
+        //                                          + `  <div class ="mhead">고르는 법</div>`
+        //                                          + `  <div class = "mtext">${res.data[i].select_tip}</div>`
+        //                                          + `  <div class ="mhead">손질법</div>`
+        //                                          + `  <div class = "mtext">${res.data[i].care}</div>`
+
+        //                                 var $li = (`${tag}`);
+        //                                 $('#modalList').append($li);//jQuery 문법
+        //                 }
+        //             },
+        //             error: function (data) {
+        //                 console.log("failed");
+        //             },
+        //             complete: function () {
+        //                 console.log('compelted');
+        //             }
+
+        //         });
+            
+        // }
 
         
    </script>
