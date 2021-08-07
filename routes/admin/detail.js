@@ -15,11 +15,11 @@ router.post('/', async(req, res) => {
 
     if(req.body.statusChk == 'New'){// 신규 추가
          let insertThumbQuery =  'INSERT INTO food_thumbnail '
-        +' (name, img,title,category,background_color,link,nutrition1, nutrition2,nutrition3,nutrition4,views,likes,wishes,regiDate)'
-        +' VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';;
+        +' (name, img,title,category,background_color,link,nutrition1, nutrition2,nutrition3,nutrition4,views,likes,wishes,comments,info_tag,caution,regiDate)'
+        +' VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
         let insertThumbResult = await db.queryParam_Parse(insertThumbQuery, 
                 [req.body.name, '', req.body.title, req.body.category, req.body.background_color,req.body.link,
-                    req.body.nutrition1,req.body.nutrition2,req.body.nutrition3,req.body.nutrition4,0,0,0, moment().format('YYYY-MM-DD HH:mm:ss')]);
+                    req.body.nutrition1,req.body.nutrition2,req.body.nutrition3,req.body.nutrition4,0,0,0,0,req.body.infoTag,req.body.caution, moment().format('YYYY-MM-DD HH:mm:ss')]);
         
         let insertDetailQuery =  'INSERT INTO food_detail '
         +' (name	,status,	efficacy,	combination,	select_tip,	care,	energy,	moisture,	protein,	lipid,	ash,	carbohydrate,	total_sugars,	saccharose,	glucose,	fruit_sugar,	Lactose,	Maltose,	Galactose,	Total_dietary_fiber,	water_soluble_dietary_fiber,	insoluble_dietary_fiber,	total_amino_acids'
