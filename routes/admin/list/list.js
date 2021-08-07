@@ -69,7 +69,7 @@ router.get('/search', async(req, res) => {
     if(checked == 'true'){
         selectQuery =  'SELECT name,img,title,background_color,category'
         + ", CASE nutrition1 WHEN '' THEN '미등록' ELSE nutrition1 END AS nutrition1"
-        + `,nutrition2,nutrition3,nutrition4,(SELECT cancerNm FROM cancer_food WHERE food LIKE '%A.name%' LIMIT 1) As cancerNm `
+        + `,nutrition2,nutrition3,nutrition4,(SELECT cancerNm FROM cancer_food WHERE food = A.name LIMIT 1) As cancerNm `
         + 'FROM food_thumbnail A '
         + 'WHERE name LIKE ? '
         + 'ORDER BY name '
