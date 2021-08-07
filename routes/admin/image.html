@@ -306,7 +306,7 @@ $(document).ready(function() {
                                       + `</div>`
                                      + ` <div class="info">`
                                       + `    <h4 id="name">${res.data[i].name}</h4>`
-                                      + `    <p class="text-muted" style = "font-size:9px;">${res.data[i].background_color}</p>`
+                                      + `    <p id ="background_color" class="text-muted" style = "font-size:9px;">${res.data[i].background_color}</p>`
                                       + `</div>`
                                       + ` </div>`
                                       + ` <div class="clearfix"></div>`
@@ -391,6 +391,11 @@ $(document).ready(function() {
 
   <script>
   
+        $(document).on('keypress', 'input,select', function (e) {
+            if (e.which == 13) {
+            Search();
+            }
+        });
         function clear(){
             $('#food').text("");
             $('#color').text("");
@@ -402,9 +407,13 @@ $(document).ready(function() {
         function openModal(idx){
             clear();
             let name = $(idx).find('#name').text();
-            let color = $(idx).find('#thumb').css( "background-color" );
+            let color = $(idx).find('#background_color').text();
+
             $('#food').val(name);
             $('#food').text(name);
+            $('#color').text(color);
+            $('#color').val(color);
+            
                 // Get the modal
                var modal = document.getElementById("detailModal");
                 var span = document.getElementsByClassName("close")[0];
