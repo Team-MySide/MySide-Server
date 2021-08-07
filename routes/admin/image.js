@@ -65,6 +65,33 @@ router.post('/', upload.single('thumbImg'), async(req, res) => {
   
 });
 
+router.get('/search', async(req, res) => {
+
+    let checked = req.query.checked;
+
+    let keyword = '%'+req.query.keyword+'%';
+    let selectQuery ="";
+    if(checked == 'true'){
+        selectQuery =  'SELECT A.name,A.img,A.title,A.background_color FROM food_thumbnail A '
+        + 'WHERE name LIKE ? '
+        + 'ORDER BY regiDate DESC '
+    }else{
+        selectQuery =  'SELECT A.name,A.img,A.title,A.background_color FROM food_thumbnail A '
+        + "WHERE ((background_color = '') "
+        + "OR (img =''))"
+        + 'AND name LIKE ? '
+        + 'ORDER BY regiDate DESC '
+    }
+    
+    let selectResult = await db.queryParam_Parse(selectQuery,keyword);
+    if (!selectResult) {
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.BOARD_INSERT_FAIL));
+    } else { //쿼리문이 성공했을 때
+  
+       res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.BOARD_INSERT_SUCCESS,selectResult));
+    }
+ 
+});
 
 router.get('/', (req, res) => {
     res.sendFile(__dirname + '/image.html')
