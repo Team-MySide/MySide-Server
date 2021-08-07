@@ -74,8 +74,8 @@ router.get('/about', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const UpdateThumbQuery = 'UPDATE food_thumbnail SET title =?,category =?,link =?,nutrition1 =?,nutrition2 =?,nutrition3=?,nutrition4 = ?  WHERE name = ?'; 
-    const UpdateThumbResult = await db.queryParam_Arr(UpdateThumbQuery , [req.body.title,req.body.category,req.body.link,req.body.nutrition1,req.body.nutrition2,req.body.nutrition3,req.body.nutrition4,req.body.name]);
+    const UpdateThumbQuery = 'UPDATE food_thumbnail SET title =?,category =?,link =?,nutrition1 =?,nutrition2 =?,nutrition3=?,nutrition4 = ?,background_color =?  WHERE name = ?'; 
+    const UpdateThumbResult = await db.queryParam_Arr(UpdateThumbQuery , [req.body.title,req.body.category,req.body.link,req.body.nutrition1,req.body.nutrition2,req.body.nutrition3,req.body.nutrition4,req.body.background_color,req.body.name]);
     console.log(UpdateThumbResult);
     
     const UpdateDetailQuery = 'UPDATE food_detail SET efficacy =?, combination =? ,select_tip =?, care =? WHERE name = ?'; 

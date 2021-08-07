@@ -173,6 +173,10 @@
                                 else item += `<option value="유방암">유방암</option>`
                                 if(resp.data.cancer[i].cancerNm == "갑상선암") item += `<option value="갑상선암" selected>갑상선암</option>`;
                                 else item += `<option value="갑상선암">갑상선암</option>`
+                                if(resp.data.cancer[i].cancerNm == "항암") item += `<option value="항암" selected>항암</option>`;
+                                else item += `<option value="항암">항암</option>`
+                                if(resp.data.cancer[i].cancerNm == "예방") item += `<option value="항암" selected>예방</option>`;
+                                else item += `<option value="예방">예방</option>`
                             item +=  ` </select>
                                 <input id="ref_site" name="ref_site" type="text" tabindex="148"  placeholder="참고사이트" value="${resp.data.cancer[i].ref_site}">
                                 <input id="ref_link" name="ref_link" type="text" tabindex="148"  placeholder="참고링크" value="${resp.data.cancer[i].ref_link}">
@@ -207,6 +211,8 @@
                 <option value="폐암">폐암</option>
                 <option value="유방암">유방암</option>
                 <option value="갑상선암">갑상선암</option>
+                <option value="항암">항암</option>
+                <option value="예방">예방</option>
             </select>
             <input id="ref_site" name="ref_site" type="text" tabindex="148"  placeholder="참고사이트" value="">
             <input id="ref_link" name="ref_link" type="text" tabindex="148"  placeholder="참고링크" value="">
