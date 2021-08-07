@@ -84,6 +84,7 @@ router.get('/search', async(req, res) => {
     }
     
     let selectResult = await db.queryParam_Parse(selectQuery,keyword);
+    console.log(selectResult);
     if (!selectResult) {
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.BOARD_INSERT_FAIL));
     } else { //쿼리문이 성공했을 때
