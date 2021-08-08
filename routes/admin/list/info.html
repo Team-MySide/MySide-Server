@@ -157,6 +157,16 @@
                 document.getElementById('select_tip').value =resp.data.select_tip;
                 document.getElementById('combination').value =resp.data.combination;
                 document.getElementById('background_color').value =resp.data.background_color;
+                document.getElementById('caution').value =resp.data.caution;
+                if(resp.data.infoTag == 'caution'){
+                    console.log(document.getElementsByName('infoTag'));
+                    document.getElementsByName('infoTag')[0].checked = true;
+                }else if(resp.data.infoTag == 'recommended'){
+                    document.getElementsByName('infoTag')[1].checked = true;
+                }else{
+                    document.getElementsByName('infoTag')[2].checked = true;
+                }
+                
                 for(let i=0;i<resp.data.cancer.length;i++){
                     let item = `
                         <div id = "cancerItem"> 

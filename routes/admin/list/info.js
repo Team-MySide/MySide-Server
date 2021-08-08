@@ -28,11 +28,13 @@ router.get('/about', async (req, res) => {
         combination: "",
         select_tip : "",
         care: "",
+        infoTag: "",
+        caution:"",
         status : [],
         cancer : []
     }
 
-    let selectThumbQuery = "SELECT name,title,category,background_color,link,nutrition1 ,nutrition2,nutrition3,nutrition4 FROM food_thumbnail WHERE name =?  "
+    let selectThumbQuery = "SELECT name,title,category,background_color,link,nutrition1 ,nutrition2,nutrition3,nutrition4,info_tag,caution FROM food_thumbnail WHERE name =?  "
     let selectThumbResult = await db.queryParam_Parse(selectThumbQuery,[req.query.food]);
 
     if(selectThumbResult[0] != null){
@@ -45,6 +47,8 @@ router.get('/about', async (req, res) => {
         resData.nutrition3 = selectThumbResult[0].nutrition3;
         resData.nutrition4 = selectThumbResult[0].nutrition4;
         resData.background_color = selectThumbResult[0].background_color;
+        resData.infoTag = selectThumbResult[0].info_tag;
+        resData.caution = selectThumbResult[0].caution;
     }
 
     let selectDetailQuery = "SELECT efficacy,combination,select_tip,care FROM food_detail WHERE name =?  Limit 1";
@@ -74,8 +78,9 @@ router.get('/about', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const UpdateThumbQuery = 'UPDATE food_thumbnail SET title =?,category =?,link =?,nutrition1 =?,nutrition2 =?,nutrition3=?,nutrition4 = ?,background_color =?  WHERE name = ?'; 
-    const UpdateThumbResult = await db.queryParam_Arr(UpdateThumbQuery , [req.body.title,req.body.category,req.body.link,req.body.nutrition1,req.body.nutrition2,req.body.nutrition3,req.body.nutrition4,req.body.background_color,req.body.name]);
+    console.log(req.body);
+    const UpdateThumbQuery = 'UPDATE food_thumbnail SET title =?,category =?,link =?,nutrition1 =?,nutrition2 =?,nutrition3=?,nutrition4 = ?,background_color =?,info_tag=?,caution=?  WHERE name = ?'; 
+    const UpdateThumbResult = await db.queryParam_Arr(UpdateThumbQuery , [req.body.title,req.body.category,req.body.link,req.body.nutrition1,req.body.nutrition2,req.body.nutrition3,req.body.nutrition4,req.body.background_color,req.body.infoTag,req.body.caution,req.body.name]);
     console.log(UpdateThumbResult);
     
     const UpdateDetailQuery = 'UPDATE food_detail SET efficacy =?, combination =? ,select_tip =?, care =? WHERE name = ?'; 
