@@ -9,5 +9,6 @@ router.use('/wish', require('./wish/index'));
 router.use('/home', require('./home/index'));
 router.use('/like', require('./like/index'));
 router.use('/common', require('./common/index'));
+router.use('/receipe', require('./receipe/index'));
 
 module.exports = router;
