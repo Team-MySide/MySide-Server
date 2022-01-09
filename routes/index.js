@@ -9,6 +9,6 @@ router.get('/', (req, res) => {
 });
 
 router.use('/', require('./api/index.js'));
-router.use('/admin', require('./admin/index.js'));
+// router.use('/admin', require('./admin/index.js'));
 
 module.exports = router;
