@@ -14,6 +14,7 @@ router.put('/', async (req, res) => {
     receipe_id = req.body.receipe_id
     let WishQuery;
     let UpdateWishQuery;
+    let active;
 
     const likeExit = 'SELECT * FROM receipe_save WHERE user_id = ? AND receipe_id = ?'
     const likeExitResult = await db.queryParam_Parse(likeExit, [user_id, receipe_id]);
@@ -23,10 +24,12 @@ router.put('/', async (req, res) => {
     if(likeExitResult[0]==null){ // 좋아요 아닌 상태
         WishQuery = 'INSERT INTO receipe_save (user_id,receipe_id) VALUES (?, ?)'; 
         UpdateWishQuery = 'UPDATE receipe SET receipe_savesum = receipe_savesum+ 1 WHERE receipe_id = ?'
+        active = false
         console.log('0')
     } else{ // 좋아요 상태
         WishQuery = 'DELETE FROM receipe_save WHERE user_id =? AND receipe_id =?'
         UpdateWishQuery = 'UPDATE receipe SET receipe_savesum = receipe_savesum-1 WHERE receipe_id = ?'
+        active = true
         console.log('1')
     } 
     
@@ -36,7 +39,7 @@ router.put('/', async (req, res) => {
     if(!WishResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "저장 상태 변경 성공"));      
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "저장 상태 변경 성공", active));      
     }
 });
 
