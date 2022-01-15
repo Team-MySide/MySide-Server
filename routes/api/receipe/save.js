@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
-const crypto = require('crypto-promise');
+const authUtil = require("../../../module/utils/authUtils");   // 토큰 있을 때 사용ßß
 
 const defaultRes = require('../../../module/utils/utils');
 const statusCode = require('../../../module/utils/statusCode');
@@ -9,15 +8,15 @@ const resMessage = require('../../../module/utils/responseMessage')
 const db = require('../../../module/pool');
 
 
-router.put('/', async (req, res) => {
-    user_id = req.body.user_id
+router.put('/', authUtil.isLoggedin, async (req, res) => {
+    user_id = req.decoded.id
     receipe_id = req.body.receipe_id
     let WishQuery;
     let UpdateWishQuery;
     let active;
 
     const likeExit = 'SELECT * FROM receipe_save WHERE user_id = ? AND receipe_id = ?'
-    const likeExitResult = await db.queryParam_Parse(likeExit, [user_id, receipe_id]);
+    const likeExitResult = await db.queryParam_Arr(likeExit, [user_id, receipe_id]);
     console.log('likeExitResult')
     console.log(likeExitResult)
 
