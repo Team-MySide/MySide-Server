@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-const crypto = require('crypto-promise');
-
 const defaultRes = require('../../../module/utils/utils');
 const statusCode = require('../../../module/utils/statusCode');
 const resMessage = require('../../../module/utils/responseMessage')
@@ -17,7 +15,7 @@ router.put('/', async (req, res) => {
     UpdateWishQuery = 'UPDATE receipe SET receipe_sharesum = receipe_sharesum+ 1 WHERE receipe_id = ?'
     console.log('0')
 
-    const UpdateWishResult = await db.queryParam_Arr(UpdateWishQuery, receipe_id);
+    const UpdateWishResult = await db.queryParam_Parse(UpdateWishQuery, receipe_id);
     
     if(!UpdateWishResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    

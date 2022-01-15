@@ -93,5 +93,20 @@ router.get('/total',async (req, res) => {
     }
 });
 
+// //자동완성  원준 작성 중
+// router.get('/receipe',async (req, res) => {
+//     const SelectQuery = 'SELECT nutrition_id,name,name_kr FROM nutrition'; 
+//     const SelectResult = await db.queryParam_None(SelectQuery);
+//     resData =[];
+
+//     if(!SelectResult){
+//         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
+//     }else{
+//         for(let i= 0;i<SelectResult.length;i++){
+//             resData.push(SelectResult[i].name_kr);
+//         }
+//         res.status(200).send(defaultRes.successTrue(statusCode.OK, "영양성분 전체 조회 성공", resData));      
+//     }
+// });
 
 module.exports = router;
