@@ -93,5 +93,42 @@ router.get('/total',async (req, res) => {
     }
 });
 
+//자동완성 
+router.get('/receipe/save', authUtil.isLoggedin,async (req, res) => {
+
+    user_id = req.decoded.id
+
+    const SelectQuery = 'select s.receipe_id, r.receipe_name from receipe_save as s, receipe as r where s.user_id = ? AND s.receipe_id = r.receipe_id;'; 
+    const SelectResult = await db.queryParam_Parse(SelectQuery, user_id);
+    resData =[];
+    console.log(SelectResult)
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
+    }else{
+        for(let i= 0;i<SelectResult.length;i++){
+            resData.push(SelectResult[i].receipe_name);
+        }
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "찜한 레시피 전체 조회 성공", resData));      
+    }
+});
+
+//자동완성
+router.get('/receipe/my', authUtil.isLoggedin,async (req, res) => {
+
+    user_id = req.decoded.id
+
+    const SelectQuery = 'select receipe_id, receipe_name from receipe where user_id = ?';
+    const SelectResult = await db.queryParam_Parse(SelectQuery, user_id);
+    resData =[];
+    console.log(SelectResult)
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
+    }else{
+        for(let i= 0;i<SelectResult.length;i++){
+            resData.push(SelectResult[i].receipe_name);
+        }
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "my 레시피 전체 조회 성공", resData));      
+    }
+});
 
 module.exports = router;
