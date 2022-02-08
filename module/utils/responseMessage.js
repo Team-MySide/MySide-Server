@@ -127,4 +127,7 @@ module.exports = {
 
   LEAVE_ACCOUNT_SUCCESS : "회원 탈퇴 성공",
 
+  COMMENT_SELECT_NULL : "댓글이 존재하지 않습니다.",
+  COMMENT_SELECT : "댓글 조회 성공",
+
 };
