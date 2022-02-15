@@ -33,7 +33,7 @@ router.post('/write', authUtil.isLoggedin, async(req, res) => {
             res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
         }
         else {//DB연결 성공
-        res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_SELECT));
+        res.status(200).send(defaultRes.successTrue(statuscode.OK, "대댓글 입력 성공"));
         }
     }
 })
@@ -72,7 +72,7 @@ router.get('/view/:comment_id',authUtil.isLoggedin, async(req, res) => {
                 }
             }     
         }
-        res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_UPDATE, a));
+        res.status(200).send(defaultRes.successTrue(statuscode.OK, "대댓글 조회 성공", a));
     }
 
 })
@@ -85,7 +85,7 @@ router.put('/update', authUtil.isLoggedin, async(req, res) => {
         res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
     }
     else{
-        res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_UPDATE));
+        res.status(200).send(defaultRes.successTrue(statuscode.OK, "대댓글 수정 성공"));
     }
         
 }) 
@@ -104,7 +104,7 @@ router.delete('/delete/:subcomment_id', authUtil.isLoggedin, async(req, res) => 
             res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
         }
         else {//DB연결 성공
-        res.status(200).send(defaultRes.successTrue(statuscode.OK, resMessage.HEALTHLIST_DELETE));
+        res.status(200).send(defaultRes.successTrue(statuscode.OK, "대댓글 삭제 성공"));
         }
     }
 })

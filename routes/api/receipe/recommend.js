@@ -10,68 +10,43 @@ const db = require('../../../module/pool');
 const { Health } = require('aws-sdk');
 const { EXPRIED_TOKEN } = require('../../../module/utils/responseMessage');
 
-router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
-
+    router.get('/',authUtil.isLoggedin,async (req, res) => {
+    
     const SelectCancerQuery = 'SELECT cancerNm FROM user WHERE user_id = ?'; 
     const SelectCancerResult = await db.queryParam_Arr(SelectCancerQuery, [req.decoded.id]);
-
     if(!SelectCancerResult){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
+        res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));  
     }else{
+    
         let cancerNm = SelectCancerResult[0].cancerNm;
-        /*
-        receipe_id, receipe_type, receipe_name, receipe_img, receipe_difficulty, receipe_time, user_id, nickname, cancerNm, stageNm, progressNm
+        let SelectQuery =
+        'SELECT receipe_id, receipe_name, receipe_img, receipe_difficulty, receipe_time, receipe.user_id,'+
+        'user.name, user.cancerNm, user.stageNm,user.progressNm '+
+        'FROM receipe join cancer_food on cancer_food.food = receipe.receipe_mainfood '+
+        'join user on receipe.user_id = user.user_id WHERE cancer_food.cancerNm = ? '
+        let SelectRankResult = await db.queryParam_Arr(SelectQuery, cancerNm);
         
+        if(!SelectRankResult){
+            res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));  
+        }else{
+            if(SelectRankResult.length>5){                
+                let randomResult = []
+                while(randomResult.length < 5){
+                    var movenum = SelectRankResult.splice(Math.floor(Math.random() * SelectRankResult.length),1)[0]
+                    randomResult.push(movenum)
+                }
+                console.log(randomResult)
+                res.status(200).send(defaultRes.successTrue(statuscode.OK, "암 종류별 추천 레시피 조회 성공", randomResult));    
 
-        user_id, email, name, phone, password, relationCd, relationNm,  cancerCd, 
-        stageCd,  progressCd,  gender, age, height, weight, disable_food, disease, 
-        accessToken, refreshToken, salt
-
-
-        */
-        const SelectQuery = 
+            }
+            else{
+                res.status(200).send(defaultRes.successTrue(statuscode.OK, "암 종류별 추천 레시피 조회 성공", SelectRankResult));    
+            }
+        }
         
-        'SELECT  receipe_id, receipe_type, receipe_name, receipe_img, receipe_difficulty, receipe_time, user_id, nickname, cancerNm, stageNm, progressNm'
-        + 'FROM receipe A, user B '
-        + 'WHERE A.user_id = B.user_id '
-        + "AND img !=''"
-        + 'AND B.cancerNm = ? '
-        + 'LIMIT 5 '; 
-        const SelectResult = await db.queryParam_Arr(SelectQuery, [cancerNm]);
-
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "추천 음식 조회 성공", SelectResult));     
     }
+    
+
 });
 
-router.get('/recommendation/all', authUtil.isLoggedin,async (req, res) => {
-
-    const SelectCancerQuery = 'SELECT cancerNm FROM user WHERE user_id = ?'; 
-    const SelectCancerResult = await db.queryParam_Arr(SelectCancerQuery, [req.decoded.id]);
-
-    if(!SelectCancerResult){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
-    }else{
-        let cancerNm = SelectCancerResult[0].cancerNm;
-        /*
-        receipe_id, receipe_type, receipe_name, receipe_img, receipe_difficulty, receipe_time, user_id, nickname, cancerNm, stageNm, progressNm
-        
-
-        user_id, email, name, phone, password, relationCd, relationNm,  cancerCd, 
-        stageCd,  progressCd,  gender, age, height, weight, disable_food, disease, 
-        accessToken, refreshToken, salt
-
-
-        */
-        const SelectQuery = 
-        
-        'SELECT  receipe_id, receipe_type, receipe_name, receipe_img, receipe_difficulty, receipe_time, user_id, nickname, cancerNm, stageNm, progressNm'
-        + 'FROM receipe A, user B '
-        + 'WHERE A.user_id = B.user_id '
-        + "AND img !=''"
-        + 'AND B.cancerNm = ? '; 
-        const SelectResult = await db.queryParam_Arr(SelectQuery, [cancerNm]);
-
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "추천 음식 조회 성공", SelectResult));     
-    }
-});
 module.exports = router;
