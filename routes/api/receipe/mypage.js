@@ -12,8 +12,8 @@ router.get('/save', authUtil.isLoggedin ,async (req, res) => {
 
     user_id = req.decoded.id
 
-    const SelectQuery = 'SELECT * FROM receipe_save WHERE user_id = ?'; 
-    const SelectResult = await db.queryParam_Parse(SelectQuery, user_id);
+    const SelectQuery = 'select s.receipe_id, r.receipe_name, r.receipe_img, r.receipe_difficulty, r.receipe_time,u.name, u.cancerNm, u.progressNm from receipe_save as s, receipe as r, user as u where u.user_id = ? AND s.user_id = ? AND s.receipe_id = r.receipe_id ;'; 
+    const SelectResult = await db.queryParam_Arr(SelectQuery, [user_id,req.decoded.id]);
 
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 마이페이지  조회 실패
@@ -22,12 +22,12 @@ router.get('/save', authUtil.isLoggedin ,async (req, res) => {
     }
 });
 
-router.get('/mine',async (req, res) => {
+router.get('/mine', authUtil.isLoggedin,async (req, res) => {
 
     user_id = req.decoded.id
 
-    const SelectQuery = 'SELECT * FROM receipe WHERE user_id = ?'; 
-    const SelectResult = await db.queryParam_Parse(SelectQuery, user_id);
+    const SelectQuery = 'select r.receipe_name, r.receipe_img, r.receipe_difficulty, r.receipe_time,u.name, u.cancerNm, u.progressNm from receipe as r, user as u where u.user_id = ? AND r.user_id = ? ;'; 
+    const SelectResult = await db.queryParam_Arr(SelectQuery, [user_id,req.decoded.id]);
 
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 마이페이지  조회 실패
