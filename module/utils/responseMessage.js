@@ -130,4 +130,7 @@ module.exports = {
   COMMENT_SELECT_NULL : "댓글이 존재하지 않습니다.",
   COMMENT_SELECT : "댓글 조회 성공",
 
+  RECIPE_INSERT : "레시피 입력 성공",
+  RECIPE_INSERT_FAIL : "레시피 입력 실패",
+
 };
