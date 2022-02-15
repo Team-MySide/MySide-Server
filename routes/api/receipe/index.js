@@ -13,8 +13,6 @@ router.use("/save", require("./save"));
 router.use("/share", require("./share"));
 router.use("/mypage", require("./mypage"));
 router.use("/mainfood", require("./mainfood"));
-router.use("/cookstep", require("./cookstep"));
-router.use("/ingredient", require("./ingredient"));
 router.use("/search", require("./search"));
 
 module.exports = router;
