@@ -9,6 +9,7 @@ const resMessage = require('../../../module/utils/responseMessage');
 const db = require('../../../module/pool');
 const { Health } = require('aws-sdk');
 const { EXPRIED_TOKEN } = require('../../../module/utils/responseMessage');
+var moment = require('moment');
 /* 
 댓글 파트
 1. 원 댓글 작성 api
@@ -21,8 +22,8 @@ url : receipe/comment/main
 */
 //입력하기
 router.post('/main/write', authUtil.isLoggedin, async(req, res) => {
-    const createCommentQuery = "INSERT INTO receipe_comment (receipe_id, user_id, comment_content, likesum, subcomment_sum, comment_time) VALUES(?,?,?,0,0,NOW())"
-    const createCommentResult = await db.queryParam_Parse(createCommentQuery, [req.body.receipe_id, req.decoded.id, req.body.comment_content]);
+    const createCommentQuery = "INSERT INTO receipe_comment (receipe_id, user_id, comment_content, likesum, subcomment_sum, comment_time) VALUES(?,?,?,0,0,?)"
+    const createCommentResult = await db.queryParam_Parse(createCommentQuery, [req.body.receipe_id, req.decoded.id, req.body.comment_content,moment().format('YYYY-MM-DD HH:mm:ss')]);
     if (!createCommentResult) { //DB에러
         res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
     }
