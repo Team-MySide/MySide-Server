@@ -8,6 +8,8 @@ const statuscode = require('../../../module/utils/statusCode');
 const resMessage = require('../../../module/utils/responseMessage');
 const db = require('../../../module/pool');
 const { Health } = require('aws-sdk');
+var moment = require('moment');
+
 /* 
 댓글 파트
 1. 원 댓글 작성 api
@@ -21,8 +23,8 @@ url : receipe/comment/main
 //입력하기
 
 router.post('/write', authUtil.isLoggedin, async(req, res) => {
-    const createCommentQuery = "INSERT INTO receipe_subcomment (comment_id, receipe_id, user_id, content, likesum, create_time) VALUES(?,?,?,?,0,NOW())"
-    const createCommentResult = await db.queryParam_Parse(createCommentQuery, [req.body.comment_id, req.body.receipe_id, req.decoded.id, req.body.content]);
+    const createCommentQuery = "INSERT INTO receipe_subcomment (comment_id, receipe_id, user_id, content, likesum, create_time) VALUES(?,?,?,?,0,?)"
+    const createCommentResult = await db.queryParam_Parse(createCommentQuery, [req.body.comment_id, req.body.receipe_id, req.decoded.id, req.body.content,moment().format('YYYY-MM-DD HH:mm:ss')]);
     if (!createCommentResult) { //DB에러
         res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));        
     }
