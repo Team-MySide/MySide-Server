@@ -23,9 +23,9 @@ router.put('/main', authUtil.isLoggedin, async (req, res) => {
         const likeUpdateResult = await db.queryParam_Parse(likeUpdateQuery, req.body.comment_id);
 
         if(!likeInsertResult || !likeUpdateResult){
-            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
+            res.status(200).send(defaultRes.successFalse(statuscode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));    
         }else{
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "좋아요 상태 변경 성공"));      
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, "좋아요 상태 (좋아요)변경 성공", 1));      
         }
     } else{ //좋아요 o
         const likeDeletetQuery = 'DELETE FROM receipe_comment_like WHERE user_id =? AND comment_id =?'
@@ -35,15 +35,15 @@ router.put('/main', authUtil.isLoggedin, async (req, res) => {
         const likeUpdateResult = await db.queryParam_Parse(likeUpdateQuery, req.body.comment_id);
         
         if(!likeDeleteResult || !likeUpdateResult){
-            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
+            res.status(200).send(defaultRes.successFalse(statuscode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));    
         }else{
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "좋아요 상태 변경 성공"));      
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, "좋아요 상태 (취소)변경 성공", 0));      
         }
     } 
 });
 router.put('/sub', authUtil.isLoggedin, async (req, res) => {
     const likeQuery = 'SELECT * FROM receipe_subcomment_like WHERE user_id = ? AND subcomment_id = ?'
-    const likeResult = await db.queryParam_Parse(likeQuery, [req.decoded.id, req.body.comment_id]);
+    const likeResult = await db.queryParam_Parse(likeQuery, [req.decoded.id, req.body.subcomment_id]);
 
     if(likeResult[0]==null){ //좋아요 x
         const likeInsertQuery = 'INSERT INTO receipe_subcomment_like (user_id, subcomment_id) VALUES (?, ?)'; 
@@ -53,9 +53,9 @@ router.put('/sub', authUtil.isLoggedin, async (req, res) => {
         const likeUpdateResult = await db.queryParam_Parse(likeUpdateQuery, req.body.subcomment_id);
 
         if(!likeInsertResult || !likeUpdateResult){
-            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
+            res.status(200).send(defaultRes.successFalse(statuscode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));    
         }else{
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "좋아요 상태 변경 성공"));      
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, "좋아요 상태 (좋아요)변경 성공", 1));      
         }
     } else{ //좋아요 o
         const likeDeletetQuery = 'DELETE FROM receipe_subcomment_like WHERE user_id =? AND subcomment_id =?'; 
@@ -65,9 +65,9 @@ router.put('/sub', authUtil.isLoggedin, async (req, res) => {
         const likeUpdateResult = await db.queryParam_Parse(likeUpdateQuery, req.body.subcomment_id);
 
         if(!likeDeleteResult || !likeUpdateResult){
-            res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
+            res.status(200).send(defaultRes.successFalse(statuscode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));    
         }else{
-            res.status(200).send(defaultRes.successTrue(statusCode.OK, "좋아요 상태 변경 성공"));      
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, "좋아요 상태 (취소)변경 성공", 0));      
         }
     }
 });
