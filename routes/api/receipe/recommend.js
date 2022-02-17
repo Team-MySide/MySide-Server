@@ -15,7 +15,7 @@ const { EXPRIED_TOKEN } = require('../../../module/utils/responseMessage');
     const SelectCancerQuery = 'SELECT cancerNm FROM user WHERE user_id = ?'; 
     const SelectCancerResult = await db.queryParam_Arr(SelectCancerQuery, [req.decoded.id]);
     if(!SelectCancerResult){
-        res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));  
+        res.status(200).send(defaultRes.successFalse(statuscode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));  
     }else{
     
         let cancerNm = SelectCancerResult[0].cancerNm;
@@ -27,7 +27,7 @@ const { EXPRIED_TOKEN } = require('../../../module/utils/responseMessage');
         let SelectRankResult = await db.queryParam_Arr(SelectQuery, cancerNm);
         
         if(!SelectRankResult){
-            res.status(200).send(defaultRes.successFalse(statuscode.DB_ERROR, resMessage.DB_ERROR));  
+            res.status(200).send(defaultRes.successFalse(statuscode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));  
         }else{
             if(SelectRankResult.length>5){                
                 let randomResult = []
