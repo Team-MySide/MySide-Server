@@ -35,7 +35,7 @@ router.post('/insert_type', async (req, res) => {
     receipe_id = InsertReceipeResult.insertId
 
     if (!InsertReceipeResult) { //DB에러
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));        
+        res.status(200).send(defaultRes.successFalse(statusCode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));        
     }
     else {//데이터베이스 연결 성공
             res.status(200).send(defaultRes.successTrue(statusCode.OK, "레시피 유형 입력 성공.", receipe_id));
@@ -157,7 +157,7 @@ router.post('/insert/:receipe_id', upload.array('img',31),async (req, res) => {
 
 
      if (!(InsertReceipeResult2 && InsertReceipeResult3 && InsertReceipeResult4 && InsertReceipeResult5)) { //DB에러
-         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));        
+         res.status(200).send(defaultRes.successFalse(statusCode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));        
      }
      else {//데이터베이스 연결 성공
              res.status(200).send(defaultRes.successTrue(statusCode.OK, resMessage.RECIPE_INSERT ));
