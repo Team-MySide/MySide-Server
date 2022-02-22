@@ -26,7 +26,7 @@ router.get('/kinds/:receipe_foodtype/:tabIdx',async (req, res) => {
     let SelectRankResult = await db.queryParam_Arr(SelectRankQuery,req.params.receipe_foodtype);
 
     if(!SelectRankResult){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
+        res.status(200).send(defaultRes.successFalse(statusCode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));  
     }else{
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 검색 조회 성공", SelectRankResult));    
     }
@@ -53,7 +53,7 @@ router.get('/kindscancer/:cancerNm/:tabIdx',async (req, res) => {
     let SelectRankResult = await db.queryParam_Arr(SelectRankQuery,req.params.cancerNm);
 
     if(!SelectRankResult){
-        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
+        res.status(200).send(defaultRes.successFalse(statusCode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));  
     }else{
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 검색 조회 성공", SelectRankResult));    
     }
