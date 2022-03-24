@@ -45,7 +45,7 @@ router.post('/insert_type', async (req, res) => {
 
 
 // 레시피 입력하기
-router.post('/insert/:receipe_id', upload.array('img',31),async (req, res) => {
+router.post('/insert/:recipe_id', upload.array('img',31),async (req, res) => {
 
     // 2. 레시피 요리순서(글 이미지)
     receipe_list = req.body.receipe_list;
@@ -61,7 +61,7 @@ router.post('/insert/:receipe_id', upload.array('img',31),async (req, res) => {
 
         if(req.files[key]){
             InsertReceipeResult2 = await db.queryParam_Arr(InsertCookStepQuery, [
-                req.params.receipe_id,
+                req.params.recipe_id,
                 data.step_num,
                 data.step_content,
                 req.files[key].location,
@@ -70,7 +70,7 @@ router.post('/insert/:receipe_id', upload.array('img',31),async (req, res) => {
 
         }else{
             InsertReceipeResult2 = await db.queryParam_Arr(InsertCookStepQuery, [
-                req.params.receipe_id,
+                req.params.recipe_id,
                 data.step_num,
                 data.step_content,
                 '',
@@ -86,7 +86,7 @@ router.post('/insert/:receipe_id', upload.array('img',31),async (req, res) => {
 
     const InsertReceipeStepQuery = 
     'UPDATE receipe SET link= ?, link_comment = ? WHERE receipe_id = ?'
-    const InsertReceipeStepResult = await db.queryParam_Arr(InsertReceipeStepQuery, [link, link_content, req.params.receipe_id]);
+    const InsertReceipeStepResult = await db.queryParam_Arr(InsertReceipeStepQuery, [link, link_content, req.params.recipe_id]);
     console.log(InsertReceipeStepResult);
 
     // 3. 재료입력
@@ -102,7 +102,7 @@ router.post('/insert/:receipe_id', upload.array('img',31),async (req, res) => {
         console.log("ingredient_list[key].ingredient_content", data.ingredient_content)
 
         InsertReceipeResult3 = await db.queryParam_Arr(insertIngredQuery, [
-            req.params.receipe_id,
+            req.params.recipe_id,
             data.ingredient_content,
             data.ingredient_type,
             moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -132,7 +132,7 @@ router.post('/insert/:receipe_id', upload.array('img',31),async (req, res) => {
     const InsertReceipeResult4 = await db.queryParam_Arr(InsertReceipeQuery, [receipe_name, receipe_content, req.files[lastnum].location, 
         receipe_foodtype, receipe_difficulty,receipe_time, receipe_volume, 
         receipe_caution,req.body.receipe_mainfood,
-        receipe_fakesave, moment().format('YYYY-MM-DD HH:mm:ss'), req.params.receipe_id]);
+        receipe_fakesave, moment().format('YYYY-MM-DD HH:mm:ss'), req.params.recipe_id]);
     console.log(InsertReceipeResult4);
     
     //  5. 부재료 입력하기
@@ -147,7 +147,7 @@ router.post('/insert/:receipe_id', upload.array('img',31),async (req, res) => {
         console.log("ingredient_content", ingredient_content[key])
 
         InsertReceipeResult5 = await db.queryParam_Arr(insertIngredQuery, [
-            req.params.receipe_id,
+            req.params.recipe_id,
             ingredient_content[key],
             moment().format('YYYY-MM-DD HH:mm:ss'),
         ]);    

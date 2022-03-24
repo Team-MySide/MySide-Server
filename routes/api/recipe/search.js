@@ -9,7 +9,7 @@ const db = require('../../../module/pool');
 var moment = require('moment');
 
 //  종류별 레시피
-router.get('/kinds/:receipe_foodtype/:tabIdx',async (req, res) => {
+router.get('/foodtype/:recipe_foodtype/:tabIdx',async (req, res) => {
 
     let SelectQuery = 
     'SELECT receipe_foodtype, receipe_id, receipe_name, receipe_img, receipe_difficulty, receipe_time, receipe.user_id, user.name, user.cancerNm, user.stageNm,'+
@@ -23,7 +23,7 @@ router.get('/kinds/:receipe_foodtype/:tabIdx',async (req, res) => {
      }if(req.params.tabIdx == 3){//난이도순
         SelectRankQuery = SelectQuery + 'ORDER BY receipe_difficulty '
      }
-    let SelectRankResult = await db.queryParam_Arr(SelectRankQuery,req.params.receipe_foodtype);
+    let SelectRankResult = await db.queryParam_Arr(SelectRankQuery,req.params.recipe_foodtype);
 
     if(!SelectRankResult){
         res.status(200).send(defaultRes.successFalse(statusCode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));  
@@ -34,7 +34,7 @@ router.get('/kinds/:receipe_foodtype/:tabIdx',async (req, res) => {
 });
 
 // 질병별 레시피
-router.get('/kindscancer/:cancerNm/:tabIdx',async (req, res) => {
+router.get('/disease/:cancerNm/:tabIdx',async (req, res) => {
 
     let SelectQuery = 
     'SELECT receipe_id, receipe_name, receipe_img, receipe_difficulty, receipe_time, receipe.user_id,'+
