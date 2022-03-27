@@ -43,17 +43,17 @@ router.put('/', authUtil.isLoggedin, async (req, res) => {
 });
 
 
-// router.get('/list', authUtil.isLoggedin,async (req, res) => {
+router.get('/list', authUtil.isLoggedin,async (req, res) => {
 
-//     const SelectQuery = 'SELECT * FROM likelist WHERE user_id = ?'; 
-//     const SelectResult = await db.queryParam_Arr(SelectQuery, [req.decoded.id]);
+    const SelectQuery = 'SELECT * FROM likelist WHERE user_id = ?'; 
+    const SelectResult = await db.queryParam_Arr(SelectQuery, [req.decoded.id]);
 
-//     if(!SelectResult){
-//         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 마이페이지  조회 실패
-//     }else{
-//         res.status(200).send(defaultRes.successTrue(statusCode.OK, "내 리스트 조회 성공", SelectResult));      // 마이페이지  조회 성공
-//     }
-// });
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     // 마이페이지  조회 실패
+    }else{
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "내 리스트 조회 성공", SelectResult));      // 마이페이지  조회 성공
+    }
+});
 
 
 module.exports = router;

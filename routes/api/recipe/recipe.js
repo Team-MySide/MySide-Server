@@ -15,10 +15,43 @@ const upload = require('../../../config/multer');
 // 레시피 보여주기 API
 router.get('/list/:receipe_id', async (req, res) => {
 
+    const Query = 'SELECT * FROM receipe WHERE receipe_id = ?'
 
+    const Result = await db.queryParam_Parse(Query, req.params.receipe_id);
 
+    if (Result[0]['link'] == ""){
+        const selectReceipeQuery = 'SELECT RR.receipe_img, RR.receipe_name, RR.receipe_foodtype, RR.receipe_difficulty, RR.receipe_time, '
+        +'RR.receipe_volume, RR.receipe_content, RR.receipe_caution, RR.receipe_likesum, RR.receipe_sharesum, RR.receipe_savesum, RR.receipe_commentsum, '
+        +'UU.name, UU.cancerNm, UU.progressNm, '
+        +'group_concat(Ri.ingredient_content) As ingredient_content,group_concat(Ri.ingredient_type) As ingredient_type, '
+        +'group_concat(Cf.cancerNm) '
+        +'FROM receipe As RR, user As UU, receipe_ingredient Ri, (SELECT food,cancerNm FROM cancer_food GROUP BY food) Cf'
+        +' WHERE RR.receipe_id = ? AND RR.user_id=UU.user_id AND Ri.receipe_id =RR.receipe_id AND Cf.food IN (Ri.ingredient_content)'
+
+        var selectReceipeResult = await db.queryParam_Arr(selectReceipeQuery, [req.params.receipe_id]);
+        console.log(selectReceipeQuery);
+    }
+    else{
+        const selectReceipeQuery = 'SELECT * FROM receipe WHERE receipe_id = ?'
+
+        var selectReceipeResult = await db.queryParam_Parse(selectReceipeQuery, req.params.receipe_id);
+        console.log(222);
+    }
+
+    if (!selectReceipeResult) { //DB에러
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));        
+    }
+    else {//데이터베이스 연결 성공
+        if(selectReceipeResult[0]==null){
+            res.status(200).send(defaultRes.successFalse(statusCode.OK, "해당 레시피가 없습니다."));
+        }
+        else{
+            res.status(200).send(defaultRes.successTrue(statusCode.OK, "레시피 조회 성공", selectReceipeResult));
+        }
+    }
     
 });
+
 
 // 레시피 유형 API (레시피 id 생성)
 // type = 0: 글이미지 
