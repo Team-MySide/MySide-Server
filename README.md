@@ -71,6 +71,7 @@
 #### Front-end Developer
 - 김선호
 - 장윤석
+- 준현
 
 #### Back-end Developer
 - 김원준
