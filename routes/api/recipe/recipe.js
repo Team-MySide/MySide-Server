@@ -21,7 +21,7 @@ router.get('/list/:receipe_id', async (req, res) => {
     const aaa = req.params.receipe_id
 
     const selectReceipeQuery ='select re.receipe_img, re.receipe_name, re.receipe_foodtype, re.receipe_difficulty, re.receipe_time, '
-    +'re.receipe_volume, re.receipe_content, re.receipe_caution, re.receipe_likesum, re.receipe_sharesum, re.receipe_savesum, re.receipe_commentsum, re.link, re.link_comment '
+    +'re.receipe_volume, re.receipe_content, re.receipe_caution, re.receipe_likesum, re.receipe_sharesum, re.receipe_savesum, re.receipe_commentsum, re.link, re.link_comment, '
     +'u.name, u.cancerNm, u.progressNm '
     +'from receipe as re '
     +'left join user as u '
