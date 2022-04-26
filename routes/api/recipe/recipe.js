@@ -9,7 +9,7 @@ const statusCode = require('../../../module/utils/statusCode');
 const resMessage = require('../../../module/utils/responseMessage')
 const db = require('../../../module/pool');
 var moment = require('moment');
-// const upload = require('../../../config/multer');
+const upload = require('../../../config/multer');
 
 
 // 레시피 보여주기 API
