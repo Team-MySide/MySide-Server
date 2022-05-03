@@ -133,4 +133,7 @@ module.exports = {
   RECIPE_INSERT : "레시피 입력 성공",
   RECIPE_INSERT_FAIL : "레시피 입력 실패",
 
+  PROFILE_IMAGE_INSERT : "프로필 이미지 수정 성공",
+  PROFILE_IMAGE_FAIL : "프로필 이미지 수정 실패",
+
 };
