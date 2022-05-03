@@ -113,6 +113,4 @@ router.delete('/main/delete/:receipe_id/:comment_id', authUtil.isLoggedin, async
         }
     }
 })
-
-
 module.exports = router;

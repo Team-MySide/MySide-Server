@@ -21,7 +21,7 @@ const { EXPRIED_TOKEN } = require('../../../module/utils/responseMessage');
         let cancerNm = SelectCancerResult[0].cancerNm;
         let SelectQuery =
         'SELECT receipe_id, receipe_name, receipe_img, receipe_difficulty, receipe_time, receipe.user_id,'+
-        'user.name, user.cancerNm, user.stageNm,user.progressNm '+
+        'user.name as user_name, user.cancerNm as user_cancerNm, user.stageNm as user_stageNm, user.progressNm as user_progressNm '+
         'FROM receipe join cancer_food on cancer_food.food = receipe.receipe_mainfood '+
         'join user on receipe.user_id = user.user_id WHERE cancer_food.cancerNm = ? '
         let SelectRankResult = await db.queryParam_Arr(SelectQuery, cancerNm);
