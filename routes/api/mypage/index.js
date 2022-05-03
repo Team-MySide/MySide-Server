@@ -6,6 +6,7 @@ router.use('/health', require('./health.js'));
 router.use('/profile', require('./profile.js'));
 router.use('/faq', require('./faq.js'));
 router.use('/likelist', require('./likelist.js'));
+router.use('/profileimage', require('./profileimage.js'));
 
 
 
