@@ -97,20 +97,27 @@ router.put('/main/update', authUtil.isLoggedin, async(req, res) => {
 
 //댓글 삭제
 router.delete('/main/delete/:receipe_id/:comment_id', authUtil.isLoggedin, async(req, res) => {
-    const listDeleteQuery = "DELETE FROM receipe_comment WHERE comment_id = ? AND user_id = ?";
-    const listDeleteResult = await db.queryParam_Parse(listDeleteQuery, [req.params.comment_id, req.decoded.id]);
+    const listDeleteQuery = "DELETE FROM receipe_comment WHERE comment_id = ? AND user_id = ? AND receipe_id = ?";
+    const listDeleteResult = await db.queryParam_Parse(listDeleteQuery, [req.params.comment_id, req.decoded.id, req.params.receipe_id]);
+    console.log(listDeleteResult.affectedRows)
     if (!listDeleteResult) { //DB에러
         res.status(200).send(defaultRes.successFalse(statuscode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));        
     }
     else {//뿌려준 데이터를 가지고 확인하는거니 데이터는 존재 =>삭제만 하면 됨
-        const listUpdateQuery = "UPDATE receipe SET receipe_commentsum = receipe_commentsum - 1 WHERE receipe_id = ?";
-        const listUpdateResult = await db.queryParam_Parse(listUpdateQuery, [req.params.receipe_id]);
-        if (!listUpdateResult) { //DB에러
-            res.status(200).send(defaultRes.successFalse(statuscode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));        
+        if (listDeleteResult.affectedRows == 0){ // 삭제할 데이터 영향 받지 않을 경우 클라이언트가 전송한 파라미터 값 오류
+            res.status(200).send(defaultRes.successFalse(statuscode.BAD_REQUEST, resMessage.OUT_OF_VALUE));        
         }
-        else {//DB연결 성공
-        res.status(200).send(defaultRes.successTrue(statuscode.OK, "댓글 삭제 성공"));
+        else{
+            const listUpdateQuery = "UPDATE receipe SET receipe_commentsum = receipe_commentsum - 1 WHERE receipe_id = ?";
+            const listUpdateResult = await db.queryParam_Parse(listUpdateQuery, [req.params.receipe_id]);
+            if (!listUpdateResult) { //DB에러
+                res.status(200).send(defaultRes.successFalse(statuscode.INTERNAL_SERVER_ERROR, resMessage.DB_ERROR));        
+            }
+            else {//DB연결 성공
+            res.status(200).send(defaultRes.successTrue(statuscode.OK, "댓글 삭제 성공"));
+            }
         }
+        
     }
 })
 module.exports = router;
