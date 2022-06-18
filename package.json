@@ -7,9 +7,11 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1126.0",
+    "axios": "^0.27.2",
     "bcrypt": "5.0.1",
     "body-parser": "^1.19.1",
     "cookie-parser": "~1.4.4",
+    "crypto-js": "^4.1.1",
     "crypto-promise": "2.1.0",
     "debug": "~2.6.9",
     "express": "~4.16.1",
@@ -30,6 +32,7 @@
     "passport-kakao": "^1.0.1",
     "promise-mysql": "3.3.2",
     "rand-token": "1.0.1",
+    "salt": "^0.5.5",
     "sharp": "^0.30.4"
   }
 }
