@@ -202,8 +202,22 @@ router.get('/recently', authUtil.isLoggedin,async (req, res) => {
 
 router.get('/popular', async (req, res) => {
 
-         resData =["토마토", "콜리플라워", "당근", "연어(홍연어)"]
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "인기검색어 조회 성공", resData));      
+    const PopularQuery = "SELECT name FROM food_thumbnail ORDER BY views desc LIMIT 4";
+    const PopularReslut = await db.queryParam_None(PopularQuery);
+    console.log(PopularReslut[0]['name'])
+    return_data = []
+
+
+
+    if(!PopularReslut){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));    
+    }else{
+        for(let i = 0;i<PopularReslut.length;i++){
+            return_data.push(PopularReslut[i]['name']);
+        }
+        console.log(return_data)
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "인기검색어 top4 조회 성공", return_data)); 
+    }
 
 });
 
