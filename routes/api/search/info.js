@@ -26,15 +26,13 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
 
     try{
        
-        const UpdateViewsQuery = 'UPDATE food_thumbnail SET views + 1 WHERE food = ?' 
+        const UpdateViewsQuery = 'UPDATE food_thumbnail SET views = views + 1 WHERE name = ?' 
         const UpdateViewsResult = await db.queryParam_Arr(UpdateViewsQuery, [req.params.food]);
-         
         const SelectQuery1 = 'SELECT food_id, background_color,name,title,img,category,wishes,views,likes,nutrition1,nutrition2,nutrition3,nutrition4 FROM food_thumbnail WHERE name = ?'; 
         const SelectResult1 = await db.queryParam_Arr(SelectQuery1, [req.params.food]);
         const SelectQuery2 = 'SELECT cancerNm from cancer_food WHERE food = ?'; 
         const SelectResult2 = await db.queryParam_Arr(SelectQuery2, [req.params.food]);
-        console.log(SelectResult2);
-        
+
         resData.name =SelectResult1[0].name;
         resData.img =SelectResult1[0].img;
         resData.title =SelectResult1[0].title;
