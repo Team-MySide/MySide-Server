@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="/stylesheets/table/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/stylesheets/table/bootstrap.min.css">
+   
+    <!-- Style -->
+    <link rel="stylesheet" href="/stylesheets/table/style.css">
+
+    <title>데이터 관리</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700,600" rel="stylesheet" type="text/css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet" type="text/css">
+   
+    <style>
+      .pagination {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        font-family: arial;
+        list-style: none;
+        display: inline-block;
+        padding: 0;
+        margin-top: 10px;
+      }
+      .pagination li {
+        display: inline;
+        text-align: center;
+      }
+      .pagination a {
+        float: left;
+        display: block;
+        font-size: 15px;
+        text-decoration: none;
+        padding: 5px 12px;
+        color: rgba(90, 82, 82, 0.637);
+        margin-left: -1px;
+        border: 1px solid transparent;
+        line-height: 1.5;
+        text-align: center;
+      }
+      .pagination input {
+        float: left;
+        display: block;
+        font-size: 14px;
+        text-decoration: none;
+        padding: 5px 12px;
+        color: rgba(90, 82, 82, 0.637);
+        margin-left: -1px;
+        border: 1px solid transparent;
+        line-height: 1.5;
+        text-align: center;
+        border-color: #3BD7E2;
+      }
+      .pagination a.active {
+        cursor: default;
+      }
+      .pagination a:active {
+        outline: none;
+      }
+
+      .modal-3 {
+        float:right;
+      }
+
+      .modal-3 a {
+        margin-left: 3px;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        -moz-border-radius: 100%;
+        -webkit-border-radius: 100%;
+        border-radius: 100%;
+      }
+      .modal-3 input {
+        margin-left: 3px;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        -moz-border-radius: 100%;
+        -webkit-border-radius: 100%;
+        border-radius: 100%;
+      }
+      .prev:hover {
+        background-color: #3BD7E2;
+        color: #fff;
+        font-weight: bold;
+      }
+      .next:hover {
+        background-color: #3BD7E2;
+        color: #fff;
+        font-weight: bold;
+      }
+      #totalPage{
+        background-color: #3BD7E2;
+        color: #fff !important;
+      }
+      .slash{
+        width: 10px !important;
+      }
+
+
+      .modal{
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      }
+
+
+    /* Modal Content */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 50%;
+      height: 285px;
+      overflow: auto; /* Enable scroll if needed */
+    }
+
+    .mhead{
+        font-size: 8px;
+        color: #3BD7E2;
+        margin:  5px;
+    }
+    .mtext{
+        font-size: 10px;
+        margin:  3px;
+    }
+
+    #modal-title{
+        height: 30px;
+        font-weight: bold;
+        width: 100%;
+    }
+
+    .close {
+      color: #aaaaaa;
+      font-size: 28px;
+      font-weight: bold;
+      width: 20px;
+      margin-left: 95%;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #submit {
+        background-color: #3BD7E2;
+        outline: none;
+        color: #fff;
+        font-size: 14px;
+        display: flex;
+        justify-content: center;
+        
+    }
+
+    .selectCategory{
+      width: 100%;
+      border: 1px solid;
+      font-size: 16px;
+      font-weight: bold ;
+      margin: 5px;
+      padding: 5px;
+      text-align: center;
+    }
+    .selectCategory:hover{
+      width: 100%;
+      border: 1px solid;
+      font-size: 16px;
+      font-weight: 600 ;
+      background-color: #3BD7E2;
+      color: #fefefe;
+      margin: 5px;
+      padding: 5px;
+      text-align: center;
+    }
+
+    .selectCategory.active{
+      width: 100%;
+      border: 1px solid;
+      font-size: 16px;
+      font-weight: 600;
+      background-color: #3BD7E2;
+      color: #fefefe;
+      margin: 5px;
+      padding: 5px;
+      text-align: center;
+    }
+    </style>
+
+  </head>
+  <body>
+        <div class="content">
+    
+          <div class="container" style="margin-top: -70px;">
+            <h2 id ="category" onclick="openCategoryModal()" name="BADFOOD" class="mb-5">나쁜 음식</h2>
+      
+            <div class="table-responsive">
+              
+      
+              <table class="table custom-table" style="table-layout:fixed; width:100%;">
+                <div onclick="openModal()" style ="float:left; color: #3BD7E2; font-weight: 600;">신규 등록</div>
+           
+                <ul class="pagination modal-3">
+                  <li><a  onclick="prev()" class="prev">&laquo</a></li>
+                  <li><input id="currentPage" maxlength ="3" value="1" onkeyup="if(window.event.keyCode==13){searchPage()}"></input></li>
+                  <li><a class="slash">/</a></li>
+                  <li><a id="totalPage"></a></li>
+                  <li><a onclick="next()" class="next">&raquo;</a></li>
+                </ul><br>
+
+                
+                <thead>
+                  <tr id ="badNutThTr">
+                    <th scope="col" width ="60">ID</th>
+                    <th scope="col" width ="80">암2</th>
+                    <th scope="col" width ="100">성분</th>
+                    <th scope="col" width ="300">링크</th>
+                  </tr>
+                </thead>
+                <tbody id="table">
+                   <tr id ="badNutTbTr">
+                    <td> ID</td>
+                    <td contenteditable='true'></td>
+                    <td contenteditable='true'></td>
+                    <td contenteditable='true'></td>
+                    <td>
+                      <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                      <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                   </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+      
+      
+          </div>
+      
+        </div>
+       <form id="badNutModal" autocomplete="off" role="form" method="post" class="modal">
+        <div class="modal-content">
+            <span id ="closeGoodNut" class="close">&times;</span>
+    
+                <div class="form-group">
+                  <input id="cancer" name="cancer" type="text"  class="form-control" placeholder="암" value="" >
+              </div>
+                <div class="form-group">
+                    <input id="nutrition" name="nutrition" type="text" class="form-control" placeholder="영양성분" value="" >
+                </div>
+                <div class="form-group">
+                  <input id="ref_link" name="ref_link" type="text"  class="form-control" placeholder="참조사항" value="" >
+              </div>
+                <div class="form-group">
+                        <button type="submit"  id="submit" tabindex="139" class="form-control btn btn-login" onclick="conversion()">등 록</button>
+                </div>
+              
+         </div>
+     </form>
+
+       <form id="categoryModal" autocomplete="off" role="form" method="post" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeCategory">&times;</span>
+            <div class ="selectCategory" OnClick="location.href = '/admin/data'" id ="goodNut">좋은 영양성분</div>
+            <div class ="selectCategory" OnClick="location.href = '/admin/data/badnut'" id ="badNut" >나쁜 영양성분</div>
+            <div class ="selectCategory" OnClick="location.href = '/admin/data/goodfood'" id ="goodFood" >좋은 음식</div>
+            <div class ="selectCategory active" OnClick="location.href = '/admin/data/badfood'" id ="badFood" >나쁜 음식</div>
+              
+         </div>
+     </form>
+  
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="js/jquery.ssd-vertical-navigation.min.js"></script>
+  <script>
+    
+  $(document).ready(function(){
+    let page = 1;
+    let category = $('#category').attr('name');
+
+    let goodNutThTr = document.getElementById("goodNutThTr");
+    let badNutThTr = document.getElementById("badNutThTr");
+    let goodNutTbTr = document.getElementById("goodNutTbTr");
+    let badNutTbTr = document.getElementById("badNutTbTr");
+    badNutThTr.style.display = "none";
+    badNutTbTr.style.display = "none";
+    
+    search(page,category);
+  });
+
+  function search(page,category){
+      $.ajax({
+        method: "GET", // 요청 방식
+        url: "/admin/data/search?page="+ page +"&category=" +category ,
+        success: function (res) { // 성공 시 호출 콜백
+          let data = res.data.data;
+          let totalCount = res.data.totalCount;
+          let totalPage = Math.floor(totalCount/20);
+          $('#totalPage').html(totalPage + 1);
+          $('#table').empty();
+          let tag ="";
+          let $tr ="";
+            for (let i = 0; i < data.length; i++) {
+                  if(category=='GOODNUT'){
+                       tag = 
+                          `<tr>`
+                            + ` <td> ${data[i].id}</td>`
+                            + ` <td contenteditable='true'>${data[i].cancer}</td>`
+                            + ` <td contenteditable='true'>${data[i].nutrition}</td>`
+                            + ` <td contenteditable='true'>${data[i].ref_link}</td>`
+                            +`<tr>`
+                       $tr = (`${tag}`);
+                  }else if(category=='BADNUT'){
+                       tag = 
+                          `<tr>`
+                            + ` <td> ${data[i].id}</td>`
+                            + ` <td contenteditable='true'>${data[i].cancer}</td>`
+                            + ` <td contenteditable='true'>${data[i].nutrition}</td>`
+                            + ` <td contenteditable='true'>${data[i].ref_link}</td>`
+                            +`<tr>`
+                       $tr = (`${tag}`);
+                  }
+                $('#table').append($tr);//jQuery 문법
+             }
+        },
+        error: function (data) {
+            console.log("failed");
+        },
+        complete: function () {
+            console.log('compelted');
+        }
+     });
+    }
+
+    function prev(){
+      let page = document.getElementById('currentPage').value;
+      let category = $('#category').attr('name');
+      if(page !=1 ){
+        page = Number(page)-1;
+        document.getElementById('currentPage').value = page;
+        search(page,category);
+      }else{
+        alert("첫 페이지입니다.");
+      }
+    }
+
+    function next(){
+      let page = document.getElementById('currentPage').value;
+      let category = $('#category').attr('name');
+      let totalPage = document.getElementById('totalPage').innerHTML;
+      if(page !=totalPage ){
+        page = Number(page)+1;
+        document.getElementById('currentPage').value = page;
+        search(page,category);
+      }else{
+        alert("마지막 페이지입니다.");
+      }
+    }
+
+    function searchPage(){
+      let page = document.getElementById('currentPage').value;
+      let category = $('#category').attr('name');
+      search(page,category);
+    }
+
+    function openModal(){
+          let category = $('#category').attr('name');
+          let modal ="";
+          let span  ="";
+          
+          if(category=='GOODNUT'){
+            modal = document.getElementById("goodNutModal");
+            modal.style.display = "block";
+            span = document.getElementById("closeGoodNut");
+          }
+
+            span.onclick = function() {
+              modal.style.display = "none";
+            }
+
+            span.onclick = function() {
+              modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+    }
+
+    function openCategoryModal(){
+          let category = $('#category').attr('name');
+          let modal ="";
+          let span  ="";
+          let select  ="";
+          
+            modal = document.getElementById("categoryModal");
+            modal.style.display = "block";
+            span = document.getElementById("closeCategory");
+
+            span.onclick = function() {
+              modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+    }
+
+    function selectCategory(category,select){
+      let modal ="";
+      modal = document.getElementById("categoryModal");
+      modal.style.display = "block";
+
+
+    let goodNutThTr = document.getElementById("goodNutThTr");
+    let goodNutTbTr = document.getElementById("goodNutTbTr");
+    let badNutThTr = document.getElementById("badNutThTr");
+    let badNutTbTr = document.getElementById("badNutTbTr");
+
+    if(category == "GOODNUT"){
+      goodNutThTr.style.display = "block";
+      goodNutTbTr.style.display = "block";
+      badNutThTr.style.display = "none";
+      badNutTbTr.style.display = "none";
+    }else if(category == "BADNUT"){
+      goodNutThTr.style.display = "none";
+      goodNutTbTr.style.display = "none";
+      badNutThTr.style.display = "block";
+      badNutTbTr.style.display = "block";
+    }
+
+      search(1,category);
+      modal.style.display = "none";
+
+     
+      $(".selectCategory").removeClass("active");
+      $("#"+select.id).addClass("active");
+     
+    }
+
+    
+  
+  </script>
+   
+  </body>
+</html>

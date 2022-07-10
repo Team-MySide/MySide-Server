@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <style type="text/css">
+        body{
+            background-color: #f5f6fa;
+        }
+       .chart-wrapper {
+            background-color: #f5f6fa;
+            padding: 20px;
+            overflow: hidden;
+            width: 100%;
+        }
+        .chartjs-wrapper canvas {
+             max-height: 100% !important;
+        }
+        #head{
+            height: 60px;
+            color: #17232f;
+            font-size: 20px;
+            font-weight: 900;
+            padding: 15px;
+        }
+    </style>
+    <script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/stylesheets/table/owl.carousel.min.css">
+
+    <link rel="stylesheet" href="/stylesheets/table/bootstrap.min.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+  
+    <div id="head">대시보드</div>
+
+  <div class="chart-wrapper">
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+        <div class="single-chart rounded bg-white p-3">
+            <h3>1,203</h3>
+            <p class="text-muted">검색 현황</p>
+            <div class="chartjs-wrapper">
+            <canvas id="barChart"></canvas>
+            </div>
+        </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+        <div class="single-chart rounded bg-white p-3">
+            <h3>7,103</h3>
+            <p class="text-muted">페이지뷰</p>
+            <div class="chartjs-wrapper">
+            <canvas id="line"></canvas>
+            </div>
+        </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+        <div class="single-chart rounded bg-white p-3">
+            <h3>103</h3>
+            <p class="text-muted">신규 유저</p>
+            <div class="chartjs-wrapper">
+            <canvas id="dual-line"></canvas>
+            </div>
+        </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+        <div class="single-chart rounded bg-white p-3">
+            <h3>35</h3>
+            <p class="text-muted">레시피 현황</p>
+            <div class="chartjs-wrapper">
+            <canvas id="area-chart"></canvas>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!--   Second Row -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+        <div class="single-chart rounded bg-white p-3">
+            <h3 class="text-center pb-4">환우 통계</h3>
+            <div class="chartjs-wrapper">
+            <canvas id="polar"></canvas>
+            </div>
+        </div>
+        </div>
+        
+        <div class="col-md-6">
+        <div class="single-chart rounded bg-white p-3">
+            <h3 class="text-center pb-4">카테고리</h3>
+            <div class="chartjs-wrapper">
+            <canvas id="radar"></canvas>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+</body>
+<script>
+        /*=========================================
+    Bar Chart
+    ===========================================*/
+    var barX = document.getElementById("barChart").getContext('2d');
+
+    var myChart = new Chart(barX, {
+        type: 'bar',
+        data: {
+            labels: ["비타민C", "위암", "토마토", "감자", "나쁜", "영양성분","흠...", "검색", "문의", "이웃집"],
+            datasets: [{
+                label: '',
+                data: [71, 39, 35, 34, 31, 29, 21, 16, 15, 14, 9],
+                backgroundColor: ['#3BD7E2','#4c84ff','#4c84ff','#4c84ff','#4c84ff','#4c84ff','#4c84ff','#4c84ff','#4c84ff','#4c84ff']
+            }]
+        },
+        options: {
+        legend: {
+            display: false
+        },
+        scales: {
+        xAxes: [{
+            gridLines: {
+            drawBorder: false,
+            display:false
+            },
+            ticks: {
+            display:false, // hide main x-axis line
+            beginAtZero:true
+            },
+            barPercentage: 0.1,
+            categoryPercentage: 3
+        }],
+        yAxes: [{
+            gridLines: {
+            drawBorder: false, // hide main y-axis line
+            display:false
+            },
+            ticks: {
+            display:false,
+            beginAtZero:true
+            },
+        }]
+        },
+        
+    }
+    });
+
+    /*=========================================
+    Multiple Line Chart
+    ===========================================*/
+    var dual = document.getElementById("dual-line").getContext("2d");
+    var urChart = new Chart(dual, {
+        type: 'line',
+        data: {
+        labels:["Fri","Sat", "Sun", "Mon", "Tue", "Wed", "Thu"],
+        datasets: [{
+        label: "My First dataset",
+        pointRadius: 0,
+        pointBackgroundColor: 'rgba(255,255,255,1)',
+        pointBorderWidth: 0,
+        fill: false,
+        backgroundColor: 'transparent',
+        borderColor: '#fdc506',
+        data: [0,4, 3, 5.5, 3, 4.7, 0]
+        }, {
+        label: "My Second dataset",
+        fill: false,
+        pointRadius: 0,
+        pointBackgroundColor: '#3BD7E2',
+        pointBorderWidth: 0,
+        backgroundColor: 'transparent',
+        borderColor: '#3BD7E2',
+        data: [0,2,4.3,3.8,5.2,1.8,2.2],
+        }]
+        },
+        options: {
+        legend: {
+            display: false
+        },
+        scales: {
+        xAxes: [{
+            gridLines: {
+            drawBorder: false,
+            display:false
+            },
+            ticks: {
+            display:false, // hide main x-axis line
+            beginAtZero:true
+            },
+            barPercentage: 1.8,
+            categoryPercentage: 0.2
+        }],
+        yAxes: [{
+            gridLines: {
+            drawBorder: false, // hide main y-axis line
+            display:false
+            },
+            ticks: {
+            display:false,
+            beginAtZero:true
+            },
+        }]
+        },
+        tooltips: {
+        enabled: false
+        }
+    }
+    });
+
+    /*=========================================
+    Area Chart
+    ===========================================*/
+    var area = document.getElementById("area-chart").getContext("2d");
+    var urChart = new Chart(area, {
+        type: 'line',
+        data: {
+            labels:["Fri","Sat", "Sun", "Mon", "Tue", "Wed", "Thu"],
+            datasets: [{
+        label: "My First dataset",
+        pointRadius: 0,
+        fill: true,
+        backgroundColor: 'rgba(76, 132, 255, 0.9)',
+        borderColor: 'rgba(76, 132, 255, 0.9)',
+        data: [0,4, 2, 6.5, 3, 4.7, 0]
+        }, {
+        label: "My Second dataset",
+        pointRadius: 0,
+        fill: true,
+        backgroundColor: 'rgba(253, 197, 6, 0.9)',
+        borderColor: 'rgba(253, 197, 6, 1)',
+        data: [0,2,4.3,3.8,5.2,1.8,2.2],
+        }]
+        },
+        options: {
+        legend: {
+            display: false
+        },
+        scales: {
+        xAxes: [{
+            gridLines: {
+            drawBorder: false,
+            display:false
+            },
+            ticks: {
+            display:false, // hide main x-axis line
+            beginAtZero:true
+            },
+            barPercentage: 1.8,
+            categoryPercentage: 0.2
+        }],
+        yAxes: [{
+            gridLines: {
+            drawBorder: false, // hide main y-axis line
+            display:false
+            },
+            ticks: {
+            display:false,
+            beginAtZero:true
+            },
+        }]
+        },
+        tooltips: {
+        enabled: false
+        }
+    }
+    });
+
+    /*=========================================
+    Multiple Line Chart
+    ===========================================*/
+    var line = document.getElementById("line").getContext("2d");
+
+    var gradientFill = line.createLinearGradient(0, 120, 0, 0);
+    gradientFill.addColorStop(0, "rgba(41,204,151,0.10196)");
+    gradientFill.addColorStop(1, "rgba(41,204,151,0.30196)");
+
+    var lChart = new Chart(line, {
+        type: 'line',
+        data: {
+        labels:["월","화", "수", "목", "금", "토", "일"],
+        datasets: [{
+        lineTension: 0,
+        pointRadius: 4,
+        pointBackgroundColor: 'rgba(255,255,255,1)',
+        pointBorderWidth: 2,
+        fill: true,
+        backgroundColor: gradientFill,
+        borderColor: '#29cc97',
+        borderWidth: 2,
+        data: [100,400, 300, 550, 330, 470, 100]
+        }]
+        },
+        options: {
+        legend: {
+            display: false
+        },
+        scales: {
+        xAxes: [{
+            gridLines: {
+            drawBorder: false,
+            display:false
+            },
+            ticks: {
+            display:false, // hide main x-axis line
+            beginAtZero:true
+            },
+            barPercentage: 1.8,
+            categoryPercentage: 0.2
+        }],
+        yAxes: [{
+            gridLines: {
+            drawBorder: false, // hide main y-axis line
+            display:false
+            },
+            ticks: {
+            display:false,
+            beginAtZero:true
+            },
+        }]
+        },
+    }
+    });
+
+    /*=========================================
+    Polar Chart
+    ===========================================*/
+    var config = {
+    data: {
+        datasets: [{
+        data: [43,23,39,33,51,39],
+        backgroundColor: [
+            'rgba(41,204,151,0.5)',
+            'rgba(254,88,101,0.5)',
+            'rgba(128,97,239,0.5)', 
+            'rgba(254,196,0,0.5)', 
+            'rgba(76,132,255,0.5)',
+            'rgba(95,186,233,0.5)'
+        ],
+        label: '' // for legend
+        }],
+        labels: [
+        '위암',
+        '간암',
+        '유방암',
+        '폐암',
+        '갑상선암',
+        '대장암'
+        ]
+    },
+    options: {
+        responsive: true,
+        legend: {
+        position: 'right',
+        display: false
+        },
+        title: {
+        display: false,
+        text: 'Chart.js Polar Area Chart'
+        },
+        scale: {
+        ticks: {
+            beginAtZero: true
+        },
+        reverse: false
+        },
+        animation: {
+        animateRotate: false,
+        animateScale: true
+        }
+    }
+    };
+
+    window.onload = function() {
+    var polar = document.getElementById("polar").getContext("2d");
+    window.myPolarArea = Chart.PolarArea(polar, config);
+    };
+    /*=========================================
+    Radar Chart
+    ===========================================*/
+    var randomScalingFactor = function() {
+                return Math.round(Math.random() * 100);
+            };
+            var setting = {
+                type: 'radar',
+                data: {
+                    labels: ['육류', '과일류', '곡류', '유제품', '차류', '채소류', '해산물', '유동식', '기타'],
+                    datasets: [{
+                        label: '비율',
+                        backgroundColor: 'rgba(76,132,255,0.2)',
+                        borderColor: '#4c84ff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointBorderColor:'rgba(76,132,255,1)',
+                        pointBackgroundColor:'#ffffff',
+                        data: [22,18,28,18,4,5,13,6,12]
+            }],
+                options: {
+            responsive: true,
+            responsiveAnimationDuration: 2000,
+            maintainAspectRatio: false,
+                    legend: {
+            display: false
+            },
+            tooltips: {
+            callbacks: {
+                label: function(tooltipItem) {
+                return tooltipItem.yLabel;
+                }
+            }
+            },
+                    title: {
+                        display: false,
+                        text: 'Chart.js Radar Chart'
+                    },
+                    scale: {
+                        ticks: {
+                            beginAtZero: true
+                        },
+            pointLabels: {
+                callback: function(pointLabel, index, labels) {
+                console.log('pointLabel');
+                } 
+            }
+                    }
+                }
+        }
+    }
+
+    var radar = document.getElementById('radar');
+    myRadar = new Chart(radar, setting);
+
+</script>
+</html>

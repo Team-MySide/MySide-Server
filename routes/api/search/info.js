@@ -26,13 +26,15 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
 
     try{
        
-       const UpdateViewsQuery = 'UPDATE food_thumbnail SET views = views + 1 WHERE name = ?' 
+        const UpdateViewsQuery = 'UPDATE food_thumbnail SET views + 1 WHERE food = ?' 
         const UpdateViewsResult = await db.queryParam_Arr(UpdateViewsQuery, [req.params.food]);
+         
         const SelectQuery1 = 'SELECT food_id, background_color,name,title,img,category,wishes,views,likes,nutrition1,nutrition2,nutrition3,nutrition4 FROM food_thumbnail WHERE name = ?'; 
         const SelectResult1 = await db.queryParam_Arr(SelectQuery1, [req.params.food]);
         const SelectQuery2 = 'SELECT cancerNm from cancer_food WHERE food = ?'; 
         const SelectResult2 = await db.queryParam_Arr(SelectQuery2, [req.params.food]);
- 
+        console.log(SelectResult2);
+        
         resData.name =SelectResult1[0].name;
         resData.img =SelectResult1[0].img;
         resData.title =SelectResult1[0].title;
@@ -55,8 +57,8 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
 
     
         if(req.decoded != "NL"){
-            const SelectQuery3 = 'SELECT * FROM likelist WHERE food = ? AND user_id = ?'; 
-            const SelectResult3 = await db.queryParam_Arr(SelectQuery3, [req.params.food, req.decoded.id]);
+            const SelectQuery3 = 'SELECT * FROM likelist WHERE food = ?'; 
+            const SelectResult3 = await db.queryParam_Arr(SelectQuery3, [req.params.food]);
             if(SelectResult3[0]){
                 resData.likeStatus = 1;
             }
@@ -728,5 +730,91 @@ router.get('/source/:food', async (req, res) => {
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 출처 팝업 조회 성공",resData));      
     }
 });
+
+router.get('/source/stats/:food', async (req, res) => {
+    const SelectQuery = "SELECT cancerNm,flag,count(*) AS count FROM cancer_food WHERE food = ? GROUP BY cancerNm, flag"; 
+    const SelectResult = await db.queryParam_Parse(SelectQuery,req.params.food);
+    let resData = [];
+    let sourceList = [];
+    let source={
+        cancerNm : "",
+        flagList : []
+    }
+    let flag ={
+        code : 0,
+        count : 0
+    }
+    let cancerFlag = "";
+    let flagTmpList = [];
+
+    let sourceIdx = 0;
+    let flagCode = 0;
+    let flagCount = 0;
+
+    for(let i =0; i<SelectResult.length;i++){
+        if(cancerFlag != SelectResult[i].cancerNm){ //신규 암명 구분
+            if(i != 0) ++ sourceIdx;
+            cancerFlag = SelectResult[i].cancerNm;
+            flagTmpList = [];
+
+            source={
+                cancerNm : cancerFlag,
+                flagList : []
+            }
+
+            for(let j =1; j<4;j++){ // 좋은, 애매, 나쁜 flag 인풋
+                flag ={
+                    code : 0,
+                    count : 0
+                }
+
+                flag.code = j;
+                source.flagList.push(flag);
+            }
+
+            if(SelectResult[i].flag == ''){
+                flagCode = 1;
+            }else{
+                flagCode = SelectResult[i].flag;
+            }
+            sourceList.push(source);
+
+            flagCount = SelectResult[i].count;
+
+            sourceList[sourceIdx].flagList[flagCode-1].count = flagCount;
+         
+            
+        }else{
+            if(SelectResult[i].flag == ''){
+                flagCode = 1;
+            }else{
+                flagCode = SelectResult[i].flag;
+            }
+            flagCount = SelectResult[i].count;
+            sourceList[sourceIdx].flagList[flagCode-1].count = flagCount;
+        }
+
+    }
+
+    resData = sourceList;
+
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     
+    }else{
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 출처 상태 조회 성공",resData ));      
+    }
+});
+
+router.get('/source/stats/detail/:food/:cancerNm/:code', async (req, res) => {
+    const SelectQuery = "SELECT headline, comment, source, source_link, source_date FROM cancer_food WHERE food = ? GROUP BY cancerNm, flag"; 
+    const SelectResult = await db.queryParam_Parse(SelectQuery,req.params.food);
+
+    if(!SelectResult){
+        res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     
+    }else{
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 상세 세부설명 조회 성공",SelectResult[0]));      
+    }
+});
+
 
 module.exports = router;

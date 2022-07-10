@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="/stylesheets/table/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/stylesheets/table/bootstrap.min.css">
+   
+    <!-- Style -->
+    <link rel="stylesheet" href="/stylesheets/table/style.css">
+
+    <title>이웃집닥터</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700,600" rel="stylesheet" type="text/css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet" type="text/css">
+   
+    <style>
+
+    li{
+        font-size: 20px;
+          height: 47.5px;
+      }
+      body {
+        background-color: white;
+        color: #666666;
+        font-family: "Open sans", Sans-serif;
+        padding: 0;
+        margin: 0;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      h1 {
+        margin-top: 0;
+      }
+
+      #contentWrapper {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      #contentLeft {
+        z-index: 10;
+        width: 220px;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #283c51;
+      }
+
+      #contentRight {
+      
+        margin-left: 220px;
+      }
+
+      #leftNavigation {
+        margin: 2rem 0;
+      }
+      #leftNavigation, #leftNavigation li ul {
+        list-style: none;
+        padding: 0;
+      }
+      #leftNavigation li a {
+        font-size: 0.875rem;
+        display: block;
+        padding: 0.8rem 1rem 0.8rem 3rem;
+        color: #adadad;
+        border-bottom: solid 1px #395673;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        position: relative;
+        -webkit-transition: color 0.2s ease;
+        transition: color 0.2s ease;
+        font-weight: 600;
+      }
+
+      #leftNavigation li a .leftNavIcon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3rem;
+        padding: 0.8rem 0;
+        text-align: center;
+      }
+      #leftNavigation li a:hover {
+        color: white;
+      }
+      #leftNavigation li ul {
+        display: none;
+        margin: 0;
+        background-color: #17232f;
+      }
+      #leftNavigation li ul li a {
+        border-bottom: solid 1px #233547;
+      }
+      #leftNavigation li ul li:last-child a {
+        border-bottom: none;
+      }
+      #leftNavigation li ul li.active a {
+        color: white;
+      }
+      #leftNavigation li.active > a {
+        color: white;
+      }
+      #leftNavigation li.active ul {
+        display: block;
+      }
+      #leftNavigation > li.active {
+        background-color: #427c97;
+      }
+      #head {color:#FFFFFF; font-size: 20px; font-weight: bold; font-style:normal; margin-left: 10px;}
+      #logo{
+            width: 15%;
+            margin-bottom: 10px;
+            margin-left: 10px;
+            margin-right: 5px;
+      }
+      #logoContainer{
+        margin-top: -20px;
+        margin-bottom: -20px;
+      }
+    </style>
+
+
+    <title>Table #3</title>
+
+  <body>
+    <div id="contentWrapper">
+
+      <div id="contentLeft">
+         
+          <ul id="leftNavigation" style="list-style: none;
+          padding: 0;">
+            <li id="logoContainer">
+                    <img id="logo" src="https://mysidebucket.s3.ap-northeast-2.amazonaws.com/splash_logo.png">
+                    <i id="head">이웃집닥터</i>
+            </li>
+            <li></li>
+              <li class="active">
+                  <a data-url="/admin/dashboard"><i class="fa fa-laptop leftNavIcon"></i> 대시보드</a>
+                
+              </li>
+              <li></li>
+              <li>
+                  <a data-url="/admin/list"><i class="fa fa-apple leftNavIcon"></i> 음식 관리</a>
+                  
+              </li>
+              <li class="clickable">
+                <a data-url="/admin/recipe"><i class="fa fa-cutlery leftNavIcon"></i> 레시피 관리</a>
+              </li>
+              <li class="clickable">
+                <a data-url="/admin/data"><i class="fa fa-database leftNavIcon"></i> 데이터 관리</a>
+              </li>
+              
+
+
+              <li>
+                  <a data-url="/admin/detail"><i class="fa fa-plus leftNavIcon"></i> 음식 등록</a>
+                 
+              </li>
+              <li class="clickable">
+                  <a data-url="/admin/image"><i class="fa fa-image leftNavIcon"></i> 이미지 편집</a>
+              </li>
+  
+            
+            <li></li>
+            <li class="clickable">
+                  <a data-url="/admin/faq"><i class="fa fa-comment-o leftNavIcon"></i> FAQ</a>
+              </li>
+            <li class="clickable">
+                  <a><i class="fa fa-envelope-o leftNavIcon"></i> 문의 답변</a>
+              </li>
+          </ul>
+  
+      </div>
+  
+      <div id="contentRight">
+        <iframe id='iframe' frameborder="0" style="display:block; width:100%; height: 100vh" src="/admin/dashboard"></iframe>
+      
+        </div>
+      </div>
+    </div>
+  
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="js/jquery.ssd-vertical-navigation.min.js"></script>
+  <script>
+    
+    $(document).ready(function(e) {
+        $('a').click(function(){
+            $('li').removeClass('active')
+            $(this).parent( 'li' ).addClass('active');
+            $('#iframe').attr('src',$(this).attr('data-url'));
+        })
+    });
+
+
+
+  
+  </script>
+   
+  </body>
+</html>
