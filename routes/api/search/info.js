@@ -56,14 +56,14 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
 
     
         if(req.decoded != "NL"){
-            const SelectQuery3 = 'SELECT * FROM likelist WHERE food = ?'; 
-            const SelectResult3 = await db.queryParam_Arr(SelectQuery3, [req.params.food]);
+            const SelectQuery3 = 'SELECT * FROM likelist WHERE food = ? AND user_id = ?'; 
+            const SelectResult3 = await db.queryParam_Arr(SelectQuery3, [req.params.food, req.decoded.id]);
             if(SelectResult3[0]){
                 resData.likeStatus = 1;
             }
     
             const SelectQuery4 = 'SELECT * FROM wishlist WHERE food = ?'; 
-            const SelectResult4 = await db.queryParam_Arr(SelectQuery4, [req.params.food]);
+            const SelectResult4 = await db.queryParam_Arr(SelectQuery4, [req.params.food, req.decoded.id]);
             if(SelectResult4[0]){
                 resData.wishStatus = 1;
             }
