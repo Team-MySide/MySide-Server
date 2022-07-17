@@ -45,7 +45,7 @@ router.get('/search', async(req, res) => {
 
     if(category == 'GOODFOOD'){
         selectDataQuery =  'SELECT * '
-        + 'FROM (SELECT @rownum:=@rownum+1  rnum,  A.cancer_food_id as id, A.cancerNm, A.food,A.ref_link,ref_site,A.modify_date '
+        + 'FROM (SELECT @rownum:=@rownum+1  rnum,  A.cancer_food_id as id, A.cancerNm, A.food,A.ref_link,ref_site,A.modify_date ,A.headline, A.comment,A.flag,A.source,A.source_link,A.source_date '
         + 'FROM cancer_food A,(SELECT @ROWNUM := 0) R '
         + 'WHERE 1=1 ORDER BY rnum DESC ) list ' 
         + 'WHERE rnum >= ? AND rnum <=? '
@@ -94,10 +94,10 @@ router.post('/', async(req, res) => {
 
     if(category == 'GOODFOOD'){
         insertQuery =  'INSERT INTO cancer_food '
-        +' (cancerNm, food,ref_link,ref_site,modify_date )'
-        +' VALUES (?,?,?,?,?)';;
+        +' (cancerNm, food,ref_link,ref_site,headline, comment, flag, source, source_link, source_date,modify_date )'
+        +' VALUES (?,?,?,?,?,?,?,?,?,?,?)';
         insertResult = await db.queryParam_Arr(insertQuery, 
-                [req.body.cancer,req.body.food, req.body.ref_link,req.body.ref_site,moment().format('YYYY-MM-DD HH:mm:ss')]);
+                [req.body.cancer,req.body.food, req.body.ref_link,req.body.ref_site, req.body.headline, req.body.comment, req.body.flag, req.body.source, req.body.source_link, req.body.source_date,moment().format('YYYY-MM-DD HH:mm:ss')]);
      
     }
 
@@ -132,10 +132,10 @@ router.post('/modify', async(req, res) => {
 
     if(category == 'GOODFOOD'){
         updateQuery = 'UPDATE cancer_food SET ' 
-        + 'cancerNm =?,food =?,ref_link =?,ref_site =?,modify_date =? '
+        + 'cancerNm =?,food =?,ref_link =?,ref_site =?,headline =?, comment=?, flag=?, source=? , source_link=?, source_date=?, modify_date =? '
         + 'WHERE cancer_food_id =?'
         updateResult = await db.queryParam_Arr(updateQuery, 
-                [req.body.cancer,req.body.food, req.body.ref_link, req.body.ref_site,moment().format('YYYY-MM-DD HH:mm:ss'),req.body.id]);
+                [req.body.cancer,req.body.food, req.body.ref_link, req.body.ref_site, req.body.headline, req.body.comment, req.body.flag, req.body.source, req.body.source_link,req.body.source_date, moment().format('YYYY-MM-DD HH:mm:ss'),req.body.id]);
     }
 
     console.log(updateResult);
