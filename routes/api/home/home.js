@@ -38,7 +38,7 @@ router.get('/rank', async (req, res) => {
     + 'FROM food_thumbnail A, (SELECT food,cancerNm FROM cancer_food GROUP BY food) B '
     + 'WHERE A.name = B.food '
     + "AND A.img !=''"
-    + 'ORDER BY likes '
+    + 'ORDER BY likes DESC'
 
 
     let SelectResult = await db.queryParam_None(SelectQuery);

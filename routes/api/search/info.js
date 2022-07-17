@@ -25,8 +25,7 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
     }
 
     try{
-       
-        const UpdateViewsQuery = 'UPDATE food_thumbnail SET views + 1 WHERE food = ?' 
+        const UpdateViewsQuery = 'UPDATE food_thumbnail SET views = views + 1 WHERE name = ?' 
         const UpdateViewsResult = await db.queryParam_Arr(UpdateViewsQuery, [req.params.food]);
          
         const SelectQuery1 = 'SELECT food_id, background_color,name,title,img,category,wishes,views,likes,nutrition1,nutrition2,nutrition3,nutrition4 FROM food_thumbnail WHERE name = ?'; 
@@ -57,14 +56,14 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
 
     
         if(req.decoded != "NL"){
-            const SelectQuery3 = 'SELECT * FROM likelist WHERE food = ?'; 
-            const SelectResult3 = await db.queryParam_Arr(SelectQuery3, [req.params.food]);
+            const SelectQuery3 = 'SELECT * FROM likelist WHERE food = ? AND user_id = ?'; 
+            const SelectResult3 = await db.queryParam_Arr(SelectQuery3, [req.params.food, req.decoded.id]);
             if(SelectResult3[0]){
                 resData.likeStatus = 1;
             }
     
-            const SelectQuery4 = 'SELECT * FROM wishlist WHERE food = ?'; 
-            const SelectResult4 = await db.queryParam_Arr(SelectQuery4, [req.params.food]);
+            const SelectQuery4 = 'SELECT * FROM wishlist WHERE food = ? AND user_id = ?'; 
+            const SelectResult4 = await db.queryParam_Arr(SelectQuery4, [req.params.food, req.decoded.id]);
             if(SelectResult4[0]){
                 resData.wishStatus = 1;
             }
