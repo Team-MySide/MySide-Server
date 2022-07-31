@@ -805,13 +805,13 @@ router.get('/source/stats/:food', async (req, res) => {
 });
 
 router.get('/source/stats/detail/:food/:cancerNm/:code', async (req, res) => {
-    const SelectQuery = "SELECT headline, comment, source, source_link, source_date FROM cancer_food WHERE food = ? GROUP BY cancerNm, flag"; 
-    const SelectResult = await db.queryParam_Parse(SelectQuery,req.params.food);
-
+    const SelectQuery = "SELECT headline, comment, source, source_link, source_date FROM cancer_food WHERE food = ? AND cancerNm = ? AND flag = ? GROUP BY cancerNm , flag"; 
+    const SelectResult = await db.queryParam_Arr(SelectQuery,[req.params.food, req.params.cancerNm, req.params.code]);
+    console.log(SelectResult);
     if(!SelectResult){
         res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));     
     }else{
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 상세 세부설명 조회 성공",SelectResult[0]));      
+        res.status(200).send(defaultRes.successTrue(statusCode.OK, "음식 상세 세부설명 조회 성공",SelectResult));      
     }
 });
 
