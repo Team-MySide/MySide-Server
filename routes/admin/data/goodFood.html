@@ -263,12 +263,24 @@
                     <th scope="col" width ="100">음식</th>
                     <th scope="col" width ="300">링크</th>
                     <th scope="col" width ="100">사이트</th>
+                    <th scope="col" width ="300">헤드라인</th>
+                    <th scope="col" width ="1000">내용</th>
+                    <th scope="col" width ="300">상태</th>
+                    <th scope="col" width ="100">출처</th>
+                    <th scope="col" width ="300">링크</th>
+                    <th scope="col" width ="1000">날짜</th>
                     <th scope="col" width ="300">수정시간</th>
                   </tr>
                 </thead>
                 <tbody id="table">
                    <tr id ="badNutTbTr">
                     <td> ID</td>
+                    <td contenteditable='true'></td>
+                    <td contenteditable='true'></td>
+                    <td contenteditable='true'></td>
+                    <td contenteditable='true'></td>
+                    <td contenteditable='true'></td>
+                    <td contenteditable='true'></td>
                     <td contenteditable='true'></td>
                     <td contenteditable='true'></td>
                     <td contenteditable='true'></td>
@@ -301,6 +313,24 @@
                  </div>
                  <div class="form-group">
                   <input id="ref_site" name="ref_site" type="text"  class="form-control" placeholder="참조사이트" value="" >
+                 </div>
+                  <div class="form-group">
+                    <input id="headline" name="headline" type="text"  class="form-control" placeholder="헤드라인" value="" >
+                 </div>
+                 <div class="form-group">
+                  <input id="comment" name="comment" type="text"  class="form-control" placeholder="내용" value="" >
+                 </div>
+                  <div class="form-group">
+                    <input id="flag" name="flag" type="text"  class="form-control" placeholder="상태" value="" >
+                 </div>
+                 <div class="form-group">
+                  <input id="source" name="source" type="text"  class="form-control" placeholder="출처" value="" >
+                 </div>
+                  <div class="form-group">
+                    <input id="source_link" name="source_link" type="text"  class="form-control" placeholder="링크" value="" >
+                 </div>
+                 <div class="form-group">
+                  <input id="source_date" name="source_date" type="text"  class="form-control" placeholder="날짜" value="" >
                  </div>
                   <div class="form-group">
                           <button type="submit"  id="submit" tabindex="139" class="form-control btn btn-login" onclick="conversion()">등 록</button>
@@ -350,6 +380,12 @@
                             + ` <td contenteditable='true'>${data[i].food}</td>`
                             + ` <td contenteditable='true'>${data[i].ref_link}</td>`
                             + ` <td contenteditable='true'>${data[i].ref_site}</td>`
+                            + ` <td contenteditable='true'>${data[i].headline}</td>`
+                            + ` <td contenteditable='true'>${data[i].comment}</td>`
+                            + ` <td contenteditable='true'>${data[i].flag}</td>`
+                            + ` <td contenteditable='true'>${data[i].source}</td>`
+                            + ` <td contenteditable='true'>${data[i].source_link}</td>`
+                            + ` <td contenteditable='true'>${data[i].source_date}</td>`
                             + ` <td contenteditable='true'>${data[i].modify_date}</td>`
                             +`<tr>`
                        $tr = (`${tag}`);
@@ -477,8 +513,12 @@
       jsonData.food = select.children[2].innerHTML.trim();
       jsonData.ref_link = select.children[3].innerHTML.trim();
       jsonData.ref_site = select.children[4].innerHTML.trim();
-
-
+      jsonData.headline = select.children[5].innerHTML.trim();
+      jsonData.comment = select.children[6].innerHTML.trim();
+      jsonData.flag = select.children[7].innerHTML.trim();
+      jsonData.source = select.children[8].innerHTML.trim();
+      jsonData.source_link = select.children[9].innerHTML.trim();
+      jsonData.source_date = select.children[10].innerHTML.trim();
       $.ajax({
         method: "POST", // 요청 방식
         url: "/admin/data/modify?category=GOODFOOD",

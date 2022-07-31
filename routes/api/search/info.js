@@ -20,6 +20,7 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         likes : 0,
         wishes : 0,
         views : 0,
+        infoTag: "",
         likeStatus :0,
         wishStatus :0
     }
@@ -28,9 +29,9 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         const UpdateViewsQuery = 'UPDATE food_thumbnail SET views = views + 1 WHERE name = ?' 
         const UpdateViewsResult = await db.queryParam_Arr(UpdateViewsQuery, [req.params.food]);
          
-        const SelectQuery1 = 'SELECT food_id, background_color,name,title,img,category,wishes,views,likes,nutrition1,nutrition2,nutrition3,nutrition4 FROM food_thumbnail WHERE name = ?'; 
+        const SelectQuery1 = 'SELECT food_id, background_color,name,title,img,category,wishes,views,likes,info_tag,nutrition1,nutrition2,nutrition3,nutrition4 FROM food_thumbnail WHERE name = ?'; 
         const SelectResult1 = await db.queryParam_Arr(SelectQuery1, [req.params.food]);
-        const SelectQuery2 = 'SELECT cancerNm from cancer_food WHERE food = ?'; 
+        const SelectQuery2 = 'SELECT distinct(cancerNm) from cancer_food WHERE food = ?'; 
         const SelectResult2 = await db.queryParam_Arr(SelectQuery2, [req.params.food]);
         console.log(SelectResult2);
         
@@ -41,6 +42,13 @@ router.get('/header/:food', authUtil.checkLogin,async (req, res) => {
         resData.views =SelectResult1[0].views;
         resData.wishes =SelectResult1[0].wishes;
         resData.Color = SelectResult1[0].background_color;
+        
+
+        if(SelectResult1[0].info_tag =="NULL" || SelectResult1[0].info_tag ==""){
+            resData.infoTag = "none";
+        }else{
+            resData.infoTag = SelectResult1[0].info_tag;
+        }
     
         for(let i =0;i<SelectResult2.length;i++){
             resData.cancer.push(SelectResult2[i].cancerNm);
