@@ -11,12 +11,12 @@ const db = require('../../../module/pool');
 router.get('/cancer/:cancer',async (req, res) => {
         let SelectQuery = 
         'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
-        + 'FROM food_thumbnail A, cancer_food B '
+        + 'FROM food_thumbnail A, (SELECT food,cancerNm FROM cancer_food WHERE cancerNm = ? GROUP BY food) B '
         + 'WHERE A.name = B.food '
         + "AND A.img !=''"
         + 'AND cancerNm = ? '
     
-        let SelectResult = await db.queryParam_Arr(SelectQuery,req.params.cancer);
+        let SelectResult = await db.queryParam_Arr(SelectQuery,[req.params.cancer,req.params.cancer]);
     
         if(!SelectResult){
             res.status(200).send(defaultRes.successFalse(statusCode.DB_ERROR, resMessage.DB_ERROR));  
@@ -28,7 +28,7 @@ router.get('/cancer/:cancer',async (req, res) => {
  router.get('/cancer/nutrition/:cancer',async (req, res) => {//보류
     let SelectQuery = 
     'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
-    + 'FROM food_thumbnail A, cancer_food B '
+    + 'FROM food_thumbnail A, (SELECT food,cancerNm FROM cancer_food GROUP BY food) B '
     + 'WHERE A.name = B.food '
     + 'AND (nutrition1 IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? ) '
     + 'OR nutrition2 IN (SELECT nutrition FROM cancer_nut_good WHERE cancer = ? ) '

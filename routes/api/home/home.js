@@ -19,12 +19,12 @@ router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
         let cancerNm = SelectCancerResult[0].cancerNm;
         const SelectQuery = 
         'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
-        + 'FROM food_thumbnail A, cancer_food B '
+        + 'FROM food_thumbnail A, (SELECT food,cancerNm FROM cancer_food WHERE cancerNm = ? GROUP BY food) B '
         + 'WHERE A.name = B.food '
         + "AND img !=''"
         + 'AND B.cancerNm = ? '
         + 'LIMIT 5 '; 
-        const SelectResult = await db.queryParam_Arr(SelectQuery, [cancerNm]);
+        const SelectResult = await db.queryParam_Arr(SelectQuery, [cancerNm,cancerNm]);
 
         res.status(200).send(defaultRes.successTrue(statusCode.OK, "추천 음식 조회 성공", SelectResult));     
     }
