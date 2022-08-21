@@ -12,7 +12,7 @@ const db = require('../../../module/pool');
 router.get('/', authUtil.isLoggedin,async (req, res) => {
 
     const LikeSelectQuery = 
-    'SELECT food_id, name,img,category,cancerNM,wishes,likes,nutrition1,background_color,foreground_color '
+    'SELECT food_id, name,img,category,cancerNM,wishes,likes,views,nutrition1,background_color,foreground_color '
     + 'FROM likelist A, food_thumbnail B, (SELECT food,cancerNm FROM cancer_food GROUP BY food) C  '
     + 'WHERE A.user_id = ? '
     + 'AND A.food = B.name '
