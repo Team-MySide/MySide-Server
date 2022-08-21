@@ -13,7 +13,7 @@ router.get('/', authUtil.isLoggedin,async (req, res) => {
 
     const LikeSelectQuery = 
     'SELECT food_id, name,img,category,cancerNM,wishes,likes,nutrition1,background_color,foreground_color '
-    + 'FROM likelist A, food_thumbnail B, cancer_food C  '
+    + 'FROM likelist A, food_thumbnail B, (SELECT food,cancerNm FROM cancer_food GROUP BY food) C  '
     + 'WHERE A.user_id = ? '
     + 'AND A.food = B.name '
     + 'AND A.food = C.food' // 로그인한 유저가 좋아요한 음식을 썸네일,암-음식 테이블에서 정보를 가져온다.
