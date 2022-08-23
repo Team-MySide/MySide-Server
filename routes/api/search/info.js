@@ -813,7 +813,8 @@ router.get('/source/stats/:food', async (req, res) => {
 });
 
 router.get('/source/stats/detail/:food/:cancerNm/:code', async (req, res) => {
-    const SelectQuery = "SELECT headline, comment, source, source_link, source_date FROM cancer_food WHERE food = ? AND cancerNm = ? AND flag = ? GROUP BY cancerNm , flag"; 
+    //const SelectQuery = "SELECT headline, comment, source, source_link, source_date FROM cancer_food WHERE food = ? AND cancerNm = ? AND flag = ? GROUP BY cancerNm , flag"; 
+    const SelectQuery = "SELECT headline, comment, source, source_link, source_date FROM cancer_food WHERE food = ? AND cancerNm = ? AND flag = ? "; 
     const SelectResult = await db.queryParam_Arr(SelectQuery,[req.params.food, req.params.cancerNm, req.params.code]);
     console.log(SelectResult);
     if(!SelectResult){
