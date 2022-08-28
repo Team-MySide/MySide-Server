@@ -739,7 +739,10 @@ router.get('/source/:food', async (req, res) => {
 });
 
 router.get('/source/stats/:food', async (req, res) => {
-    const SelectQuery = "SELECT cancerNm,flag,count(*) AS count FROM cancer_food WHERE food = ? GROUP BY cancerNm, flag"; 
+    // const SelectQuery = "SELECT cancerNm,flag,count(*) AS count FROM cancer_food WHERE food = ? GROUP BY cancerNm, flag"; 
+    const SelectQuery = "SELECT cf.cancerNm,cf.flag,count(*) AS count FROM cancer_food as cf"
+    +" join cancer as c on cf.cancerNm = c.name WHERE cf.food = ? GROUP BY cf.cancerNm, cf.flag order by c.cancer_id"; 
+
     const SelectResult = await db.queryParam_Parse(SelectQuery,req.params.food);
     let resData = [];
     let sourceList = [];
