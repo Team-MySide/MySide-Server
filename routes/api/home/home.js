@@ -26,7 +26,17 @@ router.get('/recommendation', authUtil.isLoggedin,async (req, res) => {
         + 'LIMIT 5 '; 
         const SelectResult = await db.queryParam_Arr(SelectQuery, [cancerNm,cancerNm]);
 
-        res.status(200).send(defaultRes.successTrue(statusCode.OK, "추천 음식 조회 성공", SelectResult));     
+        const CancerList = ["위암","폐암","간암","대장암","유방암","갑상선암"]
+
+        if(!CancerList.includes((cancerNm))){
+
+            const SelectResult2 = await db.queryParam_Arr(SelectQuery, ["항암","항암"]);
+            res.status(200).send(defaultRes.successTrue(statusCode.OK, "항암 음식 조회 성공", SelectResult2));     
+        }
+        else{
+            res.status(200).send(defaultRes.successTrue(statusCode.OK, "추천 음식 조회 성공", SelectResult));     
+        }
+
     }
 });
 
