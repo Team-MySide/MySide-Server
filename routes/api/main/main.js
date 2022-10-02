@@ -89,7 +89,7 @@ router.get('/cancer/rank/:cancer/:tabIdx',async (req, res) => {
 
     let SelectRankQuery;
     let SelectQuery = 
-    'SELECT food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
+    'SELECT DISTINCT A.food_id, name,img,category,cancerNm,background_color,foreground_color,wishes,views,likes,nutrition1 '
     + 'FROM food_thumbnail A, cancer_food B '
     + 'WHERE A.name = B.food '
     + 'AND cancerNm = ? '
@@ -99,7 +99,7 @@ router.get('/cancer/rank/:cancer/:tabIdx',async (req, res) => {
     }else{ // 추천순 
         SelectRankQuery = SelectQuery + 'ORDER BY likes DESC'
     }
-
+    
     let SelectRankResult = await db.queryParam_Arr(SelectRankQuery,req.params.cancer);
 
     if(!SelectRankResult){
